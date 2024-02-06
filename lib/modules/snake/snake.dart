@@ -56,6 +56,7 @@ class _SnakeState extends State<Snake> {
           onHorizontalDragUpdate: (details) =>
               onHorizontalDragUpdate(details, direction),
           child: Container(
+            color: AppInfoReference.defaultAppColor.withOpacity(0.2),
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               shrinkWrap: true,
@@ -83,7 +84,7 @@ class _SnakeState extends State<Snake> {
                       padding: const EdgeInsets.all(2),
                       child: const Icon(
                         Icons.local_pizza,
-                        size: 24.0,
+                        size: 20.0,
                         color: Colors.amber,
                       ),
                     ),

@@ -10,11 +10,14 @@ class SnakeState with ChangeNotifier {
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
+  int _score = 0;
   GameDirection _direction = GameDirection.right;
   Timer? timer;
 
   List<int> get snake => _snake;
+  int get score => _score;
   int get foodIndex => _foodIndex;
+  bool get hasGameStarted => _snake.isNotEmpty;
   GameDirection get direction => _direction;
   bool get isGameOver => _isGameOver;
   bool get isGamePaused => _isGamePaused;
@@ -29,6 +32,18 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
+  void restartGame() {
+    try {
+      timer?.cancel();
+    } catch (e) {
+      //
+    }
+    _isGameOver = false;
+    _isGamePaused = false;
+    resetSnake();
+    startGame();
+  }
+
   void startGame() {
     const duration = Duration(milliseconds: 300);
     timer = Timer.periodic(
@@ -39,9 +54,6 @@ class SnakeState with ChangeNotifier {
             moveSnakePosition();
             checkForSnakeFood();
           }
-        } else {
-          print("need to reset");
-          //Hnadling game over  scenario when user presses the space bar again after the game has ended.
         }
       },
     );
@@ -66,7 +78,7 @@ class SnakeState with ChangeNotifier {
   void generateSnakeFood() {
     _foodIndex =
         DateTime.now().millisecondsSinceEpoch % AppInfoReference.gridSizeCount;
-    if (snake.contains(_foodIndex)) {
+    if (_snake.contains(_foodIndex)) {
       generateSnakeFood();
     } else {
       notifyListeners();
@@ -129,6 +141,7 @@ class SnakeState with ChangeNotifier {
         int last = _snake.last;
         _snake = _snake.where((val) => val != last).toList();
       }
+      _score = _snake.length - SnakeReference.defaultPosition.length;
     }
 
     notifyListeners();
