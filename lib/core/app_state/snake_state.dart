@@ -29,6 +29,18 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
+  void restartGame() {
+    try {
+      timer?.cancel();
+    } catch (e) {
+      //
+    }
+    _isGameOver = false;
+    _isGamePaused = false;
+    resetSnake();
+    startGame();
+  }
+
   void startGame() {
     const duration = Duration(milliseconds: 300);
     timer = Timer.periodic(
@@ -39,9 +51,6 @@ class SnakeState with ChangeNotifier {
             moveSnakePosition();
             checkForSnakeFood();
           }
-        } else {
-          print("need to reset");
-          //Hnadling game over  scenario when user presses the space bar again after the game has ended.
         }
       },
     );
@@ -66,7 +75,7 @@ class SnakeState with ChangeNotifier {
   void generateSnakeFood() {
     _foodIndex =
         DateTime.now().millisecondsSinceEpoch % AppInfoReference.gridSizeCount;
-    if (snake.contains(_foodIndex)) {
+    if (_snake.contains(_foodIndex)) {
       generateSnakeFood();
     } else {
       notifyListeners();
