@@ -38,6 +38,8 @@ class AppActions extends StatelessWidget {
     return Consumer<SnakeState>(
       builder: (context, snakeState, child) {
         bool isGamePaused = snakeState.isGamePaused;
+        bool isGameOver = snakeState.isGameOver;
+        bool hasGameStarted = snakeState.hasGameStarted;
         return Container(
           color: AppInfoReference.defaultAppColor.withOpacity(0.4),
           padding: const EdgeInsets.symmetric(
@@ -51,11 +53,31 @@ class AppActions extends StatelessWidget {
                 onTap: () => onPauseOrResumeGame(context),
               ),
               Visibility(
-                visible: true,
+                visible: isGameOver,
                 child: _getActionButton(
                   context,
                   icon: Icons.refresh,
                   onTap: () => onResetGame(context),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(),
+                  child: Text(
+                    !hasGameStarted
+                        ? 'Press to start'
+                        : isGameOver
+                            ? 'Game is over'
+                            : isGamePaused
+                                ? 'Game has been paused'
+                                : '',
+                    style: const TextStyle().copyWith(
+                      fontSize: 15.0,
+                      color: isGameOver ? Colors.redAccent : Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
                 ),
               )
             ],
