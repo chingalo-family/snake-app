@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/core/app_state/snake_state.dart';
 import 'package:snake_game/core/constants/app_info_reference.dart';
-import 'package:snake_game/modules/home.dart';
+import 'package:snake_game/modules/snake/home.dart';
 
 void main() {
   runApp(const SnakeGame());
@@ -26,7 +26,6 @@ class SnakeGame extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppInfoReference.defaultAppColor,
           ),
-          useMaterial3: true,
         ),
         home: const Home(),
       ),
