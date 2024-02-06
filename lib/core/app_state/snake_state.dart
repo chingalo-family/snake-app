@@ -10,11 +10,14 @@ class SnakeState with ChangeNotifier {
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
+  int _score = 0;
   GameDirection _direction = GameDirection.right;
   Timer? timer;
 
   List<int> get snake => _snake;
+  int get score => _score;
   int get foodIndex => _foodIndex;
+  bool get hasGameStarted => _snake.isNotEmpty;
   GameDirection get direction => _direction;
   bool get isGameOver => _isGameOver;
   bool get isGamePaused => _isGamePaused;
@@ -138,6 +141,7 @@ class SnakeState with ChangeNotifier {
         int last = _snake.last;
         _snake = _snake.where((val) => val != last).toList();
       }
+      _score = _snake.length - SnakeReference.defaultPosition.length;
     }
 
     notifyListeners();
