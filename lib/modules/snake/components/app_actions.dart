@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/core/app_state/snake_state.dart';
-import 'package:snake_game/core/constants/app_info_reference.dart';
 
 class AppActions extends StatelessWidget {
   const AppActions({
@@ -41,7 +40,7 @@ class AppActions extends StatelessWidget {
         bool isGameOver = snakeState.isGameOver;
         bool hasGameStarted = snakeState.hasGameStarted;
         return Container(
-          color: AppInfoReference.defaultAppColor.withOpacity(0.4),
+          color: Theme.of(context).colorScheme.inversePrimary,
           padding: const EdgeInsets.symmetric(
             horizontal: 10.0,
           ),
