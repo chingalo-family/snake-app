@@ -5,7 +5,10 @@ import 'package:snake_game/core/app_state/snake_state.dart';
 class AppActions extends StatelessWidget {
   const AppActions({
     super.key,
+    this.gamePanelHeight = 0,
   });
+
+  final int gamePanelHeight;
 
   Widget _getActionButton(
     BuildContext context, {
@@ -18,6 +21,7 @@ class AppActions extends StatelessWidget {
         icon: Icon(
           icon,
           size: 30.0,
+          color: Colors.white,
         ),
         onPressed: onTap,
       ),
@@ -25,11 +29,13 @@ class AppActions extends StatelessWidget {
   }
 
   void onPauseOrResumeGame(BuildContext context) {
-    Provider.of<SnakeState>(context, listen: false).pauseOrResumeGame();
+    Provider.of<SnakeState>(context, listen: false)
+        .pauseOrResumeGame(gamePanelHeight);
   }
 
   void onResetGame(BuildContext context) {
-    Provider.of<SnakeState>(context, listen: false).restartGame();
+    Provider.of<SnakeState>(context, listen: false)
+        .restartGame(gamePanelHeight);
   }
 
   @override
@@ -46,10 +52,14 @@ class AppActions extends StatelessWidget {
           ),
           child: Row(
             children: [
-              _getActionButton(
-                context,
-                icon: isGamePaused ? Icons.play_arrow_sharp : Icons.pause_sharp,
-                onTap: () => onPauseOrResumeGame(context),
+              Visibility(
+                visible: !isGameOver,
+                child: _getActionButton(
+                  context,
+                  icon:
+                      isGamePaused ? Icons.play_arrow_sharp : Icons.pause_sharp,
+                  onTap: () => onPauseOrResumeGame(context),
+                ),
               ),
               Visibility(
                 visible: isGameOver,
@@ -72,7 +82,7 @@ class AppActions extends StatelessWidget {
                                 : '',
                     style: const TextStyle().copyWith(
                       fontSize: 15.0,
-                      color: isGameOver ? Colors.redAccent : Colors.black,
+                      color: isGameOver ? Colors.redAccent : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.right,
