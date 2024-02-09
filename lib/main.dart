@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/core/app_state/snake_state.dart';
 import 'package:snake_game/core/constants/app_info_reference.dart';
 import 'package:snake_game/modules/snake/home.dart';
 
 void main() {
-  runApp(const SnakeGame());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(const SnakeGame()));
 }
 
 class SnakeGame extends StatelessWidget {

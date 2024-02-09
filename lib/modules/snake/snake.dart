@@ -5,7 +5,12 @@ import 'package:snake_game/core/constants/app_info_reference.dart';
 import 'package:snake_game/core/constants/game_direction.dart';
 
 class Snake extends StatefulWidget {
-  const Snake({super.key});
+  const Snake({
+    super.key,
+    this.gamePanelHeight = 0,
+  });
+
+  final int gamePanelHeight;
 
   @override
   State<Snake> createState() => _SnakeState();
@@ -50,13 +55,17 @@ class _SnakeState extends State<Snake> {
         List<int> snake = snakeState.snake;
         int foodIndex = snakeState.foodIndex;
         GameDirection direction = snakeState.direction;
+        int gamePanelHeight = snakeState.gamePanelHeight > 0
+            ? snakeState.gamePanelHeight
+            : widget.gamePanelHeight;
         return GestureDetector(
           onVerticalDragUpdate: (details) =>
               onVerticalDragUpdate(details, direction),
           onHorizontalDragUpdate: (details) =>
               onHorizontalDragUpdate(details, direction),
           child: Container(
-            color: AppInfoReference.defaultAppColor.withOpacity(0.2),
+            color:
+                Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               shrinkWrap: true,
@@ -64,7 +73,7 @@ class _SnakeState extends State<Snake> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: AppInfoReference.gridColumnsCount,
               ),
-              itemCount: AppInfoReference.gridSizeCount,
+              itemCount: gamePanelHeight,
               itemBuilder: (BuildContext context, int index) {
                 if (snake.contains(index)) {
                   return Center(
@@ -85,7 +94,7 @@ class _SnakeState extends State<Snake> {
                       child: const Icon(
                         Icons.local_pizza,
                         size: 20.0,
-                        color: Colors.amber,
+                        color: Colors.cyan,
                       ),
                     ),
                   );
@@ -96,7 +105,10 @@ class _SnakeState extends State<Snake> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: Container(
-                          color: Colors.blueAccent.withOpacity(0.05),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .inversePrimary
+                              .withOpacity(0.15),
                         ),
                       ),
                     ),

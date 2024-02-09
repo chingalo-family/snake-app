@@ -6,7 +6,8 @@ import 'package:snake_game/core/constants/game_direction.dart';
 import 'package:snake_game/core/constants/snake_reference.dart';
 
 class SnakeState with ChangeNotifier {
-  int _foodIndex = (AppInfoReference.gridSizeCount * 0.45).ceil();
+  int _foodIndex = 0;
+  int _gamePanelHeight = 0;
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
@@ -15,6 +16,7 @@ class SnakeState with ChangeNotifier {
   Timer? timer;
 
   List<int> get snake => _snake;
+  int get gamePanelHeight => _gamePanelHeight;
   int get score => _score;
   int get foodIndex => _foodIndex;
   bool get hasGameStarted => _snake.isNotEmpty;
@@ -32,7 +34,9 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
-  void restartGame() {
+  void restartGame(int gamePanelHeight) {
+    _gamePanelHeight = gamePanelHeight;
+    notifyListeners();
     try {
       timer?.cancel();
     } catch (e) {
@@ -59,7 +63,9 @@ class SnakeState with ChangeNotifier {
     );
   }
 
-  void pauseOrResumeGame() {
+  void pauseOrResumeGame(int gamePanelHeight) {
+    _gamePanelHeight = gamePanelHeight;
+    notifyListeners();
     if (snake.isEmpty) {
       initiateTheGame();
     }
@@ -76,8 +82,7 @@ class SnakeState with ChangeNotifier {
   }
 
   void generateSnakeFood() {
-    _foodIndex =
-        DateTime.now().millisecondsSinceEpoch % AppInfoReference.gridSizeCount;
+    _foodIndex = DateTime.now().millisecondsSinceEpoch % gamePanelHeight;
     if (_snake.contains(_foodIndex)) {
       generateSnakeFood();
     } else {
@@ -107,9 +112,7 @@ class SnakeState with ChangeNotifier {
         head -= AppInfoReference.gridColumnsCount;
         break;
       case GameDirection.down:
-        if (head >=
-            AppInfoReference.gridSizeCount -
-                AppInfoReference.gridColumnsCount) {
+        if (head >= gamePanelHeight - AppInfoReference.gridColumnsCount) {
           _isGameOver = true;
         }
         head += AppInfoReference.gridColumnsCount;
