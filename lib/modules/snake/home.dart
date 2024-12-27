@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/core/app_state/snake_state.dart';
-import 'package:snake_game/modules/snake/components/app_actions.dart';
-import 'package:snake_game/modules/snake/snake.dart';
+import 'package:snake_app/core/app_state/snake_state.dart';
+import 'package:snake_app/modules/snake/components/app_actions.dart';
+import 'package:snake_app/modules/snake/snake.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(),
                     child: Text(
-                      'Snake Game',
+                      'Snake App',
                       style: const TextStyle().copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/core/app_state/snake_state.dart';
+import 'package:snake_app/core/app_state/snake_state.dart';
 
 class AppActions extends StatelessWidget {
   const AppActions({

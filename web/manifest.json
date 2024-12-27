@@ -1,6 +1,6 @@
 {
-    "name": "snake_game",
-    "short_name": "snake_game",
+    "name": "snake_app",
+    "short_name": "snake_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

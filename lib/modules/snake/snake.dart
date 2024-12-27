@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/core/app_state/snake_state.dart';
-import 'package:snake_game/core/constants/app_info_reference.dart';
-import 'package:snake_game/core/constants/game_direction.dart';
+import 'package:snake_app/core/app_state/snake_state.dart';
+import 'package:snake_app/core/constants/app_info_reference.dart';
+import 'package:snake_app/core/constants/game_direction.dart';
 
 class Snake extends StatefulWidget {
   const Snake({

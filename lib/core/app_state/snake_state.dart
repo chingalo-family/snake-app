@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:snake_game/core/constants/app_info_reference.dart';
-import 'package:snake_game/core/constants/game_direction.dart';
-import 'package:snake_game/core/constants/snake_reference.dart';
+import 'package:snake_app/core/constants/app_info_reference.dart';
+import 'package:snake_app/core/constants/game_direction.dart';
+import 'package:snake_app/core/constants/snake_reference.dart';
 
 class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
