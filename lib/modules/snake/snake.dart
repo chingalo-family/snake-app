@@ -48,6 +48,16 @@ class _SnakeState extends State<Snake> {
     }
   }
 
+  int _getNumberOfRows() {
+    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
+    double boxSize = (gamePanelWidth - AppInfoReference.gridPadding) /
+            AppInfoReference.gridColumnsCount -
+        AppInfoReference.gridPadding;
+    return ((widget.gamePanelHeight - AppInfoReference.gridPadding) /
+            (boxSize + AppInfoReference.gridPadding))
+        .toInt();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SnakeState>(
@@ -55,9 +65,8 @@ class _SnakeState extends State<Snake> {
         List<int> snake = snakeState.snake;
         int foodIndex = snakeState.foodIndex;
         GameDirection direction = snakeState.direction;
-        int gamePanelHeight = snakeState.gamePanelHeight > 0
-            ? snakeState.gamePanelHeight
-            : widget.gamePanelHeight;
+        int numberOfRows = _getNumberOfRows();
+        int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
         return GestureDetector(
           onVerticalDragUpdate: (details) =>
               onVerticalDragUpdate(details, direction),
@@ -67,54 +76,50 @@ class _SnakeState extends State<Snake> {
             color:
                 Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
             padding: const EdgeInsets.all(10),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: AppInfoReference.gridColumnsCount,
+            child: GridView.count(
+              crossAxisCount: AppInfoReference.gridColumnsCount,
+              children: List.generate(
+                totalBoxes,
+                (index) {
+                  return Center(
+                    child: snake.contains(index)
+                        ? Container(
+                            padding: const EdgeInsets.all(2),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Container(
+                                color: Colors.red,
+                              ),
+                            ),
+                          )
+                        : index == foodIndex
+                            ? Center(
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  child: const Icon(
+                                    Icons.local_pizza,
+                                    size: 20.0,
+                                    color: Colors.cyan,
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: Container(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary
+                                          .withOpacity(0.15),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                  );
+                },
               ),
-              itemCount: gamePanelHeight,
-              itemBuilder: (BuildContext context, int index) {
-                if (snake.contains(index)) {
-                  return Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Container(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  );
-                } else if (index == foodIndex) {
-                  return Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: const Icon(
-                        Icons.local_pizza,
-                        size: 20.0,
-                        color: Colors.cyan,
-                      ),
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Container(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .inversePrimary
-                              .withOpacity(0.15),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              },
             ),
           ),
         );

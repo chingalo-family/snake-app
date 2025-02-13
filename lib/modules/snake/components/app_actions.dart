@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state.dart';
+import 'package:snake_app/core/constants/app_info_reference.dart';
 
 class AppActions extends StatelessWidget {
   const AppActions({
@@ -29,13 +30,25 @@ class AppActions extends StatelessWidget {
   }
 
   void onPauseOrResumeGame(BuildContext context) {
-    Provider.of<SnakeState>(context, listen: false)
-        .pauseOrResumeGame(gamePanelHeight);
+    Provider.of<SnakeState>(context, listen: false).pauseOrResumeGame(
+      gamePanelHeight: gamePanelHeight,
+      gameBoxSize: _getPanelBoxSize(context),
+    );
   }
 
   void onResetGame(BuildContext context) {
-    Provider.of<SnakeState>(context, listen: false)
-        .restartGame(gamePanelHeight);
+    Provider.of<SnakeState>(context, listen: false).restartGame(
+      gamePanelHeight: gamePanelHeight,
+      gameBoxSize: _getPanelBoxSize(context),
+    );
+  }
+
+  int _getPanelBoxSize(BuildContext context) {
+    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
+    double boxSize = (gamePanelWidth - AppInfoReference.gridPadding) /
+            AppInfoReference.gridColumnsCount -
+        AppInfoReference.gridPadding;
+    return boxSize.toInt();
   }
 
   @override
