@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      int gamePanelHeight = (constraints.maxHeight * 0.85).ceil();
+      int gamePanelHeight = (constraints.maxHeight * 0.77).ceil();
       double gameScoreHeight = (constraints.maxHeight * 0.17).ceil().toDouble();
       return Scaffold(
         appBar: AppBar(
