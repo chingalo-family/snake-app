@@ -4,8 +4,8 @@ import 'package:snake_app/core/app_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 
-class Snake extends StatefulWidget {
-  const Snake({
+class SnakeContainer extends StatefulWidget {
+  const SnakeContainer({
     super.key,
     this.gamePanelHeight = 0,
   });
@@ -13,10 +13,10 @@ class Snake extends StatefulWidget {
   final int gamePanelHeight;
 
   @override
-  State<Snake> createState() => _SnakeState();
+  State<SnakeContainer> createState() => _SnakeContainerState();
 }
 
-class _SnakeState extends State<Snake> {
+class _SnakeContainerState extends State<SnakeContainer> {
   @override
   void initState() {
     super.initState();
@@ -73,8 +73,9 @@ class _SnakeState extends State<Snake> {
           onHorizontalDragUpdate: (details) =>
               onHorizontalDragUpdate(details, direction),
           child: Container(
-            color:
-                Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.inversePrimary.withValues(
+                  alpha: 0.1,
+                ),
             padding: const EdgeInsets.all(10),
             child: GridView.count(
               crossAxisCount: AppInfoReference.gridColumnsCount,
@@ -114,7 +115,9 @@ class _SnakeState extends State<Snake> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .inversePrimary
-                                          .withOpacity(0.15),
+                                          .withValues(
+                                            alpha: 0.2,
+                                          ),
                                     ),
                                   ),
                                 ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state.dart';
 import 'package:snake_app/modules/snake/components/app_actions.dart';
-import 'package:snake_app/modules/snake/snake.dart';
+import 'package:snake_app/modules/snake/components/snake_container.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class SnakePage extends StatelessWidget {
+  const SnakePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class Home extends StatelessWidget {
               gamePanelHeight: gamePanelHeight,
             ),
           ),
-          body: Snake(
+          body: SnakeContainer(
             gamePanelHeight: gamePanelHeight,
           ),
         ),
