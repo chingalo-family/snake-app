@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
-import 'package:snake_app/modules/snake/home.dart';
+import 'package:snake_app/modules/snake/snake_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class SnakeGame extends StatelessWidget {
             seedColor: AppInfoReference.defaultAppColor,
           ),
         ),
-        home: const Home(),
+        home: const SnakePage(),
       ),
     );
   }

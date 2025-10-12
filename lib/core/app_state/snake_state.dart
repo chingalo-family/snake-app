@@ -8,6 +8,7 @@ import 'package:snake_app/core/constants/snake_reference.dart';
 class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
   int _gamePanelHeight = 0;
+  int _gameBoxSize = 0;
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
@@ -17,6 +18,7 @@ class SnakeState with ChangeNotifier {
 
   List<int> get snake => _snake;
   int get gamePanelHeight => _gamePanelHeight;
+  int get gameBoxSize => _gameBoxSize;
   int get score => _score;
   int get foodIndex => _foodIndex;
   bool get hasGameStarted => _snake.isNotEmpty;
@@ -34,8 +36,12 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
-  void restartGame(int gamePanelHeight) {
+  void restartGame({
+    required int gamePanelHeight,
+    required int gameBoxSize,
+  }) {
     _gamePanelHeight = gamePanelHeight;
+    _gameBoxSize = gameBoxSize;
     notifyListeners();
     try {
       timer?.cancel();
@@ -63,7 +69,12 @@ class SnakeState with ChangeNotifier {
     );
   }
 
-  void pauseOrResumeGame(int gamePanelHeight) {
+  void pauseOrResumeGame({
+    required int gamePanelHeight,
+    required int gameBoxSize,
+  }) {
+    _gamePanelHeight = gamePanelHeight;
+    _gameBoxSize = gameBoxSize;
     _gamePanelHeight = gamePanelHeight;
     notifyListeners();
     if (snake.isEmpty) {
