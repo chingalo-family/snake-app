@@ -78,6 +78,8 @@ class _SnakeState extends State<Snake> {
             padding: const EdgeInsets.all(10),
             child: GridView.count(
               crossAxisCount: AppInfoReference.gridColumnsCount,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
                 totalBoxes,
                 (index) {
