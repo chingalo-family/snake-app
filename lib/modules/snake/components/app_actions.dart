@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_app/core/app_state/snake_state.dart';
+import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 
 class AppActions extends StatelessWidget {
-  const AppActions({
-    super.key,
-    this.gamePanelHeight = 0,
-  });
+  const AppActions({super.key, this.gamePanelHeight = 0});
 
   final int gamePanelHeight;
 
@@ -19,11 +16,7 @@ class AppActions extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(),
       child: IconButton(
-        icon: Icon(
-          icon,
-          size: 30.0,
-          color: Colors.white,
-        ),
+        icon: Icon(icon, size: 30.0, color: Colors.white),
         onPressed: onTap,
       ),
     );
@@ -45,7 +38,8 @@ class AppActions extends StatelessWidget {
 
   int _getPanelBoxSize(BuildContext context) {
     double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
-    double boxSize = (gamePanelWidth - AppInfoReference.gridPadding) /
+    double boxSize =
+        (gamePanelWidth - AppInfoReference.gridPadding) /
             AppInfoReference.gridColumnsCount -
         AppInfoReference.gridPadding;
     return boxSize.toInt();
@@ -60,17 +54,16 @@ class AppActions extends StatelessWidget {
         bool hasGameStarted = snakeState.hasGameStarted;
         return Container(
           color: Theme.of(context).colorScheme.inversePrimary,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [
               Visibility(
                 visible: !isGameOver,
                 child: _getActionButton(
                   context,
-                  icon:
-                      isGamePaused ? Icons.play_arrow_sharp : Icons.pause_sharp,
+                  icon: isGamePaused
+                      ? Icons.play_arrow_sharp
+                      : Icons.pause_sharp,
                   onTap: () => onPauseOrResumeGame(context),
                 ),
               ),
@@ -89,10 +82,10 @@ class AppActions extends StatelessWidget {
                     !hasGameStarted
                         ? 'Press to start'
                         : isGameOver
-                            ? 'Game is over'
-                            : isGamePaused
-                                ? 'Game has been paused'
-                                : '',
+                        ? 'Game is over'
+                        : isGamePaused
+                        ? 'Game has been paused'
+                        : '',
                     style: const TextStyle().copyWith(
                       fontSize: 15.0,
                       color: isGameOver ? Colors.redAccent : Colors.white,
@@ -101,7 +94,7 @@ class AppActions extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );
