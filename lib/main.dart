@@ -5,7 +5,7 @@ import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
-import 'package:snake_app/modules/game/game.dart';
+import 'package:snake_app/modules/splash/splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +34,7 @@ class AppGame extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: const Game(),
+        home: const Splash(),
       ),
     );
   }
