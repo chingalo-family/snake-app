@@ -63,10 +63,9 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/img/app-icon.png',
-                fit: BoxFit.contain,
-                height: 24.0,
+              Container(
+                margin: const EdgeInsets.only(right: 5.0),
+                child: Text("🎮"),
               ),
               Text(AppInfoReference.appName),
             ],
