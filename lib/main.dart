@@ -28,10 +28,12 @@ class AppGame extends StatelessWidget {
       ],
       child: MaterialApp(
         title: AppInfoReference.appName,
+        themeMode: ThemeMode.dark,
         darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
           colorScheme: ColorScheme.fromSeed(
             seedColor: AppInfoReference.defaultAppColor,
           ),
+          scaffoldBackgroundColor: Colors.black,
         ),
         debugShowCheckedModeBanner: false,
         home: const Splash(),
