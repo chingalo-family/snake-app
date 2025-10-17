@@ -4,6 +4,7 @@ import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
+import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
 
 class GamePlayContainer extends StatefulWidget {
@@ -20,6 +21,13 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
   void initState() {
     super.initState();
     _setAppStateForModalAction();
+  }
+
+  void _submitGameScore() {
+    // TODO: Implement score submission logic here
+    AppUtil.showToastMessage(
+      message: 'Game Over! Your score has been submitted.',
+    );
   }
 
   void _setAppStateForModalAction() {
@@ -40,6 +48,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
             );
           }
           if (snakeState.isGameOver) {
+            _submitGameScore();
             AppModalUtil.showActionSheetModal(
               context: context,
               topBorderRadius: 20,
