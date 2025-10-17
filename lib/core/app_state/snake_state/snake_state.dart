@@ -26,6 +26,17 @@ class SnakeState with ChangeNotifier {
   bool get isGameOver => _isGameOver;
   bool get isGamePaused => _isGamePaused;
 
+  void resetSnakeState() {
+    _foodIndex = 0;
+    _snake = [];
+    _isGameOver = false;
+    _isGamePaused = true;
+    _score = 0;
+    _direction = GameDirection.right;
+    timer?.cancel();
+    notifyListeners();
+  }
+
   void resetSnake() {
     _snake = SnakeReference.defaultPosition;
     _direction = GameDirection.right;
