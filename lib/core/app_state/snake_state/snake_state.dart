@@ -12,6 +12,7 @@ class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
   int _gamePanelHeight = 0;
   int _gameBoxSize = 0;
+  int _totalBoxes = 0;
   GameFoodScore? _gameFoodScore;
   List<int> _snake = [];
   bool _isGameOver = false;
@@ -58,9 +59,14 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
-  void restartGame({required int gamePanelHeight, required int gameBoxSize}) {
+  void restartGame({
+    required int gamePanelHeight,
+    required int gameBoxSize,
+    required int totalBoxes,
+  }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
+    _totalBoxes = totalBoxes;
     notifyListeners();
     try {
       timer?.cancel();
@@ -88,10 +94,11 @@ class SnakeState with ChangeNotifier {
   void pauseOrResumeGame({
     required int gamePanelHeight,
     required int gameBoxSize,
+    required int totalBoxes,
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
-    _gamePanelHeight = gamePanelHeight;
+    _totalBoxes = totalBoxes;
     _isGamePaused = !isGamePaused;
     if (snake.isEmpty) {
       initiateTheGame();
@@ -108,16 +115,18 @@ class SnakeState with ChangeNotifier {
   }
 
   void generateSnakeFood() {
-    _foodIndex = DateTime.now().millisecondsSinceEpoch % gamePanelHeight;
+    if (_totalBoxes <= 0) return;
+    final random = Random();
+    int newFoodIndex = random.nextInt(_totalBoxes);
+    while (_snake.contains(newFoodIndex)) {
+      newFoodIndex = random.nextInt(_totalBoxes);
+    }
+    _foodIndex = newFoodIndex;
     _gameFoodScore =
-        GameStoreReference.gameFoodScores[Random().nextInt(
+        GameStoreReference.gameFoodScores[random.nextInt(
           GameStoreReference.gameFoodScores.length,
         )];
-    if (_snake.contains(_foodIndex)) {
-      generateSnakeFood();
-    } else {
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
   void updateSnakeDirection(GameDirection direction) {
@@ -138,44 +147,46 @@ class SnakeState with ChangeNotifier {
       case GameDirection.up:
         if (head < AppInfoReference.gridColumnsCount) {
           _isGameOver = true;
+        } else {
+          head -= AppInfoReference.gridColumnsCount;
         }
-        head -= AppInfoReference.gridColumnsCount;
         break;
       case GameDirection.down:
-        if (head >= gamePanelHeight - AppInfoReference.gridColumnsCount) {
+        if (head >= _totalBoxes - AppInfoReference.gridColumnsCount) {
           _isGameOver = true;
+        } else {
+          head += AppInfoReference.gridColumnsCount;
         }
-        head += AppInfoReference.gridColumnsCount;
         break;
       case GameDirection.left:
         if (head % AppInfoReference.gridColumnsCount == 0) {
           _isGameOver = true;
+        } else {
+          head--;
         }
-        head--;
         break;
       case GameDirection.right:
         if ((head + 1) % AppInfoReference.gridColumnsCount == 0) {
           _isGameOver = true;
+        } else {
+          head++;
         }
-        head++;
         break;
     }
-    if (snake.contains(head)) {
+    if (head < 0 || head >= _totalBoxes) {
       _isGameOver = true;
     }
-    if (!isGameOver) {
-      _snake = [
-        ...[head],
-        ..._snake,
-      ];
-      if (head == foodIndex) {
+    if (_snake.contains(head)) {
+      _isGameOver = true;
+    }
+    if (!_isGameOver) {
+      _snake = [head, ..._snake];
+      if (head == _foodIndex) {
         _score += gameFoodScore.score;
+        _snake.add(_snake.last);
         generateSnakeFood();
       } else {
-        int lastSnakeSegment = _snake.last;
-        _snake = _snake
-            .where((snakeSegment) => snakeSegment != lastSnakeSegment)
-            .toList();
+        _snake.removeLast();
       }
     }
     notifyListeners();
