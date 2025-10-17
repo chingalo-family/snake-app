@@ -4,23 +4,38 @@ import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 
-class SnakeContainer extends StatefulWidget {
-  const SnakeContainer({super.key, this.gamePanelHeight = 0});
+class GamePlayContainer extends StatefulWidget {
+  const GamePlayContainer({super.key, this.gamePanelHeight = 0});
 
   final int gamePanelHeight;
 
   @override
-  State<SnakeContainer> createState() => _SnakeContainerState();
+  State<GamePlayContainer> createState() => _GamePlayContainerState();
 }
 
-class _SnakeContainerState extends State<SnakeContainer> {
+class _GamePlayContainerState extends State<GamePlayContainer> {
   @override
   void initState() {
     super.initState();
-    _startGame();
+    _setAppStateForModalAction();
   }
 
-  void _startGame() {}
+  void _setAppStateForModalAction() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final snakeState = Provider.of<SnakeState>(context, listen: false);
+      snakeState.addListener(() {
+        print(snakeState.hasGameStarted);
+        if (snakeState.hasGameStarted) {
+          if (snakeState.isGamePaused) {
+            print("isGamePaused : ${snakeState.isGamePaused}");
+          }
+          if (snakeState.isGameOver) {
+            print("isGameOver : ${snakeState.isGameOver}");
+          }
+        }
+      });
+    });
+  }
 
   void onVerticalDragUpdate(
     DragUpdateDetails details,
@@ -75,6 +90,7 @@ class _SnakeContainerState extends State<SnakeContainer> {
         List<int> snake = snakeState.snake;
         int foodIndex = snakeState.foodIndex;
         GameDirection direction = snakeState.direction;
+        bool hasGameStarted = snakeState.hasGameStarted;
         int numberOfRows = _getNumberOfRows();
         int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
         return GestureDetector(
@@ -101,7 +117,7 @@ class _SnakeContainerState extends State<SnakeContainer> {
                             child: Container(color: Colors.red),
                           ),
                         )
-                      : index == foodIndex
+                      : index == foodIndex && hasGameStarted
                       ? Center(
                           child: Container(
                             padding: const EdgeInsets.all(2),

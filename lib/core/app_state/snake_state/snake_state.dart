@@ -29,17 +29,18 @@ class SnakeState with ChangeNotifier {
   void resetSnake() {
     _snake = SnakeReference.defaultPosition;
     _direction = GameDirection.right;
-    generateSnakeFood();
+    _score = 0;
+    if (gamePanelHeight > 0) {
+      generateSnakeFood();
+    }
+    notifyListeners();
   }
 
   void initiateTheGame() {
     resetSnake();
   }
 
-  void restartGame({
-    required int gamePanelHeight,
-    required int gameBoxSize,
-  }) {
+  void restartGame({required int gamePanelHeight, required int gameBoxSize}) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
     notifyListeners();
@@ -56,17 +57,14 @@ class SnakeState with ChangeNotifier {
 
   void startGame() {
     const duration = Duration(milliseconds: 300);
-    timer = Timer.periodic(
-      duration,
-      (Timer timer) {
-        if (!isGameOver) {
-          if (!isGamePaused) {
-            moveSnakePosition();
-            checkForSnakeFood();
-          }
+    timer = Timer.periodic(duration, (Timer timer) {
+      if (!isGameOver) {
+        if (!isGamePaused) {
+          moveSnakePosition();
+          checkForSnakeFood();
         }
-      },
-    );
+      }
+    });
   }
 
   void pauseOrResumeGame({
@@ -76,11 +74,10 @@ class SnakeState with ChangeNotifier {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
     _gamePanelHeight = gamePanelHeight;
-    notifyListeners();
+    _isGamePaused = !isGamePaused;
     if (snake.isEmpty) {
       initiateTheGame();
     }
-    _isGamePaused = !isGamePaused;
     try {
       timer?.cancel();
     } catch (e) {
@@ -147,7 +144,7 @@ class SnakeState with ChangeNotifier {
     if (!isGameOver) {
       _snake = [
         ...[head],
-        ..._snake
+        ..._snake,
       ];
       if (head == foodIndex) {
         generateSnakeFood();

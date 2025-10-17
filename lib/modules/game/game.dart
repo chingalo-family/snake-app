@@ -5,6 +5,7 @@ import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/components/game_highlight_container.dart';
+import 'package:snake_app/modules/game/pages/game_play.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 
 class Game extends StatelessWidget {
@@ -24,17 +25,16 @@ class Game extends StatelessWidget {
   }
 
   void _onDirectToGamePlay(BuildContext context) {
-    print("Direct to Game Play");
-    // Timer(
-    //   const Duration(microseconds: 500),
-    //   () => Navigator.push(
-    //     context,
-    //     PageRouteBuilder(
-    //       pageBuilder: (_, __, ___) => Leaderboard(),
-    //       transitionDuration: const Duration(seconds: 0),
-    //     ),
-    //   ),
-    // );
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => GamePlay(),
+          transitionDuration: const Duration(milliseconds: 100),
+        ),
+      ),
+    );
   }
 
   @override
