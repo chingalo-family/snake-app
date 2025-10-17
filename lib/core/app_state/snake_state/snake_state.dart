@@ -4,15 +4,15 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
-import 'package:snake_app/core/constants/game_store_reference.dart';
+import 'package:snake_app/core/constants/game_food_store_reference.dart';
 import 'package:snake_app/core/constants/snake_reference.dart';
-import 'package:snake_app/core/models/game_score.dart';
+import 'package:snake_app/core/models/game_food_score.dart';
 
 class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
   int _gamePanelHeight = 0;
   int _gameBoxSize = 0;
-  GameScore? _gameScore;
+  GameFoodScore? _gameFoodScore;
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
@@ -29,10 +29,10 @@ class SnakeState with ChangeNotifier {
   GameDirection get direction => _direction;
   bool get isGameOver => _isGameOver;
   bool get isGamePaused => _isGamePaused;
-  GameScore get gameScore => _gameScore ?? GameStoreReference.gameScores.first;
-
+  GameFoodScore get gameFoodScore =>
+      _gameFoodScore ?? GameStoreReference.gameFoodScores.first;
   void resetSnakeState() {
-    _gameScore = GameStoreReference.gameScores.first;
+    _gameFoodScore = GameStoreReference.gameFoodScores.first;
     _gamePanelHeight = 0;
     _foodIndex = 0;
     _snake = [];
@@ -109,8 +109,10 @@ class SnakeState with ChangeNotifier {
 
   void generateSnakeFood() {
     _foodIndex = DateTime.now().millisecondsSinceEpoch % gamePanelHeight;
-    _gameScore = GameStoreReference
-        .gameScores[Random().nextInt(GameStoreReference.gameScores.length)];
+    _gameFoodScore =
+        GameStoreReference.gameFoodScores[Random().nextInt(
+          GameStoreReference.gameFoodScores.length,
+        )];
     if (_snake.contains(_foodIndex)) {
       generateSnakeFood();
     } else {
@@ -167,11 +169,13 @@ class SnakeState with ChangeNotifier {
         ..._snake,
       ];
       if (head == foodIndex) {
+        _score += gameFoodScore.score;
         generateSnakeFood();
-        _score += gameScore.score;
       } else {
-        int last = _snake.last;
-        _snake = _snake.where((val) => val != last).toList();
+        int lastSnakeSegment = _snake.last;
+        _snake = _snake
+            .where((snakeSegment) => snakeSegment != lastSnakeSegment)
+            .toList();
       }
     }
     notifyListeners();

@@ -1,8 +1,8 @@
-class GameScore {
+class GameFoodScore {
   int score;
   String icon;
 
-  GameScore({required this.score, required this.icon});
+  GameFoodScore({required this.score, required this.icon});
 
   @override
   String toString() {

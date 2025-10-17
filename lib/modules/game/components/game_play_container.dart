@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
+import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
 import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
@@ -119,6 +120,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         int foodIndex = snakeState.foodIndex;
         GameDirection direction = snakeState.direction;
         bool hasGameStarted = snakeState.hasGameStarted;
+        GameFoodScore gameFoodScore = snakeState.gameFoodScore;
         int numberOfRows = _getNumberOfRows();
         int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
         return GestureDetector(
@@ -146,16 +148,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                           ),
                         )
                       : index == foodIndex && hasGameStarted
-                      ? Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: const Icon(
-                              Icons.local_pizza,
-                              size: 20.0,
-                              color: Colors.cyan,
-                            ),
-                          ),
-                        )
+                      ? Center(child: Text(gameFoodScore.icon))
                       : Center(
                           child: Container(
                             padding: const EdgeInsets.all(2),
@@ -165,7 +158,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .inversePrimary
-                                    .withValues(alpha: 0.2),
+                                    .withValues(alpha: 0.05),
                               ),
                             ),
                           ),
