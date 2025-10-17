@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
+import 'package:snake_app/core/utils/app_modal_util.dart';
+import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
 
 class GamePlayContainer extends StatefulWidget {
   const GamePlayContainer({super.key, this.gamePanelHeight = 0});
@@ -24,13 +26,30 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final snakeState = Provider.of<SnakeState>(context, listen: false);
       snakeState.addListener(() {
-        print(snakeState.hasGameStarted);
         if (snakeState.hasGameStarted) {
           if (snakeState.isGamePaused) {
-            print("isGamePaused : ${snakeState.isGamePaused}");
+            AppModalUtil.showActionSheetModal(
+              context: context,
+              topBorderRadius: 20,
+              initialHeightRatio: 0.65,
+              maxHeightRatio: 0.50,
+              actionSheetContainer: GameConfirmationModal(
+                topBorderRadius: 20,
+                gamePanelHeight: widget.gamePanelHeight,
+              ),
+            );
           }
           if (snakeState.isGameOver) {
-            print("isGameOver : ${snakeState.isGameOver}");
+            AppModalUtil.showActionSheetModal(
+              context: context,
+              topBorderRadius: 20,
+              initialHeightRatio: 0.50,
+              maxHeightRatio: 0.65,
+              actionSheetContainer: GameConfirmationModal(
+                topBorderRadius: 20,
+                gamePanelHeight: widget.gamePanelHeight,
+              ),
+            );
           }
         }
       });

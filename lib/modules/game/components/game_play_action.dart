@@ -17,6 +17,7 @@ class GamePlayAction extends StatelessWidget {
   }
 
   void _onResetGame(BuildContext context) {
+    Provider.of<SnakeState>(context, listen: false).resetSnakeState();
     Provider.of<SnakeState>(context, listen: false).restartGame(
       gamePanelHeight: gamePanelHeight,
       gameBoxSize: _getPanelBoxSize(context),
