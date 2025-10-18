@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
-import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
 import 'package:snake_app/modules/game/components/game_food_icon.dart';
 
@@ -25,11 +25,14 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     _setAppStateForModalAction();
   }
 
-  void _submitGameScore() {
-    // TODO: Implement score submission logic here
-    AppUtil.showToastMessage(
-      message: 'Game Over! Your score has been submitted.',
-    );
+  Future<void> _submitGameScore() async {
+    final snakeState = Provider.of<SnakeState>(context, listen: false);
+    final score = snakeState.score;
+    final level = snakeState.level;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).submitGameScore(score: score, level: level);
   }
 
   void _setAppStateForModalAction() {

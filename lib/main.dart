@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
@@ -23,6 +24,7 @@ class AppGame extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SnakeState()),
+        ChangeNotifierProvider(create: (_) => GameScoreState()),
         ChangeNotifierProvider(create: (_) => UserEntryFormState()),
         ChangeNotifierProvider(create: (_) => UserState()),
       ],
