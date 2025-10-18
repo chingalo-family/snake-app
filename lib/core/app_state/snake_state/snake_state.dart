@@ -59,6 +59,11 @@ class SnakeState with ChangeNotifier {
     resetSnake();
   }
 
+  void updateLevel({int level = 1}) {
+    _level = level;
+    notifyListeners();
+  }
+
   void restartGame({
     required int gamePanelHeight,
     required int gameBoxSize,
