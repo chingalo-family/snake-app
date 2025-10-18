@@ -33,10 +33,7 @@ class AppModalUtil {
             minChildSize: minHeightRatio < initialHeightRatio
                 ? minHeightRatio
                 : initialHeightRatio, // Minimum height ratio.
-            builder: (
-              BuildContext context,
-              ScrollController scrollController,
-            ) {
+            builder: (BuildContext context, ScrollController scrollController) {
               // The builder function that returns the content of the sheet.
               return Padding(
                 padding: EdgeInsets.only(
@@ -45,7 +42,7 @@ class AppModalUtil {
                 // the on-screen keyboard.
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white, // White background color.
+                    //color: Colors.white, // White background color.
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(topBorderRadius),
                     ), // Top border radius.
@@ -149,17 +146,14 @@ class AppModalUtil {
                     ? customConfirmationActionButtons
                     : [
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5.0,
-                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: OutlinedButton(
                             style: const ButtonStyle().copyWith(
-                              foregroundColor:
-                                  WidgetStatePropertyAll(themColor),
+                              foregroundColor: WidgetStatePropertyAll(
+                                themColor,
+                              ),
                               side: WidgetStatePropertyAll(
-                                const BorderSide().copyWith(
-                                  color: themColor,
-                                ),
+                                const BorderSide().copyWith(color: themColor),
                               ),
                               textStyle: WidgetStateProperty.all(
                                 const TextStyle().copyWith(
@@ -174,13 +168,12 @@ class AppModalUtil {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5.0,
-                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: FilledButton(
                             style: const ButtonStyle().copyWith(
                               backgroundColor: WidgetStateProperty.all(
-                                  confirmationButtomThemColor),
+                                confirmationButtomThemColor,
+                              ),
                               textStyle: WidgetStateProperty.all(
                                 const TextStyle().copyWith(
                                   fontSize: 14.0,
@@ -194,7 +187,7 @@ class AppModalUtil {
                         ),
                       ],
               ),
-            )
+            ),
           ],
         );
       },

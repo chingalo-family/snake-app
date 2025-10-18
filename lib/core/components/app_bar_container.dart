@@ -1,7 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
+import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/user_profile/user_profile.dart';
@@ -26,6 +30,11 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void _onDirectToLeaderboard(BuildContext context) {
+    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).resetGameScoreState(orgUnitId: orgUnitId);
     Timer(
       const Duration(microseconds: 500),
       () => Navigator.push(
@@ -64,10 +73,16 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: const EdgeInsets.only(right: 5.0),
-                child: Text("🎮"),
+                margin: const EdgeInsets.only(right: 10.0),
+                child: Text(
+                  IconReference.gamePad,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ),
-              Text(AppInfoReference.appName),
+              Text(
+                AppInfoReference.appName,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ],
           ),
         ),
@@ -77,14 +92,20 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Visibility(
           child: IconButton(
-            icon: Text('🏆'),
+            icon: Text(
+              IconReference.trophy,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             tooltip: 'Leaderboard',
             onPressed: () => _onDirectToLeaderboard(context),
           ),
         ),
         Visibility(
           child: IconButton(
-            icon: Icon(Icons.person, color: Colors.white),
+            icon: Text(
+              IconReference.person,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             tooltip: 'Profile',
             onPressed: () => _onDirectToProfile(context),
           ),

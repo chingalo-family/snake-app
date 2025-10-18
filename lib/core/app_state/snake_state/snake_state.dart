@@ -1,18 +1,24 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
+import 'package:snake_app/core/constants/game_food_store_reference.dart';
 import 'package:snake_app/core/constants/snake_reference.dart';
+import 'package:snake_app/core/models/game_food_score.dart';
 
 class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
   int _gamePanelHeight = 0;
   int _gameBoxSize = 0;
+  int _totalBoxes = 0;
+  GameFoodScore? _gameFoodScore;
   List<int> _snake = [];
   bool _isGameOver = false;
   bool _isGamePaused = true;
   int _score = 0;
+  int _level = 1;
   GameDirection _direction = GameDirection.right;
   Timer? timer;
 
@@ -20,28 +26,54 @@ class SnakeState with ChangeNotifier {
   int get gamePanelHeight => _gamePanelHeight;
   int get gameBoxSize => _gameBoxSize;
   int get score => _score;
+  int get level => _level;
   int get foodIndex => _foodIndex;
   bool get hasGameStarted => _snake.isNotEmpty;
   GameDirection get direction => _direction;
   bool get isGameOver => _isGameOver;
   bool get isGamePaused => _isGamePaused;
+  GameFoodScore get gameFoodScore =>
+      _gameFoodScore ?? GameStoreReference.gameFoodScores.first;
+  void resetSnakeState() {
+    _gameFoodScore = GameStoreReference.gameFoodScores.first;
+    _gamePanelHeight = 0;
+    _foodIndex = 0;
+    _snake = [];
+    _isGameOver = false;
+    _isGamePaused = true;
+    _score = 0;
+    _direction = GameDirection.right;
+    timer?.cancel();
+    notifyListeners();
+  }
 
   void resetSnake() {
     _snake = SnakeReference.defaultPosition;
     _direction = GameDirection.right;
-    generateSnakeFood();
+    _score = 0;
+    if (gamePanelHeight > 0) {
+      generateSnakeFood();
+    }
+    notifyListeners();
   }
 
   void initiateTheGame() {
     resetSnake();
   }
 
+  void updateLevel({int level = 1}) {
+    _level = level;
+    notifyListeners();
+  }
+
   void restartGame({
     required int gamePanelHeight,
     required int gameBoxSize,
+    required int totalBoxes,
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
+    _totalBoxes = totalBoxes;
     notifyListeners();
     try {
       timer?.cancel();
@@ -56,31 +88,28 @@ class SnakeState with ChangeNotifier {
 
   void startGame() {
     const duration = Duration(milliseconds: 300);
-    timer = Timer.periodic(
-      duration,
-      (Timer timer) {
-        if (!isGameOver) {
-          if (!isGamePaused) {
-            moveSnakePosition();
-            checkForSnakeFood();
-          }
+    timer = Timer.periodic(duration, (Timer timer) {
+      if (!isGameOver) {
+        if (!isGamePaused) {
+          moveSnakePosition();
+          checkForSnakeFood();
         }
-      },
-    );
+      }
+    });
   }
 
   void pauseOrResumeGame({
     required int gamePanelHeight,
     required int gameBoxSize,
+    required int totalBoxes,
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
-    _gamePanelHeight = gamePanelHeight;
-    notifyListeners();
+    _totalBoxes = totalBoxes;
+    _isGamePaused = !isGamePaused;
     if (snake.isEmpty) {
       initiateTheGame();
     }
-    _isGamePaused = !isGamePaused;
     try {
       timer?.cancel();
     } catch (e) {
@@ -93,12 +122,18 @@ class SnakeState with ChangeNotifier {
   }
 
   void generateSnakeFood() {
-    _foodIndex = DateTime.now().millisecondsSinceEpoch % gamePanelHeight;
-    if (_snake.contains(_foodIndex)) {
-      generateSnakeFood();
-    } else {
-      notifyListeners();
+    if (_totalBoxes <= 0) return;
+    final random = Random();
+    int newFoodIndex = random.nextInt(_totalBoxes);
+    while (_snake.contains(newFoodIndex)) {
+      newFoodIndex = random.nextInt(_totalBoxes);
     }
+    _foodIndex = newFoodIndex;
+    _gameFoodScore =
+        GameStoreReference.gameFoodScores[random.nextInt(
+          GameStoreReference.gameFoodScores.length,
+        )];
+    notifyListeners();
   }
 
   void updateSnakeDirection(GameDirection direction) {
@@ -119,45 +154,48 @@ class SnakeState with ChangeNotifier {
       case GameDirection.up:
         if (head < AppInfoReference.gridColumnsCount) {
           _isGameOver = true;
+        } else {
+          head -= AppInfoReference.gridColumnsCount;
         }
-        head -= AppInfoReference.gridColumnsCount;
         break;
       case GameDirection.down:
-        if (head >= gamePanelHeight - AppInfoReference.gridColumnsCount) {
+        if (head >= _totalBoxes - AppInfoReference.gridColumnsCount) {
           _isGameOver = true;
+        } else {
+          head += AppInfoReference.gridColumnsCount;
         }
-        head += AppInfoReference.gridColumnsCount;
         break;
       case GameDirection.left:
         if (head % AppInfoReference.gridColumnsCount == 0) {
           _isGameOver = true;
+        } else {
+          head--;
         }
-        head--;
         break;
       case GameDirection.right:
         if ((head + 1) % AppInfoReference.gridColumnsCount == 0) {
           _isGameOver = true;
+        } else {
+          head++;
         }
-        head++;
         break;
     }
-    if (snake.contains(head)) {
+    if (head < 0 || head >= _totalBoxes) {
       _isGameOver = true;
     }
-    if (!isGameOver) {
-      _snake = [
-        ...[head],
-        ..._snake
-      ];
-      if (head == foodIndex) {
+    if (_snake.contains(head)) {
+      _isGameOver = true;
+    }
+    if (!_isGameOver) {
+      _snake = [head, ..._snake];
+      if (head == _foodIndex) {
+        _score += gameFoodScore.score;
+        _snake.add(_snake.last);
         generateSnakeFood();
       } else {
-        int last = _snake.last;
-        _snake = _snake.where((val) => val != last).toList();
+        _snake.removeLast();
       }
-      _score = _snake.length - SnakeReference.defaultPosition.length;
     }
-
     notifyListeners();
   }
 }

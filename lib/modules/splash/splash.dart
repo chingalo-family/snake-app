@@ -34,18 +34,23 @@ class _SplashState extends State<Splash> {
     } else {
       Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
     }
-    Timer(const Duration(milliseconds: 200), () {
-      Navigator.pushReplacement(
+    Timer(
+      const Duration(seconds: 2),
+      () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => Game()),
-      );
-    });
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Game(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

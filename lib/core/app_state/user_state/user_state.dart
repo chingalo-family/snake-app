@@ -7,6 +7,10 @@ class UserState with ChangeNotifier {
 
   User get currrentUser => _currentUser!;
 
+  String get orgUnitId => _currentUser != null && _currentUser!.isLogin
+      ? _currentUser!.userOrgUnitIds?.first ?? ''
+      : '';
+
   String get usernameIcon => _currentUser != null && _currentUser!.isLogin
       ? _currentUser!.fullName
             .split(' ')

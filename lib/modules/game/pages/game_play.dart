@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
-import 'package:snake_app/modules/snake/components/app_actions.dart';
-import 'package:snake_app/modules/snake/components/snake_container.dart';
+import 'package:snake_app/modules/game/components/game_play_action.dart';
+import 'package:snake_app/modules/game/components/game_play_container.dart';
 
-class SnakePage extends StatelessWidget {
-  const SnakePage({super.key});
+class GamePlay extends StatelessWidget {
+  const GamePlay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,9 @@ class SnakePage extends StatelessWidget {
           body: Scaffold(
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(gameScoreHeight),
-              child: AppActions(gamePanelHeight: gamePanelHeight),
+              child: GamePlayAction(gamePanelHeight: gamePanelHeight),
             ),
-            body: SnakeContainer(gamePanelHeight: gamePanelHeight),
+            body: GamePlayContainer(gamePanelHeight: gamePanelHeight),
           ),
         );
       },
