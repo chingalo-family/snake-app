@@ -7,6 +7,7 @@ import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
 import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
+import 'package:snake_app/modules/game/components/game_food_icon.dart';
 
 class GamePlayContainer extends StatefulWidget {
   const GamePlayContainer({super.key, this.gamePanelHeight = 0});
@@ -121,8 +122,10 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         GameDirection direction = snakeState.direction;
         bool hasGameStarted = snakeState.hasGameStarted;
         GameFoodScore gameFoodScore = snakeState.gameFoodScore;
+        int gameBoxSize = snakeState.gameBoxSize;
         int numberOfRows = _getNumberOfRows();
         int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+
         return GestureDetector(
           onVerticalDragUpdate: (details) =>
               onVerticalDragUpdate(details, direction),
@@ -138,28 +141,45 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(totalBoxes, (index) {
+                bool isSnake = snake.contains(index);
+                bool isHead = snake.isNotEmpty && snake.first == index;
                 return Center(
-                  child: snake.contains(index)
-                      ? Container(
+                  child: isSnake
+                      ? AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          curve: Curves.easeInOut,
                           padding: const EdgeInsets.all(2),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: Container(color: Colors.red),
+                            borderRadius: BorderRadius.circular(
+                              isHead ? 4.0 : gameBoxSize.toDouble(),
+                            ),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              curve: Curves.easeInOut,
+                              color: isHead
+                                  ? Theme.of(context).colorScheme.inversePrimary
+                                        .withValues(alpha: 0.9)
+                                  : Theme.of(context).colorScheme.primary,
+                              width: isHead
+                                  ? gameBoxSize * 1.5
+                                  : gameBoxSize.toDouble(),
+                              height: isHead
+                                  ? gameBoxSize * 1.5
+                                  : gameBoxSize.toDouble(),
+                            ),
                           ),
                         )
                       : index == foodIndex && hasGameStarted
-                      ? Center(child: Text(gameFoodScore.icon))
-                      : Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: Container(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inversePrimary
-                                    .withValues(alpha: 0.05),
-                              ),
+                      ? Center(child: GameFoodIcon(icon: gameFoodScore.icon))
+                      : Container(
+                          padding: const EdgeInsets.all(2),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4.0),
+                            child: Container(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .inversePrimary
+                                  .withValues(alpha: 0.05),
                             ),
                           ),
                         ),
