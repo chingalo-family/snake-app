@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:snake_app/core/models/dhis_event.dart';
+import 'package:snake_app/core/services/dhis2_event_services.dart';
 import 'package:snake_app/core/services/game_score_services.dart';
 
 class GameScoreState with ChangeNotifier {
@@ -20,6 +22,8 @@ class GameScoreState with ChangeNotifier {
     await GameScoreServices().downloadGameScoresFromServer(
       orgUnitId: orgUnitId,
     );
+    List<DhisEvent> offlineEvents = await Dhis2EventServices().getAllEvents();
+    print(offlineEvents);
     _isLoading = false;
     notifyListeners();
   }

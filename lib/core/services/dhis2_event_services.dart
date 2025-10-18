@@ -160,6 +160,10 @@ class Dhis2EventServices {
     );
   }
 
+  Future<List<DhisEvent>> getAllEvents() async {
+    return DhisEventOfflineProvider().getAllEvents();
+  }
+
   Future<void> savingDhisEvents({required List<DhisEvent> events}) async {
     try {
       await DhisEventOfflineProvider().addorUpdateEvents(events: events);

@@ -81,7 +81,6 @@ class GameScoreServices {
       }
     } catch (error) {
       //
-      print('Error downloading snake scores: $error');
     }
   }
 }
