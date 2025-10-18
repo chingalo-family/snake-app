@@ -18,6 +18,7 @@ class SnakeState with ChangeNotifier {
   bool _isGameOver = false;
   bool _isGamePaused = true;
   int _score = 0;
+  int _level = 1;
   GameDirection _direction = GameDirection.right;
   Timer? timer;
 
@@ -25,6 +26,7 @@ class SnakeState with ChangeNotifier {
   int get gamePanelHeight => _gamePanelHeight;
   int get gameBoxSize => _gameBoxSize;
   int get score => _score;
+  int get level => _level;
   int get foodIndex => _foodIndex;
   bool get hasGameStarted => _snake.isNotEmpty;
   GameDirection get direction => _direction;

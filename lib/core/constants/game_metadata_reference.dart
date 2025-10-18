@@ -4,4 +4,9 @@ class GameMetadataReference {
   static const gameScoreDataElement = 'ny3Ahj5mrU4';
   static const gameLevelDataElement = 'pMzR6cLAkKk';
   static const gameUsernameDataElement = 'Sh1gE51bDJS';
+  static const List<String> dataElementIds = [
+    gameScoreDataElement,
+    gameLevelDataElement,
+    gameUsernameDataElement,
+  ];
 }
