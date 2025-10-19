@@ -11,6 +11,7 @@ import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/components/game_highlight_container.dart';
 import 'package:snake_app/modules/game/pages/game_play.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
+import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
 class Game extends StatelessWidget {
   const Game({super.key});
@@ -47,6 +48,19 @@ class Game extends StatelessWidget {
     );
   }
 
+  void _onDirectToSignInOrSignUp(BuildContext context) {
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => UserSignInOrSignUp(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -67,7 +81,7 @@ class Game extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              margin: const EdgeInsets.symmetric(vertical: 5.0),
               child: Text(
                 AppInfoReference.appName,
                 style: Theme.of(context).textTheme.headlineLarge,
@@ -77,34 +91,41 @@ class Game extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10.0),
               child: Text(
                 'Classic Arcade action, Beat the high Score',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
             GameHighlightContainer(),
             const SizedBox(height: 20.0),
-            FilledButton(
-              onPressed: () => _onDirectToGamePlay(context),
-              child: Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                width: size.width * 0.80,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 5.0),
-                      child: Text(
-                        IconReference.gamePad,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+            Consumer<UserState>(
+              builder: (context, userState, child) {
+                bool isUserLoggedIn = userState.isUserLoggedIn;
+                return FilledButton(
+                  onPressed: () => isUserLoggedIn
+                      ? _onDirectToGamePlay(context)
+                      : _onDirectToSignInOrSignUp(context),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    width: size.width * 0.80,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 5.0),
+                          child: Text(
+                            IconReference.gamePad,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                        Text(
+                          isUserLoggedIn ? "Play Now" : "Sign to Play",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Play Now",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 10.0),
             OutlinedButton(

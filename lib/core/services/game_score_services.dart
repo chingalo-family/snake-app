@@ -1,5 +1,6 @@
 import 'package:snake_app/core/constants/app_sync_status.dart';
 import 'package:snake_app/core/constants/game_metadata_reference.dart';
+import 'package:snake_app/core/constants/user_metadata_reference.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/services/dhis2_event_services.dart';
@@ -12,8 +13,8 @@ class GameScoreServices {
   Future submitGameScore({required int score, required int level}) async {
     try {
       User? currentUser = await UserService().getCurrentUser();
-      String username = '';
-      String orgUnit = '';
+      String username = UserMetadataReference.defaultUsername;
+      String orgUnit = UserMetadataReference.defaultOrgUnitId;
       if (currentUser != null) {
         username = currentUser.username;
         orgUnit = currentUser.userOrgUnitIds?.first ?? '';
@@ -81,7 +82,6 @@ class GameScoreServices {
       }
     } catch (error) {
       //
-      print('Error downloading snake scores: $error');
     }
   }
 }

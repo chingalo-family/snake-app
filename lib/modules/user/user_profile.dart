@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 
-class Userprofile extends StatelessWidget {
-  const Userprofile({super.key});
+class UserProfile extends StatelessWidget {
+  const UserProfile({super.key});
 
   @override
   Widget build(BuildContext context) {

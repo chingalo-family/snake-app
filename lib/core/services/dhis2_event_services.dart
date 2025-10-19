@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:snake_app/core/constants/dhis2_connection.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/offline_db/dhis_tracker_offline_provider/dhis_event_offline_provider.dart';
@@ -46,8 +47,8 @@ class Dhis2EventServices {
       String lastSyncDate = await getLastRecordDownloadDate();
       User? user = await UserService().getCurrentUser();
       Dhis2HttpService http = Dhis2HttpService(
-        username: user?.username ?? '',
-        password: user?.password ?? '',
+        username: user?.username ?? Dhis2Connection.username,
+        password: user?.password ?? Dhis2Connection.password,
       );
       const url = 'api/tracker/events';
       var filterQueryParamter = {
@@ -77,8 +78,8 @@ class Dhis2EventServices {
       String lastSyncDate = await getLastRecordDownloadDate();
       User? user = await UserService().getCurrentUser();
       Dhis2HttpService http = Dhis2HttpService(
-        username: user?.username ?? '',
-        password: user?.password ?? '',
+        username: user?.username ?? Dhis2Connection.username,
+        password: user?.password ?? Dhis2Connection.password,
       );
       const url = 'api/tracker/events';
       var queryParameters = {
@@ -117,8 +118,8 @@ class Dhis2EventServices {
     try {
       User? user = await UserService().getCurrentUser();
       Dhis2HttpService http = Dhis2HttpService(
-        username: user?.username ?? '',
-        password: user?.password ?? '',
+        username: user?.username ?? Dhis2Connection.username,
+        password: user?.password ?? Dhis2Connection.password,
       );
       Map<String, dynamic> body = {
         "events": dhisEvents.map((DhisEvent event) {
@@ -158,6 +159,10 @@ class Dhis2EventServices {
       eventSyncStatus: status,
       orgUnitIds: orgUnitIds,
     );
+  }
+
+  Future<List<DhisEvent>> getAllEvents() async {
+    return DhisEventOfflineProvider().getAllEvents();
   }
 
   Future<void> savingDhisEvents({required List<DhisEvent> events}) async {

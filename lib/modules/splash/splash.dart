@@ -20,10 +20,10 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    setAppThemeAndInitialData();
+    setAppAndInitialData();
   }
 
-  setAppThemeAndInitialData() async {
+  setAppAndInitialData() async {
     User? user = await UserService().getCurrentUser();
     setDataForLandingPage(user);
   }

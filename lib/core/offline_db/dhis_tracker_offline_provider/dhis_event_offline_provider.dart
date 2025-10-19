@@ -56,9 +56,8 @@ class DhisEventOfflineProvider extends OfflineDbProvider {
     }
   }
 
-  Future<List<DhisEvent>> getUpdatedEvents({DateTime? lastSync}) async {
+  Future<List<DhisEvent>> getAllEvents() async {
     List<DhisEvent> dhisEvents = [];
-    int? lastUpdatedInMilliseconds = lastSync?.millisecondsSinceEpoch;
     try {
       var dbClient = await db;
       List<Map> maps = await dbClient!.query(
@@ -78,10 +77,6 @@ class DhisEventOfflineProvider extends OfflineDbProvider {
           completedBy,
           syncStatus,
         ],
-        where: lastUpdatedInMilliseconds != null ? '"lastUpdated" >= ?' : null,
-        whereArgs: lastUpdatedInMilliseconds != null
-            ? [lastUpdatedInMilliseconds]
-            : null,
         orderBy: occurredAt,
       );
       if (maps.isNotEmpty) {

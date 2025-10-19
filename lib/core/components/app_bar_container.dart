@@ -8,7 +8,7 @@ import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
-import 'package:snake_app/modules/user_profile/user_profile.dart';
+import 'package:snake_app/modules/user/user_profile.dart';
 
 class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   const AppBarContainer({super.key});
@@ -53,72 +53,85 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
       () => Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => Userprofile(),
+          pageBuilder: (_, __, ___) => UserProfile(),
           transitionDuration: const Duration(seconds: 0),
         ),
       ),
     );
   }
 
+  void _onLogin(BuildContext context) {}
+
+  void _onLogout(BuildContext context) {
+    Provider.of<UserState>(context, listen: false).logoutUser();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: TextButton(
-          style: TextButton.styleFrom(foregroundColor: Colors.white),
-          onPressed: () => _onDirectToHome(context),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 10.0),
-                child: Text(
-                  IconReference.gamePad,
+    return Consumer<UserState>(
+      builder: (context, userState, child) {
+        bool isUserLoggedIn = userState.isUserLoggedIn;
+        return AppBar(
+          title: Container(
+            padding: const EdgeInsets.all(0),
+            margin: const EdgeInsets.all(0),
+            child: TextButton(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: () => _onDirectToHome(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      IconReference.gamePad,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  Text(
+                    AppInfoReference.appName,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          automaticallyImplyLeading: false,
+          actions: [
+            Visibility(
+              child: IconButton(
+                icon: Text(
+                  IconReference.trophy,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
+                tooltip: 'Leaderboard',
+                onPressed: () => _onDirectToLeaderboard(context),
               ),
-              Text(
-                AppInfoReference.appName,
-                style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Visibility(
+              visible: isUserLoggedIn,
+              child: IconButton(
+                icon: Text(
+                  IconReference.person,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                tooltip: 'Profile',
+                onPressed: () => _onDirectToProfile(context),
               ),
-            ],
-          ),
-        ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      automaticallyImplyLeading: false,
-      actions: [
-        Visibility(
-          child: IconButton(
-            icon: Text(
-              IconReference.trophy,
-              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            tooltip: 'Leaderboard',
-            onPressed: () => _onDirectToLeaderboard(context),
-          ),
-        ),
-        Visibility(
-          child: IconButton(
-            icon: Text(
-              IconReference.person,
-              style: Theme.of(context).textTheme.headlineSmall,
+            IconButton(
+              icon: Icon(
+                isUserLoggedIn ? Icons.logout : Icons.login,
+                color: Colors.white,
+              ),
+              tooltip: isUserLoggedIn ? 'Logout' : 'Login',
+              onPressed: () =>
+                  isUserLoggedIn ? _onLogout(context) : _onLogin(context),
             ),
-            tooltip: 'Profile',
-            onPressed: () => _onDirectToProfile(context),
-          ),
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.login,
-            color: Colors.white,
-          ), //  icon: Icon(Icons.logout, color: Colors.white),// l
-          tooltip: 'Login / Logout', //TODO handliing this
-          onPressed: () {},
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
