@@ -8,7 +8,7 @@ import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
-import 'package:snake_app/modules/user_profile/user_profile.dart';
+import 'package:snake_app/modules/user/user_profile.dart';
 
 class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   const AppBarContainer({super.key});
@@ -53,7 +53,7 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
       () => Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => Userprofile(),
+          pageBuilder: (_, __, ___) => UserProfile(),
           transitionDuration: const Duration(seconds: 0),
         ),
       ),
