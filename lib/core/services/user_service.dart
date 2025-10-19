@@ -7,6 +7,8 @@ import 'package:snake_app/core/services/preference_service.dart';
 class UserService {
   final String preferenceKey = 'current_user';
 
+  //TODO sign up user fn
+
   Future<User?> login({
     required String username,
     required String password,

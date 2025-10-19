@@ -6,7 +6,9 @@ import 'package:snake_app/core/services/user_service.dart';
 class UserState with ChangeNotifier {
   User? _currentUser;
 
-  User get currrentUser => _currentUser!;
+  User get currentUser => _currentUser!;
+
+  bool get isUserLoggedIn => _currentUser != null && _currentUser!.isLogin;
 
   String get orgUnitId => _currentUser != null && _currentUser!.isLogin
       ? _currentUser!.userOrgUnitIds?.first ??
@@ -24,6 +26,12 @@ class UserState with ChangeNotifier {
 
   void setCurrentUser(User currentUser) {
     _currentUser = currentUser;
+    notifyListeners();
+  }
+
+  void logoutUser() async {
+    await UserService().logout();
+    _currentUser = null;
     notifyListeners();
   }
 
