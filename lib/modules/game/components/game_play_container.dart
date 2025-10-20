@@ -19,6 +19,8 @@ class GamePlayContainer extends StatefulWidget {
 }
 
 class _GamePlayContainerState extends State<GamePlayContainer> {
+  bool _isModalVisible = false;
+
   @override
   void initState() {
     super.initState();
@@ -47,8 +49,14 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final snakeState = Provider.of<SnakeState>(context, listen: false);
       snakeState.addListener(() {
+        if (!mounted) return;
+
+        if (_isModalVisible) return;
+
         if (snakeState.hasGameStarted) {
           if (snakeState.isGamePaused) {
+            _isModalVisible = true;
+            setState(() {});
             AppModalUtil.showActionSheetModal(
               context: context,
               topBorderRadius: 20,
@@ -58,9 +66,15 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 topBorderRadius: 20,
                 gamePanelHeight: widget.gamePanelHeight,
               ),
-            );
+            ).then((_) {
+              _isModalVisible = false;
+              setState(() {});
+            });
+            ;
           }
           if (snakeState.isGameOver) {
+            _isModalVisible = true;
+            setState(() {});
             _submitGameScore();
             AppModalUtil.showActionSheetModal(
               context: context,
@@ -71,7 +85,11 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 topBorderRadius: 20,
                 gamePanelHeight: widget.gamePanelHeight,
               ),
-            );
+            ).then((_) {
+              _isModalVisible = false;
+              setState(() {});
+            });
+            ;
           }
         }
       });
