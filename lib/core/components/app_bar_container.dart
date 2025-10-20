@@ -50,6 +50,11 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void _onDirectToProfile(BuildContext context) {
+    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).resetGameScoreState(orgUnitId: orgUnitId);
     Timer(
       const Duration(microseconds: 500),
       () => Navigator.push(
