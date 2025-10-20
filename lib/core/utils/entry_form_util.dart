@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:snake_app/core/constants/app_sync_status.dart';
+import 'package:snake_app/core/constants/user_metadata_reference.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/form_section.dart';
 import 'package:snake_app/core/models/input_field.dart';
@@ -8,6 +9,37 @@ import 'package:snake_app/core/models/input_field_option.dart';
 import 'package:snake_app/core/utils/app_util.dart';
 
 class EntryFormUtil {
+  static Map<String, dynamic> getUserAccountPlayload({
+    required Map dataObject,
+  }) {
+    String username = dataObject['username'] ?? '';
+    String password = dataObject['password'] ?? '';
+    String email = dataObject['email'] ?? '';
+    String firstName = dataObject['firstName'] ?? '';
+    String surname = dataObject['surname'] ?? '';
+    String phoneNumber = dataObject['phoneNumber'] ?? '';
+    const organisationUnits = [
+      {"id": UserMetadataReference.defaultOrgUnitId},
+    ];
+    return {
+      "username": username,
+      "password": password,
+      "userRoles": UserMetadataReference.userRoles
+          .map((userRoleId) => {"id": userRoleId})
+          .toList(),
+      "email": email,
+      "firstName": firstName,
+      "surname": surname,
+      "phoneNumber": phoneNumber,
+      "organisationUnits": organisationUnits,
+      "dataViewOrganisationUnits": organisationUnits,
+      "teiSearchOrganisationUnits": organisationUnits,
+      "userGroups": UserMetadataReference.userGroups
+          .map((groupId) => {"id": groupId})
+          .toList(),
+    };
+  }
+
   static DhisEvent getDhis2EventPayLoad({
     required Map dataObject,
     required List<String> dataElementIds,
