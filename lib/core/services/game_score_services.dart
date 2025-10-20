@@ -1,5 +1,7 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snake_app/core/constants/app_sync_status.dart';
 import 'package:snake_app/core/constants/game_metadata_reference.dart';
+import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/constants/user_metadata_reference.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/user.dart';
@@ -41,16 +43,22 @@ class GameScoreServices {
             status: AppSyncStatus.notSynced,
             orgUnitIds: [orgUnit],
           );
-      if (bestScore != '-' && (int.tryParse(bestScore) ?? 0) < score) {
-        offlineEvents.add(
-          EntryFormUtil.getDhis2EventPayLoad(
-            dataObject: dataObject,
-            dataElementIds: GameMetadataReference.dataElementIds,
-            program: GameMetadataReference.program,
-            programStage: GameMetadataReference.programStage,
-            orgUnit: orgUnit,
-          ),
+      DhisEvent dhisEvent = EntryFormUtil.getDhis2EventPayLoad(
+        dataObject: dataObject,
+        dataElementIds: GameMetadataReference.dataElementIds,
+        program: GameMetadataReference.program,
+        programStage: GameMetadataReference.programStage,
+        orgUnit: orgUnit,
+      );
+      if ((int.tryParse(bestScore) ?? 0) < score) {
+        AppUtil.showToastMessage(
+          message: "${IconReference.trophy} You have new personal record!",
+          position: ToastGravity.TOP,
         );
+        offlineEvents.add(dhisEvent);
+      } else {
+        dhisEvent.syncStatus = AppSyncStatus.synced;
+        await Dhis2EventServices().savingDhisEvents(events: [dhisEvent]);
       }
       if (offlineEvents.isNotEmpty) {
         List<List<dynamic>> chunkedDhis2Events = AppUtil.chunkItems(
