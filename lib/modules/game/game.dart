@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
@@ -49,6 +50,7 @@ class Game extends StatelessWidget {
   }
 
   void _onDirectToSignInOrSignUp(BuildContext context) {
+    Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
     Timer(
       const Duration(microseconds: 500),
       () => Navigator.push(
@@ -118,7 +120,7 @@ class Game extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          isUserLoggedIn ? "Play Now" : "Sign to Play",
+                          isUserLoggedIn ? "Play Now" : "Sign In to Play",
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
