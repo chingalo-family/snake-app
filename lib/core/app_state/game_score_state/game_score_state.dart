@@ -24,6 +24,7 @@ class GameScoreState with ChangeNotifier {
   Future<void> submitGameScore({
     required int score,
     required int level,
+    required String gameScoreId,
     required String bestScore,
   }) async {
     _setLoading(true);
@@ -31,6 +32,7 @@ class GameScoreState with ChangeNotifier {
       score: score,
       level: level,
       bestScore: bestScore,
+      gameScoreId: gameScoreId,
     );
     _setLoading(false);
   }

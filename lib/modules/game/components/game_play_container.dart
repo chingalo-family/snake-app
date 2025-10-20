@@ -33,11 +33,14 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     ).bestScore;
     final score = snakeState.score;
     final level = snakeState.level;
+    final gameScoreId = snakeState.gameScoreId;
     if (score <= 0) return;
-    Provider.of<GameScoreState>(
-      context,
-      listen: false,
-    ).submitGameScore(score: score, level: level, bestScore: bestScore);
+    Provider.of<GameScoreState>(context, listen: false).submitGameScore(
+      score: score,
+      level: level,
+      bestScore: bestScore,
+      gameScoreId: gameScoreId,
+    );
   }
 
   void _setAppStateForModalAction() {

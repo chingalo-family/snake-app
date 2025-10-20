@@ -16,6 +16,7 @@ class GameScoreServices {
     required int score,
     required int level,
     required String bestScore,
+    required String gameScoreId,
   }) async {
     try {
       User? currentUser = await UserService().getCurrentUser();
@@ -25,7 +26,10 @@ class GameScoreServices {
         username = currentUser.username;
         orgUnit = currentUser.userOrgUnitIds?.first ?? '';
       }
-      Map<String, dynamic> dataObject = {"completedBy": username};
+      Map<String, dynamic> dataObject = {
+        "completedBy": username,
+        "event": gameScoreId,
+      };
       for (String dataElement in GameMetadataReference.dataElementIds) {
         switch (dataElement) {
           case GameMetadataReference.gameScoreDataElement:
