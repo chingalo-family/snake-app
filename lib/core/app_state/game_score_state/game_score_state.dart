@@ -21,9 +21,17 @@ class GameScoreState with ChangeNotifier {
   String get bestRank => _bestRank;
   List<GameScore> get gameScores => _gameScores;
 
-  Future<void> submitGameScore({required int score, required int level}) async {
+  Future<void> submitGameScore({
+    required int score,
+    required int level,
+    required String bestScore,
+  }) async {
     _setLoading(true);
-    await GameScoreServices().submitGameScore(score: score, level: level);
+    await GameScoreServices().submitGameScore(
+      score: score,
+      level: level,
+      bestScore: bestScore,
+    );
     _setLoading(false);
   }
 

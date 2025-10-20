@@ -27,12 +27,17 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
 
   Future<void> _submitGameScore() async {
     final snakeState = Provider.of<SnakeState>(context, listen: false);
+    String bestScore = Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).bestScore;
     final score = snakeState.score;
     final level = snakeState.level;
+    if (score <= 0) return;
     Provider.of<GameScoreState>(
       context,
       listen: false,
-    ).submitGameScore(score: score, level: level);
+    ).submitGameScore(score: score, level: level, bestScore: bestScore);
   }
 
   void _setAppStateForModalAction() {

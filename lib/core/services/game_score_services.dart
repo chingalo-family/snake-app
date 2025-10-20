@@ -10,7 +10,11 @@ import 'package:snake_app/core/utils/entry_form_util.dart';
 
 class GameScoreServices {
   final int pageSize = 50;
-  Future submitGameScore({required int score, required int level}) async {
+  Future submitGameScore({
+    required int score,
+    required int level,
+    required String bestScore,
+  }) async {
     try {
       User? currentUser = await UserService().getCurrentUser();
       String username = UserMetadataReference.defaultUsername;
@@ -37,32 +41,36 @@ class GameScoreServices {
             status: AppSyncStatus.notSynced,
             orgUnitIds: [orgUnit],
           );
-      offlineEvents.add(
-        EntryFormUtil.getDhis2EventPayLoad(
-          dataObject: dataObject,
-          dataElementIds: GameMetadataReference.dataElementIds,
-          program: GameMetadataReference.program,
-          programStage: GameMetadataReference.programStage,
-          orgUnit: orgUnit,
-        ),
-      );
-      List<List<dynamic>> chunkedDhis2Events = AppUtil.chunkItems(
-        items: offlineEvents,
-        size: pageSize,
-      );
-      for (List<dynamic> chunkedDhis2EventList in chunkedDhis2Events) {
-        List<String> unsyncedEvents = await Dhis2EventServices()
-            .syncDhis2EventsToServer(
-              dhisEvents: chunkedDhis2EventList as List<DhisEvent>,
-            );
-        await Dhis2EventServices().savingDhisEvents(
-          events: (chunkedDhis2EventList).map((DhisEvent dhisEvent) {
-            dhisEvent.syncStatus = unsyncedEvents.contains(dhisEvent.event)
-                ? AppSyncStatus.notSynced
-                : AppSyncStatus.synced;
-            return dhisEvent;
-          }).toList(),
+      if (bestScore != '-' && (int.tryParse(bestScore) ?? 0) < score) {
+        offlineEvents.add(
+          EntryFormUtil.getDhis2EventPayLoad(
+            dataObject: dataObject,
+            dataElementIds: GameMetadataReference.dataElementIds,
+            program: GameMetadataReference.program,
+            programStage: GameMetadataReference.programStage,
+            orgUnit: orgUnit,
+          ),
         );
+      }
+      if (offlineEvents.isNotEmpty) {
+        List<List<dynamic>> chunkedDhis2Events = AppUtil.chunkItems(
+          items: offlineEvents,
+          size: pageSize,
+        );
+        for (List<dynamic> chunkedDhis2EventList in chunkedDhis2Events) {
+          List<String> unsyncedEvents = await Dhis2EventServices()
+              .syncDhis2EventsToServer(
+                dhisEvents: chunkedDhis2EventList as List<DhisEvent>,
+              );
+          await Dhis2EventServices().savingDhisEvents(
+            events: (chunkedDhis2EventList).map((DhisEvent dhisEvent) {
+              dhisEvent.syncStatus = unsyncedEvents.contains(dhisEvent.event)
+                  ? AppSyncStatus.notSynced
+                  : AppSyncStatus.synced;
+              return dhisEvent;
+            }).toList(),
+          );
+        }
       }
     } catch (error) {
       //
