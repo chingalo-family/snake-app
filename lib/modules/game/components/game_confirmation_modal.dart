@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
+import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 
 class GameConfirmationModal extends StatelessWidget {
   const GameConfirmationModal({
@@ -55,6 +60,24 @@ class GameConfirmationModal extends StatelessWidget {
         .toInt();
   }
 
+  void _onDirectToLeaderboard(BuildContext context) {
+    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).resetGameScoreState(orgUnitId: orgUnitId);
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Leaderboard(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -69,13 +92,14 @@ class GameConfirmationModal extends StatelessWidget {
       ),
       child: Consumer<SnakeState>(
         builder: (context, snakeState, child) {
+          bool isGameOver = snakeState.isGameOver;
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                  snakeState.isGameOver ? 'Game Over' : 'Game Paused',
+                  isGameOver ? 'Game Over' : 'Game Paused',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ),
@@ -99,7 +123,7 @@ class GameConfirmationModal extends StatelessWidget {
               FilledButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  if (snakeState.isGameOver) {
+                  if (isGameOver) {
                     _onResetGame(context);
                   } else {
                     _onPauseOrResumeGame(context);
@@ -124,6 +148,34 @@ class GameConfirmationModal extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Visibility(
+                visible: isGameOver,
+                child: OutlinedButton(
+                  onPressed: () => _onDirectToLeaderboard(context),
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    width: size.width * 0.70,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 5.0),
+                          child: Text(
+                            IconReference.trophy,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                        Text(
+                          "Leaderboard",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
