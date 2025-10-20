@@ -37,17 +37,17 @@ class GameScoreState with ChangeNotifier {
 
   Future<void> resetGameScoreState({required String orgUnitId}) async {
     _setLoading(true);
-
     await GameScoreServices().downloadGameScoresFromServer(
       orgUnitId: orgUnitId,
     );
-
     final dhisEvents = await Dhis2EventServices().getAllEvents();
     _gameScores = dhisEvents.map((e) => GameScore(dhisEvent: e)).toList()
-      ..sort((a, b) => b.score.compareTo(a.score)); // sort descending
-
+      ..sort((a, b) {
+        final levelCompare = b.level.compareTo(a.level);
+        if (levelCompare != 0) return levelCompare;
+        return b.score.compareTo(a.score);
+      });
     await _setCurrentUserGameStats();
-
     _setLoading(false);
   }
 
