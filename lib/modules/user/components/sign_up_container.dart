@@ -1,0 +1,117 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_state.dart';
+import 'package:snake_app/core/components/circular_process_loader.dart';
+import 'package:snake_app/core/components/entry_forms/entry_form_container.dart';
+import 'package:snake_app/core/models/form_section.dart';
+import 'package:snake_app/core/models/user.dart';
+import 'package:snake_app/core/services/user_service.dart';
+import 'package:snake_app/core/utils/app_util.dart';
+import 'package:snake_app/modules/game/game.dart';
+import 'package:snake_app/modules/user/models/sign_up_form.dart';
+
+class SignUpContainer extends StatefulWidget {
+  const SignUpContainer({super.key});
+
+  @override
+  State<SignUpContainer> createState() => _SignUpContainerState();
+}
+
+class _SignUpContainerState extends State<SignUpContainer> {
+  List<FormSection> formSections = [];
+  Map mandatoryFieldObject = {};
+  bool _isFormReady = false;
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    setFormMetadata();
+    super.initState();
+    Timer(const Duration(milliseconds: 500), () {
+      _isFormReady = true;
+      setState(() {});
+    });
+  }
+
+  void setFormMetadata() {
+    formSections = SignUpForm.getFormFields();
+    for (String id in SignUpForm.getFormMandatoryFieldIds()) {
+      mandatoryFieldObject[id] = true;
+    }
+  }
+
+  void onInputValueChange(String id, dynamic value) {
+    Provider.of<UserEntryFormState>(
+      context,
+      listen: false,
+    ).setFormFieldState(id, value);
+  }
+
+  onSignUp(Map dataObject) async {
+    try {
+      _isSaving = true;
+      setState(() {});
+      User? user = await UserService().signUpUser(dataObject);
+      if (user != null) {
+        await UserService().setCurrentUser(user);
+        _onSuccessSignUp(user);
+      }
+    } catch (error) {
+      _isSaving = false;
+      setState(() {});
+      AppUtil.showToastMessage(message: error.toString());
+    }
+  }
+
+  void _onSuccessSignUp(User user) async {
+    Provider.of<UserState>(context, listen: false).setCurrentUser(user);
+
+    Timer(
+      const Duration(seconds: 2),
+      () => Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Game(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(),
+      child: _isFormReady
+          ? Consumer<UserEntryFormState>(
+              builder: (context, userEntryFormState, child) {
+                bool isSignUpFormValid = userEntryFormState.isSignUpFormValid;
+                return Column(
+                  children: [
+                    EntryFormContainer(
+                      onInputValueChange: (String id, dynamic value) =>
+                          onInputValueChange(id, value),
+                      formSections: formSections,
+                      dataObject: userEntryFormState.formState,
+                      mandatoryFieldObject: mandatoryFieldObject,
+                    ),
+                    FilledButton(
+                      onPressed: !isSignUpFormValid
+                          ? null
+                          : () => _isSaving
+                                ? null
+                                : onSignUp(userEntryFormState.formState),
+                      child: Text(_isSaving ? "Waiting ..." : "Sign Up"),
+                    ),
+                  ],
+                );
+              },
+            )
+          : const Center(child: CircularProcessLoader(size: 2.0)),
+    );
+  }
+}
