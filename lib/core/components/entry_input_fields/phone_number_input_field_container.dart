@@ -44,12 +44,10 @@ class _PhoneNumberInputFieldContainerState
   void onValueChange(String value) {
     bool isValidPhoneNumber = EntryFormUtil.isPhoneNumberValid(value..trim());
     widget.setValidationError(false);
-    if (isValidPhoneNumber) {
-      widget.setValidationError(false);
-      widget.onInputValueChange(value.trim());
-    } else {
-      widget.setValidationError(true);
-    }
+    widget.onInputValueChange(value.trim());
+    isValidPhoneNumber
+        ? widget.setValidationError(false)
+        : widget.setValidationError(true);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:snake_app/core/utils/entry_form_util.dart';
 
 class UserEntryFormState with ChangeNotifier {
   // intial state
@@ -22,12 +23,19 @@ class UserEntryFormState with ChangeNotifier {
   void setSignUpFormValidity() {
     String firstName = _formState['firstName'] ?? '';
     String surname = _formState['surname'] ?? '';
+    String username = _formState['username'] ?? '';
     String email = _formState['email'] ?? '';
+    String password = _formState['password'] ?? '';
     String phoneNumber = _formState['phoneNumber'] ?? '';
-    _isSignUpFormValid = firstName.isNotEmpty &&
+    bool isOtherFormValid =
+        firstName.isNotEmpty &&
         surname.isNotEmpty &&
-        email.isNotEmpty &&
-        phoneNumber.isNotEmpty;
+        username.isNotEmpty &&
+        EntryFormUtil.isPasswordValid(password) &&
+        EntryFormUtil.isEmailValid(email);
+    _isSignUpFormValid = phoneNumber.isEmpty
+        ? isOtherFormValid
+        : isOtherFormValid && EntryFormUtil.isPhoneNumberValid(phoneNumber);
     notifyListeners();
   }
 
@@ -38,14 +46,13 @@ class UserEntryFormState with ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO set user account state
-
-  //reducers
   void resetFormState() {
     _formState.clear();
     _hiddenFields.clear();
     _hiddenSections.clear();
     _hiddenInputFieldOptions.clear();
+    setLoginFormValidity();
+    setSignUpFormValidity();
     notifyListeners();
   }
 

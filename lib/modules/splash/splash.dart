@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
@@ -31,6 +32,14 @@ class _SplashState extends State<Splash> {
   void setDataForLandingPage(User? user) async {
     if (user != null && user.isLogin) {
       Provider.of<UserState>(context, listen: false).setCurrentUser(user);
+      String orgUnitId = Provider.of<UserState>(
+        context,
+        listen: false,
+      ).orgUnitId;
+      Provider.of<GameScoreState>(
+        context,
+        listen: false,
+      ).resetGameScoreState(orgUnitId: orgUnitId);
     } else {
       Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
     }

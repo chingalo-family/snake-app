@@ -1,5 +1,7 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snake_app/core/constants/app_sync_status.dart';
 import 'package:snake_app/core/constants/game_metadata_reference.dart';
+import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/constants/user_metadata_reference.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/user.dart';
@@ -10,7 +12,12 @@ import 'package:snake_app/core/utils/entry_form_util.dart';
 
 class GameScoreServices {
   final int pageSize = 50;
-  Future submitGameScore({required int score, required int level}) async {
+  Future submitGameScore({
+    required int score,
+    required int level,
+    required String bestScore,
+    required String gameScoreId,
+  }) async {
     try {
       User? currentUser = await UserService().getCurrentUser();
       String username = UserMetadataReference.defaultUsername;
@@ -19,7 +26,10 @@ class GameScoreServices {
         username = currentUser.username;
         orgUnit = currentUser.userOrgUnitIds?.first ?? '';
       }
-      Map<String, dynamic> dataObject = {"completedBy": username};
+      Map<String, dynamic> dataObject = {
+        "completedBy": username,
+        "event": gameScoreId,
+      };
       for (String dataElement in GameMetadataReference.dataElementIds) {
         switch (dataElement) {
           case GameMetadataReference.gameScoreDataElement:
@@ -37,32 +47,42 @@ class GameScoreServices {
             status: AppSyncStatus.notSynced,
             orgUnitIds: [orgUnit],
           );
-      offlineEvents.add(
-        EntryFormUtil.getDhis2EventPayLoad(
-          dataObject: dataObject,
-          dataElementIds: GameMetadataReference.dataElementIds,
-          program: GameMetadataReference.program,
-          programStage: GameMetadataReference.programStage,
-          orgUnit: orgUnit,
-        ),
+      DhisEvent dhisEvent = EntryFormUtil.getDhis2EventPayLoad(
+        dataObject: dataObject,
+        dataElementIds: GameMetadataReference.dataElementIds,
+        program: GameMetadataReference.program,
+        programStage: GameMetadataReference.programStage,
+        orgUnit: orgUnit,
       );
-      List<List<dynamic>> chunkedDhis2Events = AppUtil.chunkItems(
-        items: offlineEvents,
-        size: pageSize,
-      );
-      for (List<dynamic> chunkedDhis2EventList in chunkedDhis2Events) {
-        List<String> unsyncedEvents = await Dhis2EventServices()
-            .syncDhis2EventsToServer(
-              dhisEvents: chunkedDhis2EventList as List<DhisEvent>,
-            );
-        await Dhis2EventServices().savingDhisEvents(
-          events: (chunkedDhis2EventList).map((DhisEvent dhisEvent) {
-            dhisEvent.syncStatus = unsyncedEvents.contains(dhisEvent.event)
-                ? AppSyncStatus.notSynced
-                : AppSyncStatus.synced;
-            return dhisEvent;
-          }).toList(),
+      if ((int.tryParse(bestScore) ?? 0) < score) {
+        AppUtil.showToastMessage(
+          message: "${IconReference.trophy} You have new personal record!",
+          position: ToastGravity.TOP,
         );
+        offlineEvents.add(dhisEvent);
+      } else {
+        dhisEvent.syncStatus = AppSyncStatus.synced;
+        await Dhis2EventServices().savingDhisEvents(events: [dhisEvent]);
+      }
+      if (offlineEvents.isNotEmpty) {
+        List<List<dynamic>> chunkedDhis2Events = AppUtil.chunkItems(
+          items: offlineEvents,
+          size: pageSize,
+        );
+        for (List<dynamic> chunkedDhis2EventList in chunkedDhis2Events) {
+          List<String> unsyncedEvents = await Dhis2EventServices()
+              .syncDhis2EventsToServer(
+                dhisEvents: chunkedDhis2EventList as List<DhisEvent>,
+              );
+          await Dhis2EventServices().savingDhisEvents(
+            events: (chunkedDhis2EventList).map((DhisEvent dhisEvent) {
+              dhisEvent.syncStatus = unsyncedEvents.contains(dhisEvent.event)
+                  ? AppSyncStatus.notSynced
+                  : AppSyncStatus.synced;
+              return dhisEvent;
+            }).toList(),
+          );
+        }
       }
     } catch (error) {
       //

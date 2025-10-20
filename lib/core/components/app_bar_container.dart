@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/user/user_profile.dart';
+import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
 class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   const AppBarContainer({super.key});
@@ -48,6 +50,11 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void _onDirectToProfile(BuildContext context) {
+    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).resetGameScoreState(orgUnitId: orgUnitId);
     Timer(
       const Duration(microseconds: 500),
       () => Navigator.push(
@@ -60,10 +67,32 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _onLogin(BuildContext context) {}
+  void _onLogin(BuildContext context) {
+    Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => UserSignInOrSignUp(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
 
   void _onLogout(BuildContext context) {
     Provider.of<UserState>(context, listen: false).logoutUser();
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Game(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
   }
 
   @override

@@ -7,6 +7,7 @@ import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/constants/game_food_store_reference.dart';
 import 'package:snake_app/core/constants/snake_reference.dart';
 import 'package:snake_app/core/models/game_food_score.dart';
+import 'package:snake_app/core/utils/app_util.dart';
 
 class SnakeState with ChangeNotifier {
   int _foodIndex = 0;
@@ -19,10 +20,12 @@ class SnakeState with ChangeNotifier {
   bool _isGamePaused = true;
   int _score = 0;
   int _level = 1;
+  String _gameScoreId = AppUtil.getUid();
   GameDirection _direction = GameDirection.right;
   Timer? timer;
 
   List<int> get snake => _snake;
+  String get gameScoreId => _gameScoreId;
   int get gamePanelHeight => _gamePanelHeight;
   int get gameBoxSize => _gameBoxSize;
   int get score => _score;
@@ -34,7 +37,10 @@ class SnakeState with ChangeNotifier {
   bool get isGamePaused => _isGamePaused;
   GameFoodScore get gameFoodScore =>
       _gameFoodScore ?? GameStoreReference.gameFoodScores.first;
+
   void resetSnakeState() {
+    _gameScoreId = AppUtil.getUid();
+    _level = 1;
     _gameFoodScore = GameStoreReference.gameFoodScores.first;
     _gamePanelHeight = 0;
     _foodIndex = 0;
@@ -70,6 +76,7 @@ class SnakeState with ChangeNotifier {
     required int gamePanelHeight,
     required int gameBoxSize,
     required int totalBoxes,
+    Duration duration = const Duration(milliseconds: 250),
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
@@ -83,11 +90,10 @@ class SnakeState with ChangeNotifier {
     _isGameOver = false;
     _isGamePaused = false;
     resetSnake();
-    startGame();
+    startGame(duration: duration);
   }
 
-  void startGame() {
-    const duration = Duration(milliseconds: 300);
+  void startGame({Duration duration = const Duration(milliseconds: 250)}) {
     timer = Timer.periodic(duration, (Timer timer) {
       if (!isGameOver) {
         if (!isGamePaused) {

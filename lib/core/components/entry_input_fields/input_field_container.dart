@@ -229,7 +229,10 @@ class _InputFieldContainerState extends State<InputFieldContainer> {
     );
   }
 
-  setValidationError(bool hasValidationError) {}
+  setValidationError(bool hasValidationError) {
+    widget.inputField.hasError = hasValidationError;
+    setState(() {});
+  }
 
   getInputMaskSeparator() {
     return widget.inputFormatters

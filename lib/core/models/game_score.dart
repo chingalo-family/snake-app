@@ -4,6 +4,7 @@ import 'package:snake_app/core/utils/app_util.dart';
 
 class GameScore {
   late int score;
+  late int level;
   late String user;
   late String scoredAt;
   final DhisEvent dhisEvent;
@@ -16,6 +17,10 @@ class GameScore {
     for (var dataValue in dhisEvent.dataValues) {
       dataValueMap[dataValue.dataElement] = dataValue.value;
     }
+    level = int.parse(
+      dataValueMap[GameMetadataReference.gameLevelDataElement]?.toString() ??
+          '0',
+    );
     score = int.parse(
       dataValueMap[GameMetadataReference.gameScoreDataElement]?.toString() ??
           '0',
@@ -25,6 +30,6 @@ class GameScore {
 
   @override
   String toString() {
-    return 'GameScore{score: $score, user: $user, scoredAt: $scoredAt}';
+    return 'GameScore{score: $score, user: $user, scoredAt: $scoredAt level: $level}';
   }
 }

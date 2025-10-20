@@ -5,12 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
 class AppUtil {
-  static isPasswordValid(String password) {
-    return RegExp(
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$%\^&\*~\+\-\=\_\?\.]).{8,}$',
-    ).hasMatch(password);
-  }
-
   static List<Map<String, String>> getPaginationFilters({
     required Response response,
     int pageSize = 50,

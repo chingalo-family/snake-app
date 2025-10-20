@@ -1,13 +1,37 @@
 import 'dart:convert';
+import 'package:snake_app/core/constants/dhis2_connection.dart';
+import 'package:snake_app/core/constants/email_connection.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/offline_db/user_offline_provider/user_offline_provider.dart';
 import 'package:snake_app/core/services/dhis2_http_service.dart';
 import 'package:snake_app/core/services/preference_service.dart';
+import 'package:snake_app/core/utils/entry_form_util.dart';
 
 class UserService {
   final String preferenceKey = 'current_user';
 
-  //TODO sign up user fn
+  Future<User?> signUpUser(Map dataObject) async {
+    var url = 'api/users';
+    User? user;
+    Dhis2HttpService http = Dhis2HttpService(
+      username: Dhis2Connection.username,
+      password: Dhis2Connection.password,
+    );
+    var response = await http.httpPost(
+      url,
+      json.encode(EntryFormUtil.getUserAccountPlayload(dataObject: dataObject)),
+      queryParameters: {},
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      user = await login(
+        username: dataObject['username'],
+        password: dataObject['password'],
+      );
+    } else {
+      throw ('Failed to sign up user, kindly reach out to ${EmailConnection.senderEmail} for support.');
+    }
+    return user;
+  }
 
   Future<User?> login({
     required String username,
