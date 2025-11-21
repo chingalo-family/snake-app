@@ -14,14 +14,17 @@ class GamePlay extends StatelessWidget {
         double gameScoreHeight = (constraints.maxHeight * 0.17)
             .ceil()
             .toDouble();
-        return Scaffold(
-          appBar: AppBarContainer(),
-          body: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(gameScoreHeight),
-              child: GamePlayAction(gamePanelHeight: gamePanelHeight),
+        return PopScope(
+          canPop: false,
+          child: Scaffold(
+            appBar: AppBarContainer(),
+            body: Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(gameScoreHeight),
+                child: GamePlayAction(gamePanelHeight: gamePanelHeight),
+              ),
+              body: GamePlayContainer(gamePanelHeight: gamePanelHeight),
             ),
-            body: GamePlayContainer(gamePanelHeight: gamePanelHeight),
           ),
         );
       },
