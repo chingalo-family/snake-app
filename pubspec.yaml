@@ -1,7 +1,7 @@
 name: snake_app
 description: "A simple snake game built with Flutter."
 publish_to: 'none' 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.9.2
@@ -19,6 +19,8 @@ dependencies:
   dhis2_dart_utils: ^1.1.26
   fluttertoast: ^9.0.0
   path: ^1.9.1
+  audioplayers: ^6.5.1
+  haptic_feedback: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +32,4 @@ flutter:
   assets:
     - assets/img/
     - assets/icons/
+    - assets/sounds/
