@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:snake_app/core/models/game_score.dart';
 import 'package:snake_app/core/models/user_game_stats.dart';
 import 'package:snake_app/core/services/dhis2_event_services.dart';
-import 'package:snake_app/core/services/game_score_services.dart';
+import 'package:snake_app/core/services/game_score_service.dart';
 import 'package:snake_app/core/services/user_service.dart';
 
 class GameScoreState with ChangeNotifier {
@@ -28,7 +28,7 @@ class GameScoreState with ChangeNotifier {
     required String bestScore,
   }) async {
     _setLoading(true);
-    await GameScoreServices().submitGameScore(
+    await GameScoreService().submitGameScore(
       score: score,
       level: level,
       bestScore: bestScore,
@@ -39,9 +39,7 @@ class GameScoreState with ChangeNotifier {
 
   Future<void> resetGameScoreState({required String orgUnitId}) async {
     _setLoading(true);
-    await GameScoreServices().downloadGameScoresFromServer(
-      orgUnitId: orgUnitId,
-    );
+    await GameScoreService().downloadGameScoresFromServer(orgUnitId: orgUnitId);
     final dhisEvents = await Dhis2EventServices().getAllEvents();
     _gameScores = dhisEvents.map((e) => GameScore(dhisEvent: e)).toList()
       ..sort((a, b) {

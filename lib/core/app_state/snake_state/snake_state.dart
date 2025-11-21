@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:haptic_feedback/haptic_feedback.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/constants/game_food_store_reference.dart';
@@ -154,7 +155,7 @@ class SnakeState with ChangeNotifier {
     }
   }
 
-  void moveSnakePosition() {
+  void moveSnakePosition() async {
     int head = _snake.first;
     switch (_direction) {
       case GameDirection.up:
@@ -198,9 +199,12 @@ class SnakeState with ChangeNotifier {
         _score += gameFoodScore.score;
         _snake.add(_snake.last);
         generateSnakeFood();
+        await Haptics.vibrate(HapticsType.success);
       } else {
         _snake.removeLast();
       }
+    } else {
+      await Haptics.vibrate(HapticsType.error);
     }
     notifyListeners();
   }
