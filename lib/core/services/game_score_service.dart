@@ -10,7 +10,7 @@ import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/core/utils/entry_form_util.dart';
 
-class GameScoreServices {
+class GameScoreService {
   final int pageSize = 50;
   Future submitGameScore({
     required int score,
