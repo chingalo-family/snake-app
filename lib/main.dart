@@ -21,8 +21,40 @@ void main() async {
   ]).then((value) => runApp(const AppGame()));
 }
 
-class AppGame extends StatelessWidget {
+class AppGame extends StatefulWidget {
   const AppGame({super.key});
+
+  @override
+  State<AppGame> createState() => _AppGameState();
+}
+
+class _AppGameState extends State<AppGame> with WidgetsBindingObserver {
+  final soundManger = GameSoundService.instance;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    soundManger.playBackgroundMusic();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      soundManger.pauseAll();
+    }
+    if (state == AppLifecycleState.resumed) {
+      soundManger.resumeAll();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    soundManger.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
