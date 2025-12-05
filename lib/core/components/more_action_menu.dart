@@ -72,9 +72,7 @@ class MoreActionMenu extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Colors.white,
-            ),
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       onTap: onTap,
       shape: RoundedRectangleBorder(
