@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
-import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
+import 'package:snake_app/core/utils/grid_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
 import 'package:snake_app/modules/game/components/game_food_icon.dart';
 
@@ -131,21 +131,6 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     }
   }
 
-  int _getGridColumnsCount() {
-    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
-    return AppInfoReference.getGridColumnsCount(gamePanelWidth);
-  }
-
-  int _getNumberOfRows(int gridColumnsCount) {
-    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
-    double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
-        AppInfoReference.gridPadding;
-    return ((widget.gamePanelHeight - AppInfoReference.gridPadding) /
-            (boxSize + AppInfoReference.gridPadding))
-        .toInt();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<SnakeState>(
@@ -156,8 +141,12 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         bool hasGameStarted = snakeState.hasGameStarted;
         GameFoodScore gameFoodScore = snakeState.gameFoodScore;
         int gameBoxSize = snakeState.gameBoxSize;
-        int gridColumnsCount = _getGridColumnsCount();
-        int numberOfRows = _getNumberOfRows(gridColumnsCount);
+        int gridColumnsCount = GridUtil.getGridColumnsCount(context);
+        int numberOfRows = GridUtil.getNumberOfRows(
+          context,
+          widget.gamePanelHeight,
+          gridColumnsCount,
+        );
         int totalBoxes = numberOfRows * gridColumnsCount;
 
         return GestureDetector(
