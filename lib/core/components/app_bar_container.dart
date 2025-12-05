@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
+import 'package:snake_app/core/components/more_action_menu.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
+import 'package:snake_app/core/utils/app_modal_util.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/user/user_profile.dart';
@@ -95,6 +97,16 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  void _onOpenMoreActions(BuildContext context) {
+    AppModalUtil.showActionSheetModal(
+      context: context,
+      actionSheetContainer: const MoreActionMenu(),
+      initialHeightRatio: 0.2,
+      minHeightRatio: 0.1,
+      maxHeightRatio: 0.4,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserState>(
@@ -157,6 +169,14 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
               tooltip: isUserLoggedIn ? 'Logout' : 'Login',
               onPressed: () =>
                   isUserLoggedIn ? _onLogout(context) : _onLogin(context),
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+              tooltip: 'More',
+              onPressed: () => _onOpenMoreActions(context),
             ),
           ],
         );
