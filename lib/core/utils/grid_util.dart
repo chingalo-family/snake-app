@@ -15,12 +15,15 @@ class GridUtil {
   }
 
   /// Calculate the size of each box in the grid.
+  static double _getBoxSize(double gamePanelWidth, int gridColumnsCount) {
+    return (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
+        AppInfoReference.gridPadding;
+  }
+
+  /// Calculate the size of each box in the grid as an integer.
   static int getPanelBoxSize(BuildContext context, int gridColumnsCount) {
     double gamePanelWidth = getGamePanelWidth(context);
-    double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
-        AppInfoReference.gridPadding;
-    return boxSize.toInt();
+    return _getBoxSize(gamePanelWidth, gridColumnsCount).toInt();
   }
 
   /// Calculate the number of rows based on the panel height.
@@ -30,9 +33,7 @@ class GridUtil {
     int gridColumnsCount,
   ) {
     double gamePanelWidth = getGamePanelWidth(context);
-    double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
-        AppInfoReference.gridPadding;
+    double boxSize = _getBoxSize(gamePanelWidth, gridColumnsCount);
     return ((gamePanelHeight - AppInfoReference.gridPadding) /
             (boxSize + AppInfoReference.gridPadding))
         .toInt();

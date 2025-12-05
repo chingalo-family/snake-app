@@ -7,6 +7,7 @@ class AppInfoReference {
   static const Color defaultAppColor = Colors.cyan;
   static const int gridPadding = 10;
   static const double targetBoxSize = 18.0;
+  static const int defaultGridColumnsCount = 20;
 
   /// Calculate the number of grid columns based on the available width
   /// to ensure uniform box sizes across different devices.

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
+import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/constants/game_food_store_reference.dart';
 import 'package:snake_app/core/constants/snake_reference.dart';
@@ -14,7 +15,7 @@ class SnakeState with ChangeNotifier {
   int _gamePanelHeight = 0;
   int _gameBoxSize = 0;
   int _totalBoxes = 0;
-  int _gridColumnsCount = 20; // Default value
+  int _gridColumnsCount = AppInfoReference.defaultGridColumnsCount;
   GameFoodScore? _gameFoodScore;
   List<int> _snake = [];
   bool _isGameOver = false;
@@ -45,7 +46,7 @@ class SnakeState with ChangeNotifier {
     _level = 1;
     _gameFoodScore = GameStoreReference.gameFoodScores.first;
     _gamePanelHeight = 0;
-    _gridColumnsCount = 20; // Reset to default
+    _gridColumnsCount = AppInfoReference.defaultGridColumnsCount;
     _foodIndex = 0;
     _snake = [];
     _isGameOver = false;
