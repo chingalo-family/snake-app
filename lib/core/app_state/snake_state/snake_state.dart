@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:haptic_feedback/haptic_feedback.dart';
-import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
 import 'package:snake_app/core/constants/game_food_store_reference.dart';
 import 'package:snake_app/core/constants/snake_reference.dart';
@@ -15,6 +14,7 @@ class SnakeState with ChangeNotifier {
   int _gamePanelHeight = 0;
   int _gameBoxSize = 0;
   int _totalBoxes = 0;
+  int _gridColumnsCount = 20; // Default value
   GameFoodScore? _gameFoodScore;
   List<int> _snake = [];
   bool _isGameOver = false;
@@ -29,6 +29,7 @@ class SnakeState with ChangeNotifier {
   String get gameScoreId => _gameScoreId;
   int get gamePanelHeight => _gamePanelHeight;
   int get gameBoxSize => _gameBoxSize;
+  int get gridColumnsCount => _gridColumnsCount;
   int get score => _score;
   int get level => _level;
   int get foodIndex => _foodIndex;
@@ -44,6 +45,7 @@ class SnakeState with ChangeNotifier {
     _level = 1;
     _gameFoodScore = GameStoreReference.gameFoodScores.first;
     _gamePanelHeight = 0;
+    _gridColumnsCount = 20; // Reset to default
     _foodIndex = 0;
     _snake = [];
     _isGameOver = false;
@@ -77,11 +79,13 @@ class SnakeState with ChangeNotifier {
     required int gamePanelHeight,
     required int gameBoxSize,
     required int totalBoxes,
+    required int gridColumnsCount,
     Duration duration = const Duration(milliseconds: 250),
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
     _totalBoxes = totalBoxes;
+    _gridColumnsCount = gridColumnsCount;
     notifyListeners();
     try {
       timer?.cancel();
@@ -109,10 +113,12 @@ class SnakeState with ChangeNotifier {
     required int gamePanelHeight,
     required int gameBoxSize,
     required int totalBoxes,
+    required int gridColumnsCount,
   }) {
     _gamePanelHeight = gamePanelHeight;
     _gameBoxSize = gameBoxSize;
     _totalBoxes = totalBoxes;
+    _gridColumnsCount = gridColumnsCount;
     _isGamePaused = !isGamePaused;
     if (snake.isEmpty) {
       initiateTheGame();
@@ -159,28 +165,28 @@ class SnakeState with ChangeNotifier {
     int head = _snake.first;
     switch (_direction) {
       case GameDirection.up:
-        if (head < AppInfoReference.gridColumnsCount) {
+        if (head < _gridColumnsCount) {
           _isGameOver = true;
         } else {
-          head -= AppInfoReference.gridColumnsCount;
+          head -= _gridColumnsCount;
         }
         break;
       case GameDirection.down:
-        if (head >= _totalBoxes - AppInfoReference.gridColumnsCount) {
+        if (head >= _totalBoxes - _gridColumnsCount) {
           _isGameOver = true;
         } else {
-          head += AppInfoReference.gridColumnsCount;
+          head += _gridColumnsCount;
         }
         break;
       case GameDirection.left:
-        if (head % AppInfoReference.gridColumnsCount == 0) {
+        if (head % _gridColumnsCount == 0) {
           _isGameOver = true;
         } else {
           head--;
         }
         break;
       case GameDirection.right:
-        if ((head + 1) % AppInfoReference.gridColumnsCount == 0) {
+        if ((head + 1) % _gridColumnsCount == 0) {
           _isGameOver = true;
         } else {
           head++;

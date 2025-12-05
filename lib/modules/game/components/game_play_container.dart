@@ -131,11 +131,15 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
     }
   }
 
-  int _getNumberOfRows() {
+  int _getGridColumnsCount() {
+    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
+    return AppInfoReference.getGridColumnsCount(gamePanelWidth);
+  }
+
+  int _getNumberOfRows(int gridColumnsCount) {
     double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
     double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) /
-            AppInfoReference.gridColumnsCount -
+        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
         AppInfoReference.gridPadding;
     return ((widget.gamePanelHeight - AppInfoReference.gridPadding) /
             (boxSize + AppInfoReference.gridPadding))
@@ -152,8 +156,9 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         bool hasGameStarted = snakeState.hasGameStarted;
         GameFoodScore gameFoodScore = snakeState.gameFoodScore;
         int gameBoxSize = snakeState.gameBoxSize;
-        int numberOfRows = _getNumberOfRows();
-        int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+        int gridColumnsCount = _getGridColumnsCount();
+        int numberOfRows = _getNumberOfRows(gridColumnsCount);
+        int totalBoxes = numberOfRows * gridColumnsCount;
 
         return GestureDetector(
           onVerticalDragUpdate: (details) =>
@@ -166,7 +171,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
             ).colorScheme.inversePrimary.withValues(alpha: 0.1),
             padding: const EdgeInsets.all(10),
             child: GridView.count(
-              crossAxisCount: AppInfoReference.gridColumnsCount,
+              crossAxisCount: gridColumnsCount,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(totalBoxes, (index) {

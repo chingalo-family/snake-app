@@ -19,41 +19,48 @@ class GameConfirmationModal extends StatelessWidget {
   final double topBorderRadius;
   final int gamePanelHeight;
 
+  int _getGridColumnsCount(BuildContext context) {
+    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
+    return AppInfoReference.getGridColumnsCount(gamePanelWidth);
+  }
+
   void _onPauseOrResumeGame(BuildContext context) {
-    int numberOfRows = _getNumberOfRows(context);
-    int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+    int gridColumnsCount = _getGridColumnsCount(context);
+    int numberOfRows = _getNumberOfRows(context, gridColumnsCount);
+    int totalBoxes = numberOfRows * gridColumnsCount;
     Provider.of<SnakeState>(context, listen: false).pauseOrResumeGame(
       gamePanelHeight: gamePanelHeight,
-      gameBoxSize: _getPanelBoxSize(context),
+      gameBoxSize: _getPanelBoxSize(context, gridColumnsCount),
       totalBoxes: totalBoxes,
+      gridColumnsCount: gridColumnsCount,
     );
   }
 
   void _onResetGame(BuildContext context) {
-    int numberOfRows = _getNumberOfRows(context);
-    int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+    int gridColumnsCount = _getGridColumnsCount(context);
+    int numberOfRows = _getNumberOfRows(context, gridColumnsCount);
+    int totalBoxes = numberOfRows * gridColumnsCount;
     Provider.of<SnakeState>(context, listen: false).resetSnakeState();
     Provider.of<SnakeState>(context, listen: false).restartGame(
       gamePanelHeight: gamePanelHeight,
-      gameBoxSize: _getPanelBoxSize(context),
+      gameBoxSize: _getPanelBoxSize(context, gridColumnsCount),
       totalBoxes: totalBoxes,
+      gridColumnsCount: gridColumnsCount,
     );
   }
 
-  int _getPanelBoxSize(BuildContext context) {
+  int _getPanelBoxSize(BuildContext context, int gridColumnsCount) {
     double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
     double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) /
-            AppInfoReference.gridColumnsCount -
+        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
         AppInfoReference.gridPadding;
     return boxSize.toInt();
   }
 
-  int _getNumberOfRows(BuildContext context) {
+  int _getNumberOfRows(BuildContext context, int gridColumnsCount) {
     double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
     double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) /
-            AppInfoReference.gridColumnsCount -
+        (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
         AppInfoReference.gridPadding;
     return ((gamePanelHeight - AppInfoReference.gridPadding) /
             (boxSize + AppInfoReference.gridPadding))
