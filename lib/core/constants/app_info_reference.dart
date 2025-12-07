@@ -6,18 +6,14 @@ class AppInfoReference {
   static const String currentAppVersion = '1.0.0';
   static const Color defaultAppColor = Colors.cyan;
   static const int gridPadding = 2;
-  static const double targetBoxSize = 9.0;
+  static const double targetBoxSize =
+      15.0; //@TODO Determines the size of each box in the grid, later be depend on levels
   static const int defaultGridColumnsCount = 20;
 
-  /// Calculate the number of grid columns based on the available width
-  /// to ensure uniform box sizes across different devices.
   static int getGridColumnsCount(double availableWidth) {
-    // Calculate how many columns can fit with the target box size
-    // Formula: (availableWidth - padding) / (targetBoxSize + padding)
     int columns =
         ((availableWidth - gridPadding) / (targetBoxSize + gridPadding))
             .floor();
-    // Ensure at least 10 columns and at most 40 columns
     return columns.clamp(10, 40);
   }
 }
