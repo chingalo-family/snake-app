@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppInfoReference {
   static const String appName = 'Snake App';
   static const String androidId = 'chingalo.family.snake_app';
-  static const String currentAppVersion = '1.0.0';
+  static const String currentAppVersion = '1.0.1';
   static const Color defaultAppColor = Colors.cyan;
   static const int gridPadding = 2;
   static const double targetBoxSize =
