@@ -30,9 +30,9 @@ class AppBarContainer extends StatelessWidget implements PreferredSizeWidget {
     AppModalUtil.showActionSheetModal(
       context: context,
       actionSheetContainer: const MoreActionMenu(),
-      initialHeightRatio: 0.3,
+      initialHeightRatio: 0.4,
       minHeightRatio: 0.1,
-      maxHeightRatio: 0.6,
+      maxHeightRatio: 0.5,
     );
   }
 

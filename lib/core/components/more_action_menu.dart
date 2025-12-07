@@ -10,6 +10,7 @@ import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
+import 'package:snake_app/modules/settings/settings.dart';
 import 'package:snake_app/modules/user/user_profile.dart';
 import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
@@ -80,6 +81,20 @@ class MoreActionMenu extends StatelessWidget {
     );
   }
 
+  void _onNavigateToSettings(BuildContext context) {
+    Navigator.pop(context);
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const Settings(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserState>(
@@ -97,8 +112,8 @@ class MoreActionMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 40,
-                    height: 4,
+                    width: 40.0,
+                    height: 4.0,
                     margin: const EdgeInsets.symmetric(vertical: 12.0),
                     decoration: BoxDecoration(
                       color: Theme.of(context).secondaryHeaderColor,
@@ -114,6 +129,12 @@ class MoreActionMenu extends StatelessWidget {
                           icon: Icons.info_outline,
                           label: 'About App',
                           onTap: () => _onNavigateToAbout(context),
+                        ),
+                        _buildMenuItem(
+                          context,
+                          icon: Icons.settings_outlined,
+                          label: 'Settings',
+                          onTap: () => _onNavigateToSettings(context),
                         ),
                         _buildMenuItem(
                           context,
