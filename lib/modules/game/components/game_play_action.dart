@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
-import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
+import 'package:snake_app/core/utils/grid_util.dart';
 
 class GamePlayAction extends StatelessWidget {
   const GamePlayAction({super.key, this.gamePanelHeight = 0});
@@ -10,44 +10,36 @@ class GamePlayAction extends StatelessWidget {
   final int gamePanelHeight;
 
   void _onPauseOrResumeGame(BuildContext context) {
-    int numberOfRows = _getNumberOfRows(context);
-    int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+    int gridColumnsCount = GridUtil.getGridColumnsCount(context);
+    int numberOfRows = GridUtil.getNumberOfRows(
+      context,
+      gamePanelHeight,
+      gridColumnsCount,
+    );
+    int totalBoxes = numberOfRows * gridColumnsCount;
     Provider.of<SnakeState>(context, listen: false).pauseOrResumeGame(
       gamePanelHeight: gamePanelHeight,
-      gameBoxSize: _getPanelBoxSize(context),
+      gameBoxSize: GridUtil.getPanelBoxSize(context, gridColumnsCount),
       totalBoxes: totalBoxes,
+      gridColumnsCount: gridColumnsCount,
     );
   }
 
   void _onResetGame(BuildContext context) {
-    int numberOfRows = _getNumberOfRows(context);
-    int totalBoxes = numberOfRows * AppInfoReference.gridColumnsCount;
+    int gridColumnsCount = GridUtil.getGridColumnsCount(context);
+    int numberOfRows = GridUtil.getNumberOfRows(
+      context,
+      gamePanelHeight,
+      gridColumnsCount,
+    );
+    int totalBoxes = numberOfRows * gridColumnsCount;
     Provider.of<SnakeState>(context, listen: false).resetSnakeState();
     Provider.of<SnakeState>(context, listen: false).restartGame(
       gamePanelHeight: gamePanelHeight,
-      gameBoxSize: _getPanelBoxSize(context),
+      gameBoxSize: GridUtil.getPanelBoxSize(context, gridColumnsCount),
       totalBoxes: totalBoxes,
+      gridColumnsCount: gridColumnsCount,
     );
-  }
-
-  int _getPanelBoxSize(BuildContext context) {
-    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
-    double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) /
-            AppInfoReference.gridColumnsCount -
-        AppInfoReference.gridPadding;
-    return boxSize.toInt();
-  }
-
-  int _getNumberOfRows(BuildContext context) {
-    double gamePanelWidth = MediaQuery.of(context).size.width * 0.95;
-    double boxSize =
-        (gamePanelWidth - AppInfoReference.gridPadding) /
-            AppInfoReference.gridColumnsCount -
-        AppInfoReference.gridPadding;
-    return ((gamePanelHeight - AppInfoReference.gridPadding) /
-            (boxSize + AppInfoReference.gridPadding))
-        .toInt();
   }
 
   @override
