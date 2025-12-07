@@ -5,8 +5,8 @@ class AppInfoReference {
   static const String androidId = 'chingalo.family.snake_app';
   static const String currentAppVersion = '1.0.0';
   static const Color defaultAppColor = Colors.cyan;
-  static const int gridPadding = 10;
-  static const double targetBoxSize = 18.0;
+  static const int gridPadding = 2;
+  static const double targetBoxSize = 9.0;
   static const int defaultGridColumnsCount = 20;
 
   /// Calculate the number of grid columns based on the available width

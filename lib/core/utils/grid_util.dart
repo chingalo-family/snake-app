@@ -5,7 +5,7 @@ import 'package:snake_app/core/constants/app_info_reference.dart';
 class GridUtil {
   /// Calculate the game panel width based on the screen width.
   static double getGamePanelWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width * 0.95;
+    return MediaQuery.of(context).size.width;
   }
 
   /// Calculate the number of grid columns based on the available width.

@@ -158,7 +158,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
             color: Theme.of(
               context,
             ).colorScheme.inversePrimary.withValues(alpha: 0.1),
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(2),
             child: GridView.count(
               crossAxisCount: gridColumnsCount,
               shrinkWrap: true,
