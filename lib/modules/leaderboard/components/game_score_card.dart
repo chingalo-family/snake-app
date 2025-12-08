@@ -30,7 +30,7 @@ class GameScoreCard extends StatelessWidget {
         child: Row(
           children: [
             // Rank number
-            Container(
+            SizedBox(
               width: 40,
               child: Text(
                 '$rank',

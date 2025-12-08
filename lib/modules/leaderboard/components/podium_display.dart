@@ -18,7 +18,7 @@ class PodiumDisplay extends StatelessWidget {
     }
 
     // Get top 3 scores, fill with nulls if less than 3
-    final first = topScores.length > 0 ? topScores[0] : null;
+    final first = topScores.isNotEmpty ? topScores[0] : null;
     final second = topScores.length > 1 ? topScores[1] : null;
     final third = topScores.length > 2 ? topScores[2] : null;
 
@@ -80,7 +80,7 @@ class PodiumDisplay extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               '👑',
-              style: const TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: size * 0.3),
             ),
           ),
         // Avatar with border
