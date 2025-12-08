@@ -2,12 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
-import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/models/game_score.dart';
 import 'package:snake_app/modules/leaderboard/components/game_score_card.dart';
+import 'package:snake_app/modules/leaderboard/components/leaderboard_tabs.dart';
+import 'package:snake_app/modules/leaderboard/components/podium_display.dart';
 
-class Leaderboard extends StatelessWidget {
+class Leaderboard extends StatefulWidget {
   const Leaderboard({super.key});
+
+  @override
+  State<Leaderboard> createState() => _LeaderboardState();
+}
+
+class _LeaderboardState extends State<Leaderboard> {
+  int _selectedTab = 0;
+
+  void _onTabChanged(int index) {
+    setState(() {
+      _selectedTab = index;
+    });
+    // TODO: Implement filtering logic based on tab selection
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,32 +32,78 @@ class Leaderboard extends StatelessWidget {
         builder: (context, gameScoreState, child) {
           bool isLoading = gameScoreState.isLoading;
           List<GameScore> gameScores = gameScoreState.gameScores;
+          
+          // Split scores into top 3 and rest
+          List<GameScore> topScores = gameScores.take(3).toList();
+          List<GameScore> remainingScores = gameScores.skip(3).toList();
+          
           return isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16.0),
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Column(
                       children: [
-                        Text(
-                          IconReference.trophy,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.headlineLarge?.copyWith(fontSize: 40.0),
-                        ),
-                        const SizedBox(height: 10.0),
+                        // Title
                         Text(
                           "Leaderboard",
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Text(
-                          "Top players worldwide",
-                          style: Theme.of(context).textTheme.titleSmall,
+                        const SizedBox(height: 20.0),
+                        
+                        // Tabs
+                        LeaderboardTabs(
+                          onTabChanged: _onTabChanged,
                         ),
-                        const SizedBox(height: 15.0),
-                        ...gameScores.map((GameScore gameScore) {
+                        const SizedBox(height: 20.0),
+                        
+                        // Top 3 Podium
+                        PodiumDisplay(topScores: topScores),
+                        const SizedBox(height: 30.0),
+                        
+                        // Table headers if there are remaining scores
+                        if (remainingScores.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 40,
+                                  child: Text(
+                                    'Rank',
+                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 64.0),
+                                Expanded(
+                                  child: Text(
+                                    'Player',
+                                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Points',
+                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(width: 16.0),
+                              ],
+                            ),
+                          ),
+                        
+                        // Remaining scores list
+                        ...remainingScores.map((GameScore gameScore) {
                           int index = gameScores.indexOf(gameScore);
                           int rank = index + 1;
                           return GameScoreCard(
@@ -50,6 +111,7 @@ class Leaderboard extends StatelessWidget {
                             gameScore: gameScore,
                           );
                         }),
+                        const SizedBox(height: 20.0),
                       ],
                     ),
                   ),
