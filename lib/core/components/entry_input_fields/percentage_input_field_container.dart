@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/input_field.dart';
+import 'package:snake_app/core/components/entry_input_fields/input_field_controller_mixin.dart';
 
 // `PercentageInputFieldContainer` is a container for the percentage input fields
 class PercentageInputFieldContainer extends StatefulWidget {
@@ -33,18 +34,19 @@ class PercentageInputFieldContainer extends StatefulWidget {
 }
 
 class _PercentageInputFieldContainerState
-    extends State<PercentageInputFieldContainer> {
-  TextEditingController? percentageController;
+    extends State<PercentageInputFieldContainer>
+    with InputFieldControllerMixin {
+  
+  @override
+  InputField get inputField => widget.inputField;
+  
+  @override
+  String? get inputValue => widget.inputValue;
 
   @override
   void initState() {
     super.initState();
-    updatePercentageValue(value: widget.inputValue);
-  }
-
-  updatePercentageValue({String? value = ''}) {
-    percentageController = TextEditingController(text: value);
-    setState(() {});
+    updateControllerValue(value: widget.inputValue);
   }
 
   void onValueChange(String value) {
@@ -68,20 +70,7 @@ class _PercentageInputFieldContainerState
   @override
   void didUpdateWidget(covariant PercentageInputFieldContainer oldWidget) {
     super.didUpdateWidget(widget);
-    if (oldWidget.inputValue != widget.inputValue) {
-      if (widget.inputField.isReadOnly!) {
-        updatePercentageValue(value: widget.inputValue);
-      }
-      if (widget.inputValue == null || widget.inputValue == '') {
-        updatePercentageValue();
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    percentageController = null;
+    handleInputValueUpdate(oldWidget.inputValue, widget.inputValue);
   }
 
   @override
@@ -93,7 +82,7 @@ class _PercentageInputFieldContainerState
             readOnly: widget.inputField.isReadOnly!,
             controller: widget.inputField.isReadOnly!
                 ? TextEditingController(text: widget.inputValue)
-                : percentageController,
+                : textController,
             keyboardType: TextInputType.number,
             onChanged: onValueChange,
             style: const TextStyle().copyWith(
