@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/input_field.dart';
+import 'package:snake_app/core/utils/entry_form_util.dart';
 
 // `NumericalInputFieldContainer` is an input field container for numerical input fields
 class NumericalInputFieldContainer extends StatefulWidget {
@@ -44,15 +45,8 @@ class _NumericalInputFieldContainerState
     setState(() {});
   }
 
-  String getSanitizedNumericalValue(String value) {
-    value = value.trim() == '' ? '0' : value;
-    return !value.contains('.')
-        ? '${int.parse(value)}'
-        : '${double.parse(value)}';
-  }
-
   void onValueChange(String value) {
-    String sanitizedValue = getSanitizedNumericalValue(value);
+    String sanitizedValue = EntryFormUtil.getSanitizedNumericalValue(value);
     setState(() {});
     widget.onInputValueChange(sanitizedValue.trim());
   }

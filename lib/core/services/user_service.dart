@@ -3,7 +3,7 @@ import 'package:snake_app/core/constants/dhis2_connection.dart';
 import 'package:snake_app/core/constants/email_connection.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/offline_db/user_offline_provider/user_offline_provider.dart';
-import 'package:snake_app/core/services/dhis2_http_service.dart';
+import 'package:snake_app/core/services/http_service.dart';
 import 'package:snake_app/core/services/preference_service.dart';
 import 'package:snake_app/core/utils/entry_form_util.dart';
 
@@ -13,7 +13,7 @@ class UserService {
   Future<User?> signUpUser(Map dataObject) async {
     var url = 'api/users';
     User? user;
-    Dhis2HttpService http = Dhis2HttpService(
+    HttpService http = HttpService(
       username: Dhis2Connection.username,
       password: Dhis2Connection.password,
     );
@@ -44,7 +44,7 @@ class UserService {
         'fields':
             'id,name,email,gender,phoneNumber,organisationUnits[id],userGroups[name,id,users[id,name,username]]',
       };
-      Dhis2HttpService http = Dhis2HttpService(
+      HttpService http = HttpService(
         username: username,
         password: password,
       );
@@ -66,7 +66,7 @@ class UserService {
     String message = '';
     try {
       User? user = await getCurrentUser();
-      Dhis2HttpService http = Dhis2HttpService(
+      HttpService http = HttpService(
         username: user?.username ?? '',
         password: user?.password ?? '',
       );

@@ -48,13 +48,6 @@ class _EmailInputFieldContainerState extends State<EmailInputFieldContainer> {
     setState(() {});
   }
 
-  String getSanitizedNumericalValue(String value) {
-    value = value.trim() == '' ? '0' : value;
-    return !value.contains('.')
-        ? '${int.parse(value)}'
-        : '${double.parse(value)}';
-  }
-
   void onValueChange(String value) {
     bool isValidEmail = EntryFormUtil.isEmailValid(value.trim());
     widget.onInputValueChange(value.trim());
