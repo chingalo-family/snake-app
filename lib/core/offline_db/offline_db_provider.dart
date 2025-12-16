@@ -85,11 +85,11 @@ class OfflineDbProvider {
   }) async {
     try {
       var dbClient = await db;
-      List<List<dynamic>> chunkedItems = AppUtil.chunkItems(
+      List<List<T>> chunkedItems = AppUtil.chunkItems(
         items: items,
         size: PaginationConstant.insertBatchSize,
-      );
-      for (List<dynamic> itemGroup in chunkedItems) {
+      ).cast<List<T>>();
+      for (List<T> itemGroup in chunkedItems) {
         var batch = dbClient!.batch();
         for (T item in itemGroup) {
           batch.insert(
@@ -105,7 +105,8 @@ class OfflineDbProvider {
         );
       }
     } catch (e) {
-      //
+      // Errors are silently caught to maintain consistency with existing offline provider behavior
+      // Database operations may fail due to constraints or connection issues, but shouldn't crash the app
     }
   }
 }

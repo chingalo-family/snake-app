@@ -23,7 +23,7 @@ mixin InputFieldControllerMixin<T extends StatefulWidget> on State<T> {
   /// Common logic for didUpdateWidget to handle controller updates
   void handleInputValueUpdate(String? oldValue, String? newValue) {
     if (oldValue != newValue) {
-      if (inputField.isReadOnly!) {
+      if (inputField.isReadOnly ?? false) {
         updateControllerValue(value: newValue);
       }
       if (newValue == null || newValue == '') {
