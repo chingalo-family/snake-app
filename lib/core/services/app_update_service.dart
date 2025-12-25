@@ -43,37 +43,14 @@ class AppUpdateService {
     return null;
   }
 
-  /// Download APK file from the given URL
-  Future<String?> downloadApk(String apkUrl, {
-    Function(int received, int total)? onProgress,
-  }) async {
-    try {
-      final response = await http.get(Uri.parse(apkUrl));
-
-      if (response.statusCode == 200) {
-        final dir = await getExternalStorageDirectory();
-        if (dir == null) return null;
-
-        final filePath = '${dir.path}/app-update.apk';
-        final file = File(filePath);
-
-        await file.writeAsBytes(response.bodyBytes);
-        return filePath;
-      }
-    } catch (e) {
-      return null;
-    }
-
-    return null;
-  }
-
   /// Download APK with progress tracking using streaming
   Future<String?> downloadApkWithProgress(
     String apkUrl, {
     Function(int received, int total)? onProgress,
   }) async {
+    http.Client? client;
     try {
-      final client = http.Client();
+      client = http.Client();
       final request = http.Request('GET', Uri.parse(apkUrl));
       final response = await client.send(request);
 
@@ -95,16 +72,15 @@ class AppUpdateService {
         }
 
         await sink.close();
-        client.close();
 
         return filePath;
       }
 
-      client.close();
+      return null;
     } catch (e) {
       return null;
+    } finally {
+      client?.close();
     }
-
-    return null;
   }
 }

@@ -3,6 +3,7 @@ import 'package:install_plugin/install_plugin.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/app_update_state/app_update_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
+import 'package:snake_app/core/models/app_update_version.dart';
 import 'package:snake_app/core/services/app_update_service.dart';
 
 class AppUpdateDialog extends StatelessWidget {
@@ -39,7 +40,7 @@ class AppUpdateDialog extends StatelessWidget {
   Widget _buildUpdateAvailableDialog(
     BuildContext context,
     AppUpdateState updateState,
-    dynamic availableUpdate,
+    AppUpdateVersion availableUpdate,
   ) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
