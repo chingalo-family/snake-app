@@ -4,7 +4,7 @@ import 'package:snake_app/core/constants/dhis2_connection.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/offline_db/dhis_tracker_offline_provider/dhis_event_offline_provider.dart';
-import 'package:snake_app/core/services/dhis2_http_service.dart';
+import 'package:snake_app/core/services/http_service.dart';
 import 'package:snake_app/core/services/preference_service.dart';
 import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/core/utils/app_util.dart';
@@ -46,7 +46,7 @@ class Dhis2EventServices {
     try {
       String lastSyncDate = await getLastRecordDownloadDate();
       User? user = await UserService().getCurrentUser();
-      Dhis2HttpService http = Dhis2HttpService(
+      HttpService http = HttpService(
         username: user?.username ?? Dhis2Connection.username,
         password: user?.password ?? Dhis2Connection.password,
       );
@@ -77,7 +77,7 @@ class Dhis2EventServices {
     try {
       String lastSyncDate = await getLastRecordDownloadDate();
       User? user = await UserService().getCurrentUser();
-      Dhis2HttpService http = Dhis2HttpService(
+      HttpService http = HttpService(
         username: user?.username ?? Dhis2Connection.username,
         password: user?.password ?? Dhis2Connection.password,
       );
@@ -117,7 +117,7 @@ class Dhis2EventServices {
     };
     try {
       User? user = await UserService().getCurrentUser();
-      Dhis2HttpService http = Dhis2HttpService(
+      HttpService http = HttpService(
         username: user?.username ?? Dhis2Connection.username,
         password: user?.password ?? Dhis2Connection.password,
       );

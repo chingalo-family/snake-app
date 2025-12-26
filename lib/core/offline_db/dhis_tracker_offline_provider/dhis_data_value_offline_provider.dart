@@ -16,33 +16,17 @@ class DhisDataValueOfflineProvider extends OfflineDbProvider {
   Future addOrUpdateDhisEventDataValues({
     required List<DhisEvent> dhisEvents,
   }) async {
-    var dbClient = await db;
     try {
-      List<List<dynamic>> chunkedDhisEventDataValues = AppUtil.chunkItems(
-        items: dhisEvents
-            .map((DhisEvent dhis2Event) {
-              return dhis2Event.dataValues;
-            })
-            .toList()
-            .expand((dataValue) => dataValue)
-            .toList(),
-        size: PaginationConstant.insertBatchSize,
+      List<DhisDataValue> dataValues = dhisEvents
+          .map((DhisEvent dhis2Event) => dhis2Event.dataValues)
+          .expand((dataValue) => dataValue)
+          .toList();
+      
+      await batchInsert<DhisDataValue>(
+        tableName: tableName,
+        items: dataValues,
+        toMap: (dhisDataValue) => dhisDataValue.toJson(),
       );
-      for (List<dynamic> chunkedDhisEventDataValueList
-          in chunkedDhisEventDataValues) {
-        var dhisEventDataValueBatch = dbClient!.batch();
-        for (DhisDataValue dhisDataValue in chunkedDhisEventDataValueList) {
-          dhisEventDataValueBatch.insert(
-            tableName,
-            dhisDataValue.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          );
-        }
-        await dhisEventDataValueBatch.commit(
-          noResult: true,
-          continueOnError: true,
-        );
-      }
     } catch (error) {
       //
     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/input_field.dart';
+import 'package:snake_app/core/utils/entry_form_util.dart';
+import 'package:snake_app/core/components/entry_input_fields/input_field_controller_mixin.dart';
 
 // `NumericalInputFieldContainer` is an input field container for numerical input fields
 class NumericalInputFieldContainer extends StatefulWidget {
@@ -29,30 +31,23 @@ class NumericalInputFieldContainer extends StatefulWidget {
 }
 
 class _NumericalInputFieldContainerState
-    extends State<NumericalInputFieldContainer> {
-  TextEditingController? numericalController;
+    extends State<NumericalInputFieldContainer>
+    with InputFieldControllerMixin {
+  
+  @override
+  InputField get inputField => widget.inputField;
+  
+  @override
+  String? get inputValue => widget.inputValue;
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
-    updateNumericalValue(value: widget.inputValue);
-  }
-
-  updateNumericalValue({String? value = ''}) {
-    numericalController = TextEditingController(text: value);
-    setState(() {});
-  }
-
-  String getSanitizedNumericalValue(String value) {
-    value = value.trim() == '' ? '0' : value;
-    return !value.contains('.')
-        ? '${int.parse(value)}'
-        : '${double.parse(value)}';
+    updateControllerValue(value: widget.inputValue);
   }
 
   void onValueChange(String value) {
-    String sanitizedValue = getSanitizedNumericalValue(value);
+    String sanitizedValue = EntryFormUtil.getSanitizedNumericalValue(value);
     setState(() {});
     widget.onInputValueChange(sanitizedValue.trim());
   }
@@ -60,14 +55,7 @@ class _NumericalInputFieldContainerState
   @override
   void didUpdateWidget(covariant NumericalInputFieldContainer oldWidget) {
     super.didUpdateWidget(widget);
-    if (oldWidget.inputValue != widget.inputValue) {
-      if (widget.inputField.isReadOnly!) {
-        updateNumericalValue(value: widget.inputValue);
-      }
-      if (widget.inputValue == null || widget.inputValue == '') {
-        updateNumericalValue();
-      }
-    }
+    handleInputValueUpdate(oldWidget.inputValue, widget.inputValue);
   }
 
   @override
@@ -79,7 +67,7 @@ class _NumericalInputFieldContainerState
             readOnly: widget.inputField.isReadOnly!,
             controller: widget.inputField.isReadOnly!
                 ? TextEditingController(text: widget.inputValue)
-                : numericalController,
+                : textController,
             keyboardType: TextInputType.number,
             onChanged: onValueChange,
             style: const TextStyle().copyWith(

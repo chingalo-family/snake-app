@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/input_field.dart';
 import 'package:snake_app/core/utils/entry_form_util.dart';
+import 'package:snake_app/core/components/entry_input_fields/input_field_controller_mixin.dart';
 
 class PhoneNumberInputFieldContainer extends StatefulWidget {
   // `InputField` is the input field metadata for the phone number input field container
@@ -32,13 +33,19 @@ class PhoneNumberInputFieldContainer extends StatefulWidget {
 }
 
 class _PhoneNumberInputFieldContainerState
-    extends State<PhoneNumberInputFieldContainer> {
-  TextEditingController? phoneNumberController;
+    extends State<PhoneNumberInputFieldContainer>
+    with InputFieldControllerMixin {
+  
+  @override
+  InputField get inputField => widget.inputField;
+  
+  @override
+  String? get inputValue => widget.inputValue;
 
   @override
   void initState() {
     super.initState();
-    phoneNumberController = TextEditingController(text: widget.inputValue);
+    updateControllerValue(value: widget.inputValue);
   }
 
   void onValueChange(String value) {
@@ -57,7 +64,7 @@ class _PhoneNumberInputFieldContainerState
         Expanded(
           child: TextFormField(
             readOnly: widget.inputField.isReadOnly!,
-            controller: phoneNumberController,
+            controller: textController,
             keyboardType: TextInputType.phone,
             onChanged: onValueChange,
             style: const TextStyle().copyWith(

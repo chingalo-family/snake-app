@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/input_field.dart';
 import 'package:snake_app/core/utils/entry_form_util.dart';
+import 'package:snake_app/core/components/entry_input_fields/input_field_controller_mixin.dart';
 
 class EmailInputFieldContainer extends StatefulWidget {
   // `InputField` is the input field metadata for the email inputs
@@ -33,26 +34,19 @@ class EmailInputFieldContainer extends StatefulWidget {
       _EmailInputFieldContainerState();
 }
 
-class _EmailInputFieldContainerState extends State<EmailInputFieldContainer> {
-  TextEditingController? emailController;
+class _EmailInputFieldContainerState extends State<EmailInputFieldContainer>
+    with InputFieldControllerMixin {
+  
+  @override
+  InputField get inputField => widget.inputField;
+  
+  @override
+  String? get inputValue => widget.inputValue;
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
-    updateEmailValue(value: widget.inputValue);
-  }
-
-  updateEmailValue({String? value = ''}) {
-    emailController = TextEditingController(text: value);
-    setState(() {});
-  }
-
-  String getSanitizedNumericalValue(String value) {
-    value = value.trim() == '' ? '0' : value;
-    return !value.contains('.')
-        ? '${int.parse(value)}'
-        : '${double.parse(value)}';
+    updateControllerValue(value: widget.inputValue);
   }
 
   void onValueChange(String value) {
@@ -66,14 +60,7 @@ class _EmailInputFieldContainerState extends State<EmailInputFieldContainer> {
   @override
   void didUpdateWidget(covariant EmailInputFieldContainer oldWidget) {
     super.didUpdateWidget(widget);
-    if (oldWidget.inputValue != widget.inputValue) {
-      if (widget.inputField.isReadOnly!) {
-        updateEmailValue(value: widget.inputValue);
-      }
-      if (widget.inputValue == null || widget.inputValue == '') {
-        updateEmailValue();
-      }
-    }
+    handleInputValueUpdate(oldWidget.inputValue, widget.inputValue);
   }
 
   @override
@@ -85,7 +72,7 @@ class _EmailInputFieldContainerState extends State<EmailInputFieldContainer> {
             readOnly: widget.inputField.isReadOnly!,
             controller: widget.inputField.isReadOnly!
                 ? TextEditingController(text: widget.inputValue)
-                : emailController,
+                : textController,
             keyboardType: TextInputType.emailAddress,
             onChanged: onValueChange,
             style: const TextStyle().copyWith(

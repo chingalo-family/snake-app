@@ -1,5 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:snake_app/core/constants/pagination_constant.dart';
+import 'package:snake_app/core/utils/app_util.dart';
 
 class OfflineDbProvider {
   Database? _db;
@@ -69,6 +71,42 @@ class OfflineDbProvider {
       dbClient!.close();
     } catch (e) {
       //
+    }
+  }
+
+  /// Common method to perform batch inserts with chunking
+  /// Reduces code duplication across offline providers
+  Future<void> batchInsert<T>({
+    required String tableName,
+    required List<T> items,
+    required Map<String, Object?> Function(T) toMap,
+    ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.replace,
+    bool exclusive = false,
+  }) async {
+    try {
+      var dbClient = await db;
+      List<List<T>> chunkedItems = AppUtil.chunkItems(
+        items: items,
+        size: PaginationConstant.insertBatchSize,
+      ).cast<List<T>>();
+      for (List<T> itemGroup in chunkedItems) {
+        var batch = dbClient!.batch();
+        for (T item in itemGroup) {
+          batch.insert(
+            tableName,
+            toMap(item),
+            conflictAlgorithm: conflictAlgorithm,
+          );
+        }
+        await batch.commit(
+          exclusive: exclusive,
+          noResult: true,
+          continueOnError: true,
+        );
+      }
+    } catch (e) {
+      // Errors are silently caught to maintain consistency with existing offline provider behavior
+      // Database operations may fail due to constraints or connection issues, but shouldn't crash the app
     }
   }
 }
