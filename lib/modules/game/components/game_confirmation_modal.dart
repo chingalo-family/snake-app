@@ -77,14 +77,24 @@ class GameConfirmationModal extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.inverseSurface,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.inverseSurface,
+            Theme.of(context).colorScheme.surface.withOpacity(0.9),
+          ],
+        ),
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(topBorderRadius),
-        ), // Top border radius for the inner container.
+        ),
       ),
       child: Consumer<SnakeState>(
         builder: (context, snakeState, child) {
           bool isGameOver = snakeState.isGameOver;
+          int foodCollected = snakeState.foodCollected;
+          int highestCombo = snakeState.highestCombo;
+          
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -92,7 +102,9 @@ class GameConfirmationModal extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   isGameOver ? 'Game Over' : 'Game Paused',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -105,12 +117,50 @@ class GameConfirmationModal extends StatelessWidget {
               const SizedBox(height: 10.0),
               Text(
                 '${snakeState.score}',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               Text(
                 'Points Earned',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              if (isGameOver) ...[
+                const SizedBox(height: 20.0),
+                // Game stats
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .surface
+                        .withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      _StatRow(
+                        icon: '🍎',
+                        label: 'Food Collected',
+                        value: foodCollected.toString(),
+                      ),
+                      const SizedBox(height: 8),
+                      _StatRow(
+                        icon: '🔥',
+                        label: 'Highest Combo',
+                        value: 'x$highestCombo',
+                      ),
+                      const SizedBox(height: 8),
+                      _StatRow(
+                        icon: '📏',
+                        label: 'Snake Length',
+                        value: snakeState.snake.length.toString(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 20.0),
               FilledButton(
                 onPressed: () {
@@ -175,6 +225,44 @@ class GameConfirmationModal extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+/// Stat row widget for displaying game statistics
+class _StatRow extends StatelessWidget {
+  final String icon;
+  final String label;
+  final String value;
+
+  const _StatRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 20)),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ],
     );
   }
 }

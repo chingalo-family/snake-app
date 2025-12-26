@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/constants/game_direction.dart';
+import 'package:snake_app/core/constants/power_up_reference.dart';
 import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/utils/app_modal_util.dart';
 import 'package:snake_app/core/utils/grid_util.dart';
 import 'package:snake_app/modules/game/components/game_confirmation_modal.dart';
 import 'package:snake_app/modules/game/components/game_food_icon.dart';
+import 'dart:math' as math;
 
 class GamePlayContainer extends StatefulWidget {
   const GamePlayContainer({super.key, this.gamePanelHeight = 0});
@@ -137,10 +139,12 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
       builder: (context, snakeState, child) {
         List<int> snake = snakeState.snake;
         int foodIndex = snakeState.foodIndex;
+        int powerUpIndex = snakeState.powerUpIndex;
         GameDirection direction = snakeState.direction;
         bool hasGameStarted = snakeState.hasGameStarted;
         GameFoodScore gameFoodScore = snakeState.gameFoodScore;
         int gameBoxSize = snakeState.gameBoxSize;
+        bool hasShield = snakeState.hasShield;
         int gridColumnsCount = GridUtil.getGridColumnsCount(context);
         int numberOfRows = GridUtil.getNumberOfRows(
           context,
@@ -155,9 +159,16 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
           onHorizontalDragUpdate: (details) =>
               onHorizontalDragUpdate(details, direction),
           child: Container(
-            color: Theme.of(
-              context,
-            ).colorScheme.inversePrimary.withValues(alpha: 0.1),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.surface.withOpacity(0.3),
+                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+                ],
+              ),
+            ),
             padding: const EdgeInsets.all(2),
             child: GridView.count(
               crossAxisCount: gridColumnsCount,
@@ -166,6 +177,8 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
               children: List.generate(totalBoxes, (index) {
                 bool isSnake = snake.contains(index);
                 bool isHead = snake.isNotEmpty && snake.first == index;
+                bool isPowerUp = index == powerUpIndex && powerUpIndex != -1;
+                
                 return Center(
                   child: isSnake
                       ? AnimatedContainer(
@@ -174,38 +187,88 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                           padding: const EdgeInsets.all(2),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
-                              isHead ? 4.0 : gameBoxSize.toDouble(),
+                              isHead ? 6.0 : gameBoxSize.toDouble(),
                             ),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 150),
-                              curve: Curves.easeInOut,
-                              color: isHead
-                                  ? Theme.of(context).colorScheme.inversePrimary
-                                        .withValues(alpha: 0.9)
-                                  : Theme.of(context).colorScheme.primary,
-                              width: isHead
-                                  ? gameBoxSize * 1.5
-                                  : gameBoxSize.toDouble(),
-                              height: isHead
-                                  ? gameBoxSize * 1.5
-                                  : gameBoxSize.toDouble(),
+                            child: Stack(
+                              children: [
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 150),
+                                  curve: Curves.easeInOut,
+                                  decoration: BoxDecoration(
+                                    gradient: isHead
+                                        ? LinearGradient(
+                                            colors: hasShield
+                                                ? [
+                                                    Colors.blue.withOpacity(0.9),
+                                                    Colors.cyan.withOpacity(0.7),
+                                                  ]
+                                                : [
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .inversePrimary
+                                                        .withOpacity(0.8),
+                                                  ],
+                                          )
+                                        : null,
+                                    color: !isHead
+                                        ? Theme.of(context).colorScheme.primary
+                                        : null,
+                                    boxShadow: isHead
+                                        ? [
+                                            BoxShadow(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withOpacity(0.5),
+                                              blurRadius: 8,
+                                              spreadRadius: 2,
+                                            ),
+                                          ]
+                                        : null,
+                                  ),
+                                  width: isHead
+                                      ? gameBoxSize * 1.5
+                                      : gameBoxSize.toDouble(),
+                                  height: isHead
+                                      ? gameBoxSize * 1.5
+                                      : gameBoxSize.toDouble(),
+                                ),
+                                if (isHead && hasShield)
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.shield,
+                                        size: gameBoxSize * 0.8,
+                                        color: Colors.white.withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         )
-                      : index == foodIndex && hasGameStarted
-                      ? Center(child: GameFoodIcon(icon: gameFoodScore.icon))
-                      : Container(
-                          padding: const EdgeInsets.all(2),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(4.0),
-                            child: Container(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .inversePrimary
-                                  .withValues(alpha: 0.05),
-                            ),
-                          ),
-                        ),
+                      : isPowerUp
+                          ? _PowerUpCell(gameBoxSize: gameBoxSize)
+                          : index == foodIndex && hasGameStarted
+                              ? _FoodCell(
+                                  icon: gameFoodScore.icon,
+                                  gameBoxSize: gameBoxSize,
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.all(2),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    child: Container(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary
+                                          .withOpacity(0.05),
+                                    ),
+                                  ),
+                                ),
                 );
               }),
             ),
@@ -213,5 +276,131 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         );
       },
     );
+  }
+}
+
+/// Animated food cell widget
+class _FoodCell extends StatefulWidget {
+  final String icon;
+  final int gameBoxSize;
+
+  const _FoodCell({required this.icon, required this.gameBoxSize});
+
+  @override
+  State<_FoodCell> createState() => _FoodCellState();
+}
+
+class _FoodCellState extends State<_FoodCell>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _scaleAnimation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: GameFoodIcon(icon: widget.icon),
+        );
+      },
+    );
+  }
+}
+
+/// Animated power-up cell widget
+class _PowerUpCell extends StatefulWidget {
+  final int gameBoxSize;
+
+  const _PowerUpCell({required this.gameBoxSize});
+
+  @override
+  State<_PowerUpCell> createState() => _PowerUpCellState();
+}
+
+class _PowerUpCellState extends State<_PowerUpCell>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _rotationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat();
+
+    _rotationAnimation = Tween<double>(begin: 0, end: 2 * math.pi).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.linear),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final random = math.Random();
+    final powerUpIcon = PowerUpReference
+        .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)].icon;
+
+    return AnimatedBuilder(
+      animation: _rotationAnimation,
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: _rotationAnimation.value,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  Colors.amber.withOpacity(0.8),
+                  Colors.orange.withOpacity(0.4),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.amber.withOpacity(0.6),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                powerUpIcon,
+                style: TextStyle(fontSize: widget.gameBoxSize * 0.8),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
   }
 }
