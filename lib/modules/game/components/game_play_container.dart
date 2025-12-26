@@ -62,8 +62,8 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
             AppModalUtil.showActionSheetModal(
               context: context,
               topBorderRadius: 20,
-              initialHeightRatio: 0.65,
-              maxHeightRatio: 0.50,
+              initialHeightRatio: 0.40,
+              maxHeightRatio: 0.60,
               actionSheetContainer: GameConfirmationModal(
                 topBorderRadius: 20,
                 gamePanelHeight: widget.gamePanelHeight,
@@ -81,8 +81,8 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
             AppModalUtil.showActionSheetModal(
               context: context,
               topBorderRadius: 20,
-              initialHeightRatio: 0.50,
-              maxHeightRatio: 0.65,
+              initialHeightRatio: 0.60,
+              maxHeightRatio: 0.75,
               actionSheetContainer: GameConfirmationModal(
                 topBorderRadius: 20,
                 gamePanelHeight: widget.gamePanelHeight,

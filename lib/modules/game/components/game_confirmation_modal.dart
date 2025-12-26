@@ -74,7 +74,7 @@ class GameConfirmationModal extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -95,112 +95,86 @@ class GameConfirmationModal extends StatelessWidget {
           int foodCollected = snakeState.foodCollected;
           int highestCombo = snakeState.highestCombo;
           
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  isGameOver ? 'Game Over' : 'Game Paused',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    isGameOver ? 'Game Over' : 'Game Paused',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                const SizedBox(height: 12.0),
+                Text(
+                  IconReference.trophy,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontSize: 40.0),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '${snakeState.score}',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                IconReference.trophy,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontSize: 50.0),
-              ),
-              const SizedBox(height: 10.0),
-              Text(
-                '${snakeState.score}',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
+                Text(
+                  'Points Earned',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                if (isGameOver) ...[
+                  const SizedBox(height: 12.0),
+                  // Game stats - more compact
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surface
+                          .withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-              ),
-              Text(
-                'Points Earned',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              if (isGameOver) ...[
-                const SizedBox(height: 20.0),
-                // Game stats
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surface
-                        .withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      _StatRow(
-                        icon: '🍎',
-                        label: 'Food Collected',
-                        value: foodCollected.toString(),
-                      ),
-                      const SizedBox(height: 8),
-                      _StatRow(
-                        icon: '🔥',
-                        label: 'Highest Combo',
-                        value: 'x$highestCombo',
-                      ),
-                      const SizedBox(height: 8),
-                      _StatRow(
-                        icon: '📏',
-                        label: 'Snake Length',
-                        value: snakeState.snake.length.toString(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              const SizedBox(height: 20.0),
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (isGameOver) {
-                    _onResetGame(context);
-                  } else {
-                    _onPauseOrResumeGame(context);
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  width: size.width * 0.70,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 5.0),
-                        child: Text(
-                          IconReference.gamePad,
-                          style: Theme.of(context).textTheme.titleMedium,
+                    child: Column(
+                      children: [
+                        _StatRow(
+                          icon: '🍎',
+                          label: 'Food',
+                          value: foodCollected.toString(),
                         ),
-                      ),
-                      Text(
-                        snakeState.isGameOver ? 'Restart Game' : 'Resume Game',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        _StatRow(
+                          icon: '🔥',
+                          label: 'Best Combo',
+                          value: 'x$highestCombo',
+                        ),
+                        const SizedBox(height: 6),
+                        _StatRow(
+                          icon: '📏',
+                          label: 'Length',
+                          value: snakeState.snake.length.toString(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              Visibility(
-                visible: isGameOver,
-                child: OutlinedButton(
-                  onPressed: () => _onDirectToLeaderboard(context),
+                ],
+                const SizedBox(height: 16.0),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (isGameOver) {
+                      _onResetGame(context);
+                    } else {
+                      _onPauseOrResumeGame(context);
+                    }
+                  },
                   child: Container(
                     alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     width: size.width * 0.70,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -208,20 +182,49 @@ class GameConfirmationModal extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.only(right: 5.0),
                           child: Text(
-                            IconReference.trophy,
+                            IconReference.gamePad,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                         Text(
-                          "Leaderboard",
+                          snakeState.isGameOver ? 'Restart Game' : 'Resume Game',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 8.0),
+                Visibility(
+                  visible: isGameOver,
+                  child: OutlinedButton(
+                    onPressed: () => _onDirectToLeaderboard(context),
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      width: size.width * 0.70,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 5.0),
+                            child: Text(
+                              IconReference.trophy,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          Text(
+                            "Leaderboard",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+              ],
+            ),
           );
         },
       ),
