@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/app_update_state/app_update_state.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 import 'package:snake_app/core/app_state/snake_state/snake_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
@@ -64,6 +65,7 @@ class _AppGameState extends State<AppGame> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => GameScoreState()),
         ChangeNotifierProvider(create: (_) => UserEntryFormState()),
         ChangeNotifierProvider(create: (_) => UserState()),
+        ChangeNotifierProvider(create: (_) => AppUpdateState()),
       ],
       child: MaterialApp(
         title: AppInfoReference.appName,
