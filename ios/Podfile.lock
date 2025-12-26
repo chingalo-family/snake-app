@@ -9,6 +9,8 @@ PODS:
     - Flutter
   - haptic_feedback (0.5.1):
     - Flutter
+  - install_plugin (2.0.0):
+    - Flutter
   - objective_c (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -28,6 +30,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - haptic_feedback (from `.symlinks/plugins/haptic_feedback/ios`)
+  - install_plugin (from `.symlinks/plugins/install_plugin/ios`)
   - objective_c (from `.symlinks/plugins/objective_c/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
@@ -45,6 +48,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   haptic_feedback:
     :path: ".symlinks/plugins/haptic_feedback/ios"
+  install_plugin:
+    :path: ".symlinks/plugins/install_plugin/ios"
   objective_c:
     :path: ".symlinks/plugins/objective_c/ios"
   shared_preferences_foundation:
@@ -62,6 +67,7 @@ SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
   haptic_feedback: fd1d8509833f58f164fc12122c0357fa9b2750e0
+  install_plugin: e17e38d6f504857748a3ec1299d8a2bbeeeea854
   objective_c: 89e720c30d716b036faf9c9684022048eee1eee2
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0

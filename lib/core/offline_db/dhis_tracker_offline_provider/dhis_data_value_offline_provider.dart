@@ -1,9 +1,6 @@
-import 'package:snake_app/core/constants/pagination_constant.dart';
 import 'package:snake_app/core/models/dhis_data_value.dart';
 import 'package:snake_app/core/models/dhis_event.dart';
 import 'package:snake_app/core/offline_db/offline_db_provider.dart';
-import 'package:snake_app/core/utils/app_util.dart';
-import 'package:sqflite/sqflite.dart';
 
 class DhisDataValueOfflineProvider extends OfflineDbProvider {
   final String tableName = 'dhis_data_value';
@@ -21,7 +18,7 @@ class DhisDataValueOfflineProvider extends OfflineDbProvider {
           .map((DhisEvent dhis2Event) => dhis2Event.dataValues)
           .expand((dataValue) => dataValue)
           .toList();
-      
+
       await batchInsert<DhisDataValue>(
         tableName: tableName,
         items: dataValues,
