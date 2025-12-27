@@ -5,10 +5,10 @@ import 'package:snake_app/core/models/input_field.dart';
 /// Reduces duplication across email, numerical, percentage, and other input field containers.
 mixin InputFieldControllerMixin<T extends StatefulWidget> on State<T> {
   TextEditingController? textController;
-  
+
   /// InputField metadata - must be implemented by the widget
   InputField get inputField;
-  
+
   /// Current input value - must be implemented by the widget
   String? get inputValue;
 

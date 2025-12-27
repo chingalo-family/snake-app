@@ -35,14 +35,16 @@ class PowerUpDisplay extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                _getPowerUpColor(activePowerUp.type).withOpacity(0.8),
-                _getPowerUpColor(activePowerUp.type).withOpacity(0.4),
+                _getPowerUpColor(activePowerUp.type).withValues(alpha: 0.8),
+                _getPowerUpColor(activePowerUp.type).withValues(alpha: 0.4),
               ],
             ),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
-                color: _getPowerUpColor(activePowerUp.type).withOpacity(0.5),
+                color: _getPowerUpColor(
+                  activePowerUp.type,
+                ).withValues(alpha: 0.5),
                 blurRadius: 8,
                 spreadRadius: 1,
               ),
@@ -51,17 +53,14 @@ class PowerUpDisplay extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                activePowerUp.icon,
-                style: const TextStyle(fontSize: 18),
-              ),
+              Text(activePowerUp.icon, style: const TextStyle(fontSize: 18)),
               const SizedBox(width: 6),
               Text(
                 activePowerUp.name,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),

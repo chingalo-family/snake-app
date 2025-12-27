@@ -66,9 +66,4 @@ class Achievement {
   }
 }
 
-enum AchievementType {
-  score,
-  streak,
-  foodCollected,
-  gamesPlayed,
-}
+enum AchievementType { score, streak, foodCollected, gamesPlayed }

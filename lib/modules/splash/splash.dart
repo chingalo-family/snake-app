@@ -63,16 +63,13 @@ class _SplashState extends State<Splash> {
     try {
       final dhis2HttpService = Dhis2HttpService(
         username: user.username,
-        password: user.password,
+        password: user.password ?? '',
       );
       final updateService = AppUpdateService(
         dhis2HttpService: dhis2HttpService,
       );
 
-      final updateState = Provider.of<AppUpdateState>(
-        context,
-        listen: false,
-      );
+      final updateState = Provider.of<AppUpdateState>(context, listen: false);
 
       await updateState.checkForUpdate(updateService);
 
@@ -81,9 +78,7 @@ class _SplashState extends State<Splash> {
         await showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) => AppUpdateDialog(
-            updateService: updateService,
-          ),
+          builder: (context) => AppUpdateDialog(updateService: updateService),
         );
       }
     } catch (e) {
@@ -97,20 +92,17 @@ class _SplashState extends State<Splash> {
   }
 
   void _navigateToGame() {
-    Timer(
-      const Duration(seconds: 2),
-      () {
-        if (mounted) {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => Game(),
-              transitionDuration: const Duration(seconds: 0),
-            ),
-          );
-        }
-      },
-    );
+    Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => Game(),
+            transitionDuration: const Duration(seconds: 0),
+          ),
+        );
+      }
+    });
   }
 
   @override

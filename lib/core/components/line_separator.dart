@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 
 //
 class LineSeparator extends StatelessWidget {
-  const LineSeparator({
-    super.key,
-    required this.color,
-    this.height = 2.0,
-  });
+  const LineSeparator({super.key, required this.color, this.height = 2.0});
 
   final Color color;
   final double height;
@@ -17,10 +13,7 @@ class LineSeparator extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            width: height,
-            color: color,
-          ),
+          bottom: BorderSide(width: height, color: color),
         ),
       ),
     );

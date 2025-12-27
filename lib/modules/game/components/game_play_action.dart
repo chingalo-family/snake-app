@@ -51,7 +51,7 @@ class GamePlayAction extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.inverseSurface,
-            Theme.of(context).colorScheme.surface.withOpacity(0.8),
+            Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
           ],
         ),
       ),
@@ -61,9 +61,8 @@ class GamePlayAction extends StatelessWidget {
           bool isGamePaused = snakeState.isGamePaused;
           int score = snakeState.score;
           int foodCollected = snakeState.foodCollected;
-          
           return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,14 +74,14 @@ class GamePlayAction extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.symmetric(),
                           child: Chip(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
                             avatar: Text(
                               IconReference.trophy,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            labelStyle:
-                                Theme.of(context).textTheme.titleSmall,
+                            labelStyle: Theme.of(context).textTheme.titleSmall,
                             label: Text('Score: $score'),
                             side: BorderSide(
                               color: Theme.of(context).colorScheme.primary,
@@ -97,10 +96,9 @@ class GamePlayAction extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(0.3),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondary.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

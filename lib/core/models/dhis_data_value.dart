@@ -23,11 +23,11 @@ class DhisDataValue {
   }
 
   Map<String, dynamic> toJson() => {
-        'dataElement': dataElement,
-        'value': value,
-        'event': event,
-        'id': id,
-      };
+    'dataElement': dataElement,
+    'value': value,
+    'event': event,
+    'id': id,
+  };
 
   @override
   String toString() {

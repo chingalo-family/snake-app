@@ -36,10 +36,9 @@ class EmailInputFieldContainer extends StatefulWidget {
 
 class _EmailInputFieldContainerState extends State<EmailInputFieldContainer>
     with InputFieldControllerMixin {
-  
   @override
   InputField get inputField => widget.inputField;
-  
+
   @override
   String? get inputValue => widget.inputValue;
 

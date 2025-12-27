@@ -25,13 +25,15 @@ class _ComboDisplayState extends State<ComboDisplay>
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
   }
 
   @override
@@ -79,15 +81,23 @@ class _ComboDisplayState extends State<ComboDisplay>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        _getComboColor(context, comboCount).withOpacity(0.8),
-                        _getComboColor(context, comboCount).withOpacity(0.4),
+                        _getComboColor(
+                          context,
+                          comboCount,
+                        ).withValues(alpha: 0.8),
+                        _getComboColor(
+                          context,
+                          comboCount,
+                        ).withValues(alpha: 0.4),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: _getComboColor(context, comboCount)
-                            .withOpacity(0.5),
+                        color: _getComboColor(
+                          context,
+                          comboCount,
+                        ).withValues(alpha: 0.5),
                         blurRadius: 10,
                         spreadRadius: 2,
                       ),
@@ -96,10 +106,7 @@ class _ComboDisplayState extends State<ComboDisplay>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        '🔥',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                      Text('🔥', style: TextStyle(fontSize: 20)),
                       const SizedBox(width: 8),
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -107,9 +114,7 @@ class _ComboDisplayState extends State<ComboDisplay>
                         children: [
                           Text(
                             combo.tierName,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
+                            style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -117,19 +122,16 @@ class _ComboDisplayState extends State<ComboDisplay>
                           ),
                           Text(
                             'x$comboCount Combo',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: Colors.white70,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: Colors.white70),
                           ),
                         ],
                       ),
                       const SizedBox(width: 8),
                       Text(
                         '${combo.multiplier.toStringAsFixed(1)}x',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),

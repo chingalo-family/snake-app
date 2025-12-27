@@ -1,10 +1,5 @@
 /// Represents different types of power-ups in the game
-enum PowerUpType {
-  speedBoost,
-  shield,
-  scoreMultiplier,
-  slowMotion,
-}
+enum PowerUpType { speedBoost, shield, scoreMultiplier, slowMotion }
 
 /// Model for game power-ups
 class PowerUp {

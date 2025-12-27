@@ -44,7 +44,7 @@ class AchievementReference {
       targetValue: 5000,
       type: AchievementType.score,
     ),
-    
+
     // Streak-based achievements
     Achievement(
       id: 'streak_5',
@@ -70,7 +70,7 @@ class AchievementReference {
       targetValue: 20,
       type: AchievementType.streak,
     ),
-    
+
     // Food collected achievements
     Achievement(
       id: 'food_50',
@@ -88,7 +88,7 @@ class AchievementReference {
       targetValue: 100,
       type: AchievementType.foodCollected,
     ),
-    
+
     // Games played achievements
     Achievement(
       id: 'games_10',

@@ -35,10 +35,9 @@ class PhoneNumberInputFieldContainer extends StatefulWidget {
 class _PhoneNumberInputFieldContainerState
     extends State<PhoneNumberInputFieldContainer>
     with InputFieldControllerMixin {
-  
   @override
   InputField get inputField => widget.inputField;
-  
+
   @override
   String? get inputValue => widget.inputValue;
 

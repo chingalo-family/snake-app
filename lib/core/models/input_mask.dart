@@ -20,10 +20,7 @@ class InputMask extends TextInputFormatter {
   final String placeholder = '';
 
   //  This is the default constructor for `InputMask` class
-  InputMask({
-    required this.pattern,
-    required this.separator,
-  });
+  InputMask({required this.pattern, required this.separator});
 
   //
   // `formatEditUpdate` is the function for applying the mask on input value changes
@@ -39,22 +36,12 @@ class InputMask extends TextInputFormatter {
   ) {
     if (newValue.text.isNotEmpty) {
       if (newValue.text.length >= pattern.length) {
-        String text = transformText(
-          text: newValue.text,
-        );
-        int offset = getOffset(
-          oldValue,
-          newValue,
-          text,
-        );
+        String text = transformText(text: newValue.text);
+        int offset = getOffset(oldValue, newValue, text);
 
         return TextEditingValue(
           text: text.substring(0, pattern.length),
-          selection: TextSelection.fromPosition(
-            TextPosition(
-              offset: offset,
-            ),
-          ),
+          selection: TextSelection.fromPosition(TextPosition(offset: offset)),
         );
       }
 
@@ -79,9 +66,10 @@ class InputMask extends TextInputFormatter {
     int offset = newValue.selection.baseOffset;
 
     String text = transformText(
-        text: newValue.text,
-        onPattern: (int separatorIndex) =>
-            separatorIndex + 1 == offset ? offset += 1 : offset);
+      text: newValue.text,
+      onPattern: (int separatorIndex) =>
+          separatorIndex + 1 == offset ? offset += 1 : offset,
+    );
 
     return TextEditingValue(
       text: text,
@@ -112,8 +100,8 @@ class InputMask extends TextInputFormatter {
 
       return index < text.length
           ? text[index] == separator
-              ? placeholder
-              : text[index]
+                ? placeholder
+                : text[index]
           : placeholder;
     }).join();
   }

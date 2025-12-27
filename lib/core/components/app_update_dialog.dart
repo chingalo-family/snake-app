@@ -9,10 +9,7 @@ import 'package:snake_app/core/services/app_update_service.dart';
 class AppUpdateDialog extends StatelessWidget {
   final AppUpdateService updateService;
 
-  const AppUpdateDialog({
-    super.key,
-    required this.updateService,
-  });
+  const AppUpdateDialog({super.key, required this.updateService});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +18,13 @@ class AppUpdateDialog extends StatelessWidget {
         final status = updateState.status;
         final availableUpdate = updateState.availableUpdate;
 
-        if (status == AppUpdateStatus.updateAvailable && availableUpdate != null) {
-          return _buildUpdateAvailableDialog(context, updateState, availableUpdate);
+        if (status == AppUpdateStatus.updateAvailable &&
+            availableUpdate != null) {
+          return _buildUpdateAvailableDialog(
+            context,
+            updateState,
+            availableUpdate,
+          );
         } else if (status == AppUpdateStatus.downloading) {
           return _buildDownloadingDialog(context, updateState);
         } else if (status == AppUpdateStatus.downloaded) {
@@ -43,9 +45,7 @@ class AppUpdateDialog extends StatelessWidget {
     AppUpdateVersion availableUpdate,
   ) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       backgroundColor: Theme.of(context).colorScheme.surface,
       title: Row(
         children: [
@@ -57,10 +57,7 @@ class AppUpdateDialog extends StatelessWidget {
           const SizedBox(width: 12.0),
           const Text(
             'Update Available',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -70,25 +67,17 @@ class AppUpdateDialog extends StatelessWidget {
         children: [
           Text(
             'A new version (${availableUpdate.version}) is available.',
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w400,
-            ),
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
           ),
           const SizedBox(height: 12.0),
           Text(
             'Current version: ${AppInfoReference.currentAppVersion}',
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14.0, color: Colors.grey[600]),
           ),
           const SizedBox(height: 16.0),
           const Text(
             'Would you like to download and install the update now?',
-            style: TextStyle(
-              fontSize: 15.0,
-            ),
+            style: TextStyle(fontSize: 15.0),
           ),
         ],
       ),
@@ -124,16 +113,11 @@ class AppUpdateDialog extends StatelessWidget {
     final progress = updateState.downloadProgressPercentage;
 
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       backgroundColor: Theme.of(context).colorScheme.surface,
       title: const Text(
         'Downloading Update',
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -149,17 +133,17 @@ class AppUpdateDialog extends StatelessWidget {
           const SizedBox(height: 16.0),
           Text(
             progress > 0 ? '${progress.toStringAsFixed(1)}%' : 'Preparing...',
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-            ),
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
           ),
         ],
       ),
     );
   }
 
-  Future<void> _installApk(BuildContext context, AppUpdateState updateState) async {
+  Future<void> _installApk(
+    BuildContext context,
+    AppUpdateState updateState,
+  ) async {
     final apkPath = updateState.downloadedApkPath;
     if (apkPath == null) return;
 

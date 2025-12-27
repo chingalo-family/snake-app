@@ -122,7 +122,7 @@ class EntryFormContainer extends StatelessWidget {
                         Visibility(
                           visible: formSection.name != '',
                           child: LineSeparator(
-                            color: formSection.color!.withOpacity(0.1),
+                            color: formSection.color!.withValues(alpha: 0.1),
                           ),
                         ),
                         Container(

@@ -164,8 +164,10 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Theme.of(context).colorScheme.surface.withOpacity(0.3),
-                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
+                  Theme.of(
+                    context,
+                  ).colorScheme.inversePrimary.withValues(alpha: 0.1),
                 ],
               ),
             ),
@@ -178,7 +180,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 bool isSnake = snake.contains(index);
                 bool isHead = snake.isNotEmpty && snake.first == index;
                 bool isPowerUp = index == powerUpIndex && powerUpIndex != -1;
-                
+
                 return Center(
                   child: isSnake
                       ? AnimatedContainer(
@@ -199,17 +201,21 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                                         ? LinearGradient(
                                             colors: hasShield
                                                 ? [
-                                                    Colors.blue.withOpacity(0.9),
-                                                    Colors.cyan.withOpacity(0.7),
+                                                    Colors.blue.withValues(
+                                                      alpha: 0.9,
+                                                    ),
+                                                    Colors.cyan.withValues(
+                                                      alpha: 0.7,
+                                                    ),
                                                   ]
                                                 : [
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
                                                     Theme.of(context)
                                                         .colorScheme
                                                         .inversePrimary
-                                                        .withOpacity(0.8),
+                                                        .withValues(alpha: 0.8),
                                                   ],
                                           )
                                         : null,
@@ -222,7 +228,7 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .primary
-                                                  .withOpacity(0.5),
+                                                  .withValues(alpha: 0.5),
                                               blurRadius: 8,
                                               spreadRadius: 2,
                                             ),
@@ -242,7 +248,9 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                                       child: Icon(
                                         Icons.shield,
                                         size: gameBoxSize * 0.8,
-                                        color: Colors.white.withOpacity(0.7),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.7,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -251,24 +259,24 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                           ),
                         )
                       : isPowerUp
-                          ? _PowerUpCell(gameBoxSize: gameBoxSize)
-                          : index == foodIndex && hasGameStarted
-                              ? _FoodCell(
-                                  icon: gameFoodScore.icon,
-                                  gameBoxSize: gameBoxSize,
-                                )
-                              : Container(
-                                  padding: const EdgeInsets.all(2),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    child: Container(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary
-                                          .withOpacity(0.05),
-                                    ),
-                                  ),
-                                ),
+                      ? _PowerUpCell(gameBoxSize: gameBoxSize)
+                      : index == foodIndex && hasGameStarted
+                      ? _FoodCell(
+                          icon: gameFoodScore.icon,
+                          gameBoxSize: gameBoxSize,
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(2),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4.0),
+                            child: Container(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .inversePrimary
+                                  .withValues(alpha: 0.05),
+                            ),
+                          ),
+                        ),
                 );
               }),
             ),
@@ -303,9 +311,10 @@ class _FoodCellState extends State<_FoodCell>
       vsync: this,
     )..repeat(reverse: true);
 
-    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.9,
+      end: 1.1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -351,9 +360,10 @@ class _PowerUpCellState extends State<_PowerUpCell>
       vsync: this,
     )..repeat();
 
-    _rotationAnimation = Tween<double>(begin: 0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.linear),
-    );
+    _rotationAnimation = Tween<double>(
+      begin: 0,
+      end: 2 * math.pi,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }
 
   @override
@@ -366,7 +376,8 @@ class _PowerUpCellState extends State<_PowerUpCell>
   Widget build(BuildContext context) {
     final random = math.Random();
     final powerUpIcon = PowerUpReference
-        .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)].icon;
+        .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)]
+        .icon;
 
     return AnimatedBuilder(
       animation: _rotationAnimation,
@@ -378,13 +389,13 @@ class _PowerUpCellState extends State<_PowerUpCell>
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  Colors.amber.withOpacity(0.8),
-                  Colors.orange.withOpacity(0.4),
+                  Colors.amber.withValues(alpha: 0.8),
+                  Colors.orange.withValues(alpha: 0.4),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.amber.withOpacity(0.6),
+                  color: Colors.amber.withValues(alpha: 0.6),
                   blurRadius: 8,
                   spreadRadius: 2,
                 ),
@@ -400,7 +411,5 @@ class _PowerUpCellState extends State<_PowerUpCell>
         );
       },
     );
-  }
-}
   }
 }

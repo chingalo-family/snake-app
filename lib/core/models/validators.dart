@@ -14,8 +14,9 @@ class Validators {
   //
   //  @return: the method return the `FormValidator` function
   //
-  static FormValidator pattern(String regex, String? message) => () => {
-        'pattern': () => [regex, message]
+  static FormValidator pattern(String regex, String? message) =>
+      () => {
+        'pattern': () => [regex, message],
       };
 }
 
@@ -53,7 +54,7 @@ extension Validator on String? {
     return RegExp(pattern[0] as String).hasMatch(this as String)
         ? null
         : (pattern.length > 1)
-            ? pattern[1]
-            : pattern[0];
+        ? pattern[1]
+        : pattern[0];
   }
 }

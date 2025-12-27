@@ -10,14 +10,14 @@ class GameScoreCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            colorScheme.primary.withOpacity(0.6),
-            colorScheme.primary.withOpacity(0.3),
+            colorScheme.primary.withValues(alpha: 0.6),
+            colorScheme.primary.withValues(alpha: 0.3),
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -50,14 +50,14 @@ class GameScoreCard extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Colors.grey.shade800,
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   width: 2,
                 ),
               ),
               child: Center(
                 child: Text(
-                  gameScore.user.isNotEmpty 
-                      ? gameScore.user[0].toUpperCase() 
+                  gameScore.user.isNotEmpty
+                      ? gameScore.user[0].toUpperCase()
                       : '?',
                   style: const TextStyle(
                     fontSize: 18,

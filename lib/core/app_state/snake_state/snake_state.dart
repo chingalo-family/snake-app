@@ -86,7 +86,7 @@ class SnakeState with ChangeNotifier {
     _score = 0;
     _direction = GameDirection.right;
     timer?.cancel();
-    
+
     // Reset new features
     _comboCount = 0;
     _foodCollected = 0;
@@ -97,7 +97,7 @@ class SnakeState with ChangeNotifier {
     _hasShield = false;
     _scoreMultiplier = 1.0;
     _powerUpIndex = -1;
-    
+
     notifyListeners();
   }
 
@@ -151,7 +151,7 @@ class SnakeState with ChangeNotifier {
         if (!isGamePaused) {
           moveSnakePosition();
           checkForSnakeFood();
-          
+
           // Adjust speed based on active power-up
           if (_activePowerUp != null) {
             Duration newDuration = duration;
@@ -211,12 +211,12 @@ class SnakeState with ChangeNotifier {
         GameStoreReference.gameFoodScores[random.nextInt(
           GameStoreReference.gameFoodScores.length,
         )];
-    
+
     // Randomly spawn power-ups (20% chance)
     if (random.nextDouble() < 0.2 && _activePowerUp == null) {
       _generatePowerUp();
     }
-    
+
     notifyListeners();
   }
 
@@ -239,7 +239,7 @@ class SnakeState with ChangeNotifier {
   void activatePowerUp(PowerUp powerUp) {
     _activePowerUp = powerUp;
     _powerUpTimer?.cancel();
-    
+
     switch (powerUp.type) {
       case PowerUpType.shield:
         _hasShield = true;
@@ -252,11 +252,11 @@ class SnakeState with ChangeNotifier {
         // Speed changes handled in game timer
         break;
     }
-    
+
     _powerUpTimer = Timer(powerUp.duration, () {
       _deactivatePowerUp();
     });
-    
+
     notifyListeners();
   }
 
@@ -279,13 +279,13 @@ class SnakeState with ChangeNotifier {
     if (_comboCount > _highestCombo) {
       _highestCombo = _comboCount;
     }
-    
+
     // Reset combo timer
     _comboTimer?.cancel();
     _comboTimer = Timer(const Duration(seconds: 3), () {
       _resetCombo();
     });
-    
+
     notifyListeners();
   }
 
@@ -344,44 +344,42 @@ class SnakeState with ChangeNotifier {
     if (_snake.contains(head)) {
       _isGameOver = true;
     }
-    
+
     // Shield protection
     if (_isGameOver && _hasShield) {
       _isGameOver = false;
       _hasShield = false;
       await Haptics.vibrate(HapticsType.warning);
     }
-    
+
     if (!_isGameOver) {
       _snake = [head, ..._snake];
-      
+
       // Check for food collection
       if (head == _foodIndex) {
         _foodCollected++;
         _incrementCombo();
-        
+
         // Calculate score with combo and power-up multipliers
         int baseScore = gameFoodScore.score;
         int comboBonus = currentCombo.bonusScore;
         double totalMultiplier = currentCombo.multiplier * _scoreMultiplier;
         int earnedScore = ((baseScore + comboBonus) * totalMultiplier).round();
-        
+
         _score += earnedScore;
         _snake.add(_snake.last);
         generateSnakeFood();
         await Haptics.vibrate(HapticsType.success);
-      } 
+      }
       // Check for power-up collection
       else if (head == _powerUpIndex && _powerUpIndex != -1) {
         final random = Random();
-        final powerUp = PowerUpReference.allPowerUps[
-          random.nextInt(PowerUpReference.allPowerUps.length)
-        ];
+        final powerUp = PowerUpReference
+            .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)];
         activatePowerUp(powerUp);
         _clearPowerUpFromGrid();
         await Haptics.vibrate(HapticsType.heavy);
-      } 
-      else {
+      } else {
         _snake.removeLast();
       }
     } else {

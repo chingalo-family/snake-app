@@ -36,10 +36,9 @@ class PercentageInputFieldContainer extends StatefulWidget {
 class _PercentageInputFieldContainerState
     extends State<PercentageInputFieldContainer>
     with InputFieldControllerMixin {
-  
   @override
   InputField get inputField => widget.inputField;
-  
+
   @override
   String? get inputValue => widget.inputValue;
 

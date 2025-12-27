@@ -33,10 +33,9 @@ class NumericalInputFieldContainer extends StatefulWidget {
 class _NumericalInputFieldContainerState
     extends State<NumericalInputFieldContainer>
     with InputFieldControllerMixin {
-  
   @override
   InputField get inputField => widget.inputField;
-  
+
   @override
   String? get inputValue => widget.inputValue;
 

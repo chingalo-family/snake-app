@@ -44,10 +44,7 @@ class UserService {
         'fields':
             'id,name,email,gender,phoneNumber,organisationUnits[id],userGroups[name,id,users[id,name,username]]',
       };
-      HttpService http = HttpService(
-        username: username,
-        password: password,
-      );
+      HttpService http = HttpService(username: username, password: password);
       var response = await http.httpGet(url, queryParameters: queryParameters);
       if (response.statusCode == 200) {
         user = User.fromJson(json.decode(response.body), username, password);

@@ -38,11 +38,11 @@ class PowerUpReference {
   );
 
   static List<PowerUp> get allPowerUps => [
-        speedBoost,
-        shield,
-        scoreMultiplier,
-        slowMotion,
-      ];
+    speedBoost,
+    shield,
+    scoreMultiplier,
+    slowMotion,
+  ];
 
   static PowerUp? getPowerUpByType(PowerUpType type) {
     try {

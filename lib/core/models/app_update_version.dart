@@ -2,10 +2,7 @@ class AppUpdateVersion {
   final String version;
   final String apkUrl;
 
-  AppUpdateVersion({
-    required this.version,
-    required this.apkUrl,
-  });
+  AppUpdateVersion({required this.version, required this.apkUrl});
 
   factory AppUpdateVersion.fromJson(Map<String, dynamic> json) {
     return AppUpdateVersion(
@@ -15,10 +12,7 @@ class AppUpdateVersion {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'version': version,
-      'apk_url': apkUrl,
-    };
+    return {'version': version, 'apk_url': apkUrl};
   }
 
   bool isNewerThan(String currentVersion) {
