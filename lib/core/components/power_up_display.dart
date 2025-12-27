@@ -25,6 +25,7 @@ class PowerUpDisplay extends StatelessWidget {
     return Consumer<SnakeState>(
       builder: (context, snakeState, child) {
         final PowerUp? activePowerUp = snakeState.activePowerUp;
+        final int remainingSeconds = snakeState.powerUpRemainingSeconds;
 
         if (activePowerUp == null) {
           return const SizedBox.shrink();
@@ -35,16 +36,14 @@ class PowerUpDisplay extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                _getPowerUpColor(activePowerUp.type).withValues(alpha: 0.8),
-                _getPowerUpColor(activePowerUp.type).withValues(alpha: 0.4),
+                _getPowerUpColor(activePowerUp.type).withOpacity(0.8),
+                _getPowerUpColor(activePowerUp.type).withOpacity(0.4),
               ],
             ),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
-                color: _getPowerUpColor(
-                  activePowerUp.type,
-                ).withValues(alpha: 0.5),
+                color: _getPowerUpColor(activePowerUp.type).withOpacity(0.5),
                 blurRadius: 8,
                 spreadRadius: 1,
               ),
@@ -53,13 +52,35 @@ class PowerUpDisplay extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(activePowerUp.icon, style: const TextStyle(fontSize: 18)),
+              Text(
+                activePowerUp.icon,
+                style: const TextStyle(fontSize: 18),
+              ),
               const SizedBox(width: 6),
               Text(
                 activePowerUp.name,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                  vertical: 2.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${remainingSeconds}s',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                 ),
               ),
             ],

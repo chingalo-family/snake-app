@@ -39,6 +39,10 @@ class SnakeState with ChangeNotifier {
   bool _hasShield = false;
   double _scoreMultiplier = 1.0;
   int _powerUpIndex = -1;
+  int _powerUpRemainingSeconds = 0;
+  Timer? _powerUpCountdownTimer;
+  Duration _baseDuration = const Duration(milliseconds: 250);
+  PowerUpType? _previousSpeedPowerUp;
 
   List<int> get snake => _snake;
   String get gameScoreId => _gameScoreId;
@@ -63,6 +67,7 @@ class SnakeState with ChangeNotifier {
   bool get hasShield => _hasShield;
   double get scoreMultiplier => _scoreMultiplier;
   int get powerUpIndex => _powerUpIndex;
+  int get powerUpRemainingSeconds => _powerUpRemainingSeconds;
 
   Combo get currentCombo {
     double multiplier = 1.0 + (_comboCount * 0.1);
@@ -93,10 +98,12 @@ class SnakeState with ChangeNotifier {
     _highestCombo = 0;
     _comboTimer?.cancel();
     _powerUpTimer?.cancel();
+    _powerUpCountdownTimer?.cancel();
     _activePowerUp = null;
     _hasShield = false;
     _scoreMultiplier = 1.0;
     _powerUpIndex = -1;
+    _powerUpRemainingSeconds = 0;
 
     notifyListeners();
   }
@@ -146,28 +153,44 @@ class SnakeState with ChangeNotifier {
   }
 
   void startGame({Duration duration = const Duration(milliseconds: 250)}) {
+    // Store the base duration if this is the first call or a reset
+    if (_activePowerUp == null || 
+        (_activePowerUp!.type != PowerUpType.speedBoost && 
+         _activePowerUp!.type != PowerUpType.slowMotion)) {
+      _baseDuration = duration;
+    }
+
     timer = Timer.periodic(duration, (Timer timer) {
       if (!isGameOver) {
         if (!isGamePaused) {
           moveSnakePosition();
           checkForSnakeFood();
 
-          // Adjust speed based on active power-up
-          if (_activePowerUp != null) {
-            Duration newDuration = duration;
-            if (_activePowerUp!.type == PowerUpType.speedBoost) {
-              newDuration = Duration(
-                milliseconds: (duration.inMilliseconds * 0.7).round(),
-              );
-            } else if (_activePowerUp!.type == PowerUpType.slowMotion) {
-              newDuration = Duration(
-                milliseconds: (duration.inMilliseconds * 1.5).round(),
-              );
-            }
-            if (newDuration != duration) {
+          // Check if we need to adjust speed based on active power-up
+          if (_activePowerUp != null && 
+              (_activePowerUp!.type == PowerUpType.speedBoost || 
+               _activePowerUp!.type == PowerUpType.slowMotion)) {
+            // Only restart timer if this is a new speed power-up
+            if (_previousSpeedPowerUp != _activePowerUp!.type) {
+              _previousSpeedPowerUp = _activePowerUp!.type;
+              Duration newDuration = _baseDuration;
+              if (_activePowerUp!.type == PowerUpType.speedBoost) {
+                newDuration = Duration(
+                  milliseconds: (_baseDuration.inMilliseconds * 0.7).round(),
+                );
+              } else if (_activePowerUp!.type == PowerUpType.slowMotion) {
+                newDuration = Duration(
+                  milliseconds: (_baseDuration.inMilliseconds * 1.5).round(),
+                );
+              }
               timer.cancel();
               startGame(duration: newDuration);
             }
+          } else if (_previousSpeedPowerUp != null) {
+            // Power-up expired, return to base speed
+            _previousSpeedPowerUp = null;
+            timer.cancel();
+            startGame(duration: _baseDuration);
           }
         }
       }
@@ -239,6 +262,10 @@ class SnakeState with ChangeNotifier {
   void activatePowerUp(PowerUp powerUp) {
     _activePowerUp = powerUp;
     _powerUpTimer?.cancel();
+    _powerUpCountdownTimer?.cancel();
+
+    // Initialize countdown timer
+    _powerUpRemainingSeconds = powerUp.duration.inSeconds;
 
     switch (powerUp.type) {
       case PowerUpType.shield:
@@ -253,6 +280,20 @@ class SnakeState with ChangeNotifier {
         break;
     }
 
+    // Start countdown display timer (updates every second)
+    _powerUpCountdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (_powerUpRemainingSeconds > 0) {
+          _powerUpRemainingSeconds--;
+          notifyListeners();
+        } else {
+          timer.cancel();
+        }
+      },
+    );
+
+    // Set timer for power-up expiration
     _powerUpTimer = Timer(powerUp.duration, () {
       _deactivatePowerUp();
     });
@@ -270,6 +311,8 @@ class SnakeState with ChangeNotifier {
           break;
       }
       _activePowerUp = null;
+      _powerUpRemainingSeconds = 0;
+      _powerUpCountdownTimer?.cancel();
       notifyListeners();
     }
   }

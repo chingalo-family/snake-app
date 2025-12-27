@@ -12,13 +12,13 @@ class GridUtil {
   }
 
   static double _getBoxSize(double gamePanelWidth, int gridColumnsCount) {
-    return (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
-        AppInfoReference.gridPadding;
+    // Use fixed box size for uniform appearance across all devices
+    return AppInfoReference.targetBoxSize;
   }
 
   static int getPanelBoxSize(BuildContext context, int gridColumnsCount) {
-    double gamePanelWidth = getGamePanelWidth(context);
-    return _getBoxSize(gamePanelWidth, gridColumnsCount).toInt();
+    // Return fixed box size for consistent grid across devices
+    return AppInfoReference.targetBoxSize.toInt();
   }
 
   static int getNumberOfRows(
