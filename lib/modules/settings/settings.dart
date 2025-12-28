@@ -17,6 +17,10 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  // Note: These settings currently only update local state.
+  // Future implementation should integrate with:
+  // - GameSoundService for sound control
+  // - Haptic feedback service for vibration control
   bool _soundEnabled = true;
   bool _hapticEnabled = true;
 
@@ -212,7 +216,8 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         _soundEnabled = value;
                       });
-                      // TODO: Implement sound toggle functionality
+                      // Note: Future implementation will integrate with GameSoundService
+                      // to control actual sound playback
                     },
                   ),
                   _buildSettingItem(
@@ -223,7 +228,8 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         _hapticEnabled = value;
                       });
-                      // TODO: Implement haptic feedback toggle
+                      // Note: Future implementation will integrate with haptic feedback
+                      // service to control vibrations
                     },
                   ),
                 ],

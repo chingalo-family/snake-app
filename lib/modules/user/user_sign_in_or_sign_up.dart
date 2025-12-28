@@ -60,7 +60,7 @@ class UserSignInOrSignUp extends StatelessWidget {
                         'Sign in to play and compete on the leaderboard!',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.grey[300],
+                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                       ),
                     ],

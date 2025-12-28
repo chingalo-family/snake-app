@@ -78,7 +78,7 @@ class UserProfile extends StatelessWidget {
                 Text(
                   '@${currentUser.username}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.grey[300],
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                 ),
               ],
