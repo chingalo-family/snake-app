@@ -32,7 +32,7 @@ class AppGame extends StatefulWidget {
 
 class _AppGameState extends State<AppGame> with WidgetsBindingObserver {
   final soundManger = GameSoundService.instance;
-  
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +51,7 @@ class _AppGameState extends State<AppGame> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final soundEnabled = await GameSettingsService.getSoundEffectsEnabled();
     if (!soundEnabled) return;
-    
+
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive ||
         state == AppLifecycleState.detached) {

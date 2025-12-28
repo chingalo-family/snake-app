@@ -44,7 +44,9 @@ class UserProfile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Theme.of(context).colorScheme.primary,
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surface.withValues(alpha: 0.3),
                   width: 4,
                 ),
               ),
@@ -65,9 +67,9 @@ class UserProfile extends StatelessWidget {
             // User Name
             Text(
               currentUser.fullName,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 5.0),
@@ -83,17 +85,24 @@ class UserProfile extends StatelessWidget {
                 Text(
                   '@${currentUser.username}',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 15.0),
             // Status Badge
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Row(
@@ -108,8 +117,8 @@ class UserProfile extends StatelessWidget {
                   Text(
                     'Active Player',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -137,15 +146,17 @@ class UserProfile extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -177,16 +188,18 @@ class UserProfile extends StatelessWidget {
                 const SizedBox(height: 16.0),
                 Text(
                   'Confirm Logout',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12.0),
                 Text(
                   'Are you sure you want to sign out of your account?',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24.0),
@@ -203,7 +216,9 @@ class UserProfile extends StatelessWidget {
                     Expanded(
                       child: FilledButton(
                         style: FilledButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
                         ),
                         onPressed: () async {
                           Navigator.of(dialogContext).pop();
@@ -225,9 +240,9 @@ class UserProfile extends StatelessWidget {
   Future<void> _handleLogout(BuildContext context) async {
     try {
       await UserService().logout();
-      Provider.of<UserState>(context, listen: false).setCurrentUser(User());
+      Provider.of<UserState>(context, listen: false).clearCurrentUser();
       Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
-      
+
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
@@ -309,11 +324,17 @@ class UserProfile extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        const Text('🌟', style: TextStyle(fontSize: 24)),
+                                        const Text(
+                                          '🌟',
+                                          style: TextStyle(fontSize: 24),
+                                        ),
                                         const SizedBox(width: 10.0),
                                         Text(
                                           'Achievements',
-                                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge
+                                              ?.copyWith(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                         ),
@@ -323,8 +344,14 @@ class UserProfile extends StatelessWidget {
                                     Center(
                                       child: Text(
                                         'Play more games to unlock achievements!',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.6),
                                             ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -339,15 +366,20 @@ class UserProfile extends StatelessWidget {
                             SizedBox(
                               width: double.infinity,
                               child: OutlinedButton.icon(
-                                onPressed: () => _showLogoutConfirmation(context),
+                                onPressed: () =>
+                                    _showLogoutConfirmation(context),
                                 icon: const Icon(Icons.logout),
                                 label: const Text('Logout'),
                                 style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16.0,
+                                  ),
                                   side: BorderSide(
                                     color: Theme.of(context).colorScheme.error,
                                   ),
-                                  foregroundColor: Theme.of(context).colorScheme.error,
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.error,
                                 ),
                               ),
                             ),

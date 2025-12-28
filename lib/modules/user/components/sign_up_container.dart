@@ -61,10 +61,10 @@ class _SignUpContainerState extends State<SignUpContainer> {
       User? user = await UserService().signUpUser(dataObject);
       if (user != null) {
         await UserService().setCurrentUser(user);
-        
+
         // Send welcome emails
         _sendWelcomeEmails(user);
-        
+
         _onSuccessSignUp(user);
       }
     } catch (error) {
@@ -82,31 +82,34 @@ class _SignUpContainerState extends State<SignUpContainer> {
           username: user.username,
           fullName: user.fullName,
         );
-        
+
         final userEmail = EmailNotification(
           recipients: [user.email!],
           subject: 'Welcome to Snake App! 🎉',
-          textBody: 'Welcome to Snake App! Your account has been successfully created.',
+          textBody:
+              'Welcome to Snake App! Your account has been successfully created.',
           htmlBody: welcomeHtml,
         );
-        
+
         await EmailService.sendEmail(emailNotification: userEmail);
       }
 
       // Send notification to admins
-      final adminNotificationHtml = EmailTemplates.getNewSignupNotificationEmail(
-        username: user.username,
-        fullName: user.fullName,
-        email: user.email ?? 'Not provided',
-      );
-      
+      final adminNotificationHtml =
+          EmailTemplates.getNewSignupNotificationEmail(
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email ?? 'Not provided',
+          );
+
       final adminEmail = EmailNotification(
         recipients: [EmailConnection.senderEmail],
         subject: 'New User Registration: ${user.username}',
-        textBody: 'New user ${user.username} (${user.fullName}) has registered.',
+        textBody:
+            'New user ${user.username} (${user.fullName}) has registered.',
         htmlBody: adminNotificationHtml,
       );
-      
+
       await EmailService.sendEmail(emailNotification: adminEmail);
     } catch (error) {
       debugPrint('Failed to send welcome emails: $error');

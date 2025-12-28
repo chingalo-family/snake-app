@@ -271,10 +271,9 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(4.0),
                             child: Container(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .inversePrimary
-                                  .withOpacity(0.05),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.inversePrimary.withOpacity(0.05),
                             ),
                           ),
                         ),

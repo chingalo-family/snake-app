@@ -155,9 +155,9 @@ class SnakeState with ChangeNotifier {
 
   void startGame({Duration duration = const Duration(milliseconds: 250)}) {
     // Store the base duration if this is the first call or a reset
-    if (_activePowerUp == null || 
-        (_activePowerUp!.type != PowerUpType.speedBoost && 
-         _activePowerUp!.type != PowerUpType.slowMotion)) {
+    if (_activePowerUp == null ||
+        (_activePowerUp!.type != PowerUpType.speedBoost &&
+            _activePowerUp!.type != PowerUpType.slowMotion)) {
       _baseDuration = duration;
     }
 
@@ -168,9 +168,9 @@ class SnakeState with ChangeNotifier {
           checkForSnakeFood();
 
           // Check if we need to adjust speed based on active power-up
-          if (_activePowerUp != null && 
-              (_activePowerUp!.type == PowerUpType.speedBoost || 
-               _activePowerUp!.type == PowerUpType.slowMotion)) {
+          if (_activePowerUp != null &&
+              (_activePowerUp!.type == PowerUpType.speedBoost ||
+                  _activePowerUp!.type == PowerUpType.slowMotion)) {
             // Only restart timer if this is a new speed power-up
             if (_previousSpeedPowerUp != _activePowerUp!.type) {
               _previousSpeedPowerUp = _activePowerUp!.type;
@@ -282,17 +282,16 @@ class SnakeState with ChangeNotifier {
     }
 
     // Start countdown display timer (updates every second)
-    _powerUpCountdownTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        if (_powerUpRemainingSeconds > 0) {
-          _powerUpRemainingSeconds--;
-          notifyListeners();
-        } else {
-          timer.cancel();
-        }
-      },
-    );
+    _powerUpCountdownTimer = Timer.periodic(const Duration(seconds: 1), (
+      timer,
+    ) {
+      if (_powerUpRemainingSeconds > 0) {
+        _powerUpRemainingSeconds--;
+        notifyListeners();
+      } else {
+        timer.cancel();
+      }
+    });
 
     // Set timer for power-up expiration
     _powerUpTimer = Timer(powerUp.duration, () {
@@ -393,7 +392,8 @@ class SnakeState with ChangeNotifier {
     if (_isGameOver && _hasShield) {
       _isGameOver = false;
       _hasShield = false;
-      final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+      final hapticEnabled =
+          await GameSettingsService.getHapticFeedbackEnabled();
       if (hapticEnabled) {
         await Haptics.vibrate(HapticsType.warning);
       }
@@ -416,7 +416,8 @@ class SnakeState with ChangeNotifier {
         _score += earnedScore;
         _snake.add(_snake.last);
         generateSnakeFood();
-        final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+        final hapticEnabled =
+            await GameSettingsService.getHapticFeedbackEnabled();
         if (hapticEnabled) {
           await Haptics.vibrate(HapticsType.success);
         }
@@ -428,7 +429,8 @@ class SnakeState with ChangeNotifier {
             .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)];
         activatePowerUp(powerUp);
         _clearPowerUpFromGrid();
-        final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+        final hapticEnabled =
+            await GameSettingsService.getHapticFeedbackEnabled();
         if (hapticEnabled) {
           await Haptics.vibrate(HapticsType.heavy);
         }
@@ -437,7 +439,8 @@ class SnakeState with ChangeNotifier {
       }
     } else {
       _resetCombo();
-      final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+      final hapticEnabled =
+          await GameSettingsService.getHapticFeedbackEnabled();
       if (hapticEnabled) {
         await Haptics.vibrate(HapticsType.error);
       }

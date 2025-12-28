@@ -52,25 +52,31 @@ class _SettingsState extends State<Settings> {
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(icon, style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(width: 10.0),
-                Text(
-                  title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            ...children,
-          ],
-        ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(icon, style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  ...children,
+                ],
+              ),
       ),
     );
   }

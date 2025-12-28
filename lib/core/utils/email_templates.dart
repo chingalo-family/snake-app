@@ -13,7 +13,7 @@ class EmailTemplates {
     String? footerText,
   }) {
     final appColor = _getAppColorHex();
-    
+
     return '''
 <!DOCTYPE html>
 <html lang="en">
@@ -69,8 +69,9 @@ class EmailTemplates {
     required String senderEmail,
   }) {
     final appColor = _getAppColorHex();
-    
-    final content = '''
+
+    final content =
+        '''
 <h2 style="margin: 0 0 24px; color: #333333; font-size: 24px; font-weight: 600;">New Contact Form Submission</h2>
 
 <div style="background-color: #f5f5f5; border-left: 4px solid $appColor; padding: 20px; margin-bottom: 24px; border-radius: 4px;">
@@ -98,7 +99,8 @@ class EmailTemplates {
     return _getEmailTemplate(
       title: 'New Contact Form Submission',
       content: content,
-      footerText: 'This message was sent from ${AppInfoReference.appName} contact form',
+      footerText:
+          'This message was sent from ${AppInfoReference.appName} contact form',
     );
   }
 
@@ -108,8 +110,9 @@ class EmailTemplates {
     required String fullName,
   }) {
     final appColor = _getAppColorHex();
-    
-    final content = '''
+
+    final content =
+        '''
 <h2 style="margin: 0 0 16px; color: #333333; font-size: 26px; font-weight: 600;">Welcome to ${AppInfoReference.appName}! 🎉</h2>
 
 <p style="margin: 0 0 20px; color: #666666; font-size: 16px; line-height: 1.6;">
@@ -173,8 +176,9 @@ class EmailTemplates {
     required String email,
   }) {
     final appColor = _getAppColorHex();
-    
-    final content = '''
+
+    final content =
+        '''
 <h2 style="margin: 0 0 24px; color: #333333; font-size: 24px; font-weight: 600;">New User Registration 🎉</h2>
 
 <p style="margin: 0 0 24px; color: #666666; font-size: 16px; line-height: 1.6;">
