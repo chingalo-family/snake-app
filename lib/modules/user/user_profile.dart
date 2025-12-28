@@ -39,7 +39,7 @@ class UserProfile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Theme.of(context).colorScheme.primary,
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.3),
+                  color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
                   width: 4,
                 ),
               ),
@@ -48,10 +48,10 @@ class UserProfile extends StatelessWidget {
                   currentUser.fullName.isNotEmpty
                       ? currentUser.fullName[0].toUpperCase()
                       : '?',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),
@@ -94,7 +94,11 @@ class UserProfile extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.verified, color: Colors.cyan, size: 18),
+                  Icon(
+                    Icons.verified,
+                    color: AppInfoReference.defaultAppColor,
+                    size: 18,
+                  ),
                   const SizedBox(width: 5.0),
                   Text(
                     'Active Player',
