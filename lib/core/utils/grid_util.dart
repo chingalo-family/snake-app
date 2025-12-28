@@ -27,11 +27,16 @@ class GridUtil {
     int gridColumnsCount,
   ) {
     double boxSize = AppInfoReference.targetBoxSize;
-    int maxRows = ((gamePanelHeight - AppInfoReference.gridPadding) /
-            (boxSize + AppInfoReference.gridPadding))
-        .floor(); // Use floor instead of toInt to avoid overflow
+    double spacing = 2.0; // Account for mainAxisSpacing in GridView
     
-    // Ensure we don't exceed reasonable limits and account for padding
+    // Calculate available height after padding
+    double availableHeight = gamePanelHeight - AppInfoReference.gridPadding * 2;
+    
+    // Calculate how many rows can fit: (height) / (boxSize + spacing)
+    // Subtract one spacing since the last row doesn't need spacing after it
+    int maxRows = ((availableHeight + spacing) / (boxSize + spacing)).floor();
+    
+    // Ensure we don't exceed reasonable limits
     return maxRows.clamp(10, 50);
   }
 }
