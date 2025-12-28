@@ -9,6 +9,7 @@ import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/game/game.dart';
+import 'package:snake_app/modules/privacy/privacy_policy.dart';
 import 'package:snake_app/modules/user/change_password.dart';
 
 class Settings extends StatefulWidget {
@@ -236,6 +237,16 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  void _navigateToPrivacyPolicy() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const PrivacyPolicy(),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -346,6 +357,12 @@ class _SettingsState extends State<Settings> {
                     title: 'About ${AppInfoReference.appName}',
                     icon: '📱',
                     onTap: _navigateToAbout,
+                  ),
+                  const Divider(height: 20),
+                  _buildNavigationItem(
+                    title: 'Privacy Policy',
+                    icon: '🔒',
+                    onTap: _navigateToPrivacyPolicy,
                   ),
                   const Divider(height: 20),
                   _buildNavigationItem(
