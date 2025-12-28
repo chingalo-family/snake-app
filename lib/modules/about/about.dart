@@ -16,7 +16,9 @@ class About extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
@@ -26,10 +28,7 @@ class About extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            emoji,
-            style: const TextStyle(fontSize: 28),
-          ),
+          Text(emoji, style: const TextStyle(fontSize: 28)),
           const SizedBox(width: 12.0),
           Expanded(
             child: Column(
@@ -38,15 +37,15 @@ class About extends StatelessWidget {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 4.0),
                 Text(
                   description,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ],
             ),
@@ -81,28 +80,23 @@ class About extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 8.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                      fontWeight: FontWeight.w500,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w500),
               ),
               Text(
                 value,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -134,8 +128,12 @@ class About extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.2),
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.05),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(20.0),
@@ -148,7 +146,9 @@ class About extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24.0),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.3),
                               blurRadius: 20,
                               spreadRadius: 2,
                             ),
@@ -162,21 +162,28 @@ class About extends StatelessWidget {
                       const SizedBox(height: 20.0),
                       Text(
                         AppInfoReference.appName,
-                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        style: Theme.of(context).textTheme.headlineLarge
+                            ?.copyWith(
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.5,
                             ),
                       ),
                       const SizedBox(height: 8.0),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 6.0,
+                        ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         child: Text(
                           'Classic Arcade Snake Game',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -217,10 +224,14 @@ class About extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(12.0),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
@@ -229,16 +240,12 @@ class About extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.fingerprint,
-                          size: 18,
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
+                        Icon(Icons.fingerprint, size: 18),
                         const SizedBox(width: 6.0),
                         Text(
                           'PACKAGE ID',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 letterSpacing: 0.5,
                               ),
@@ -249,10 +256,10 @@ class About extends StatelessWidget {
                     Text(
                       AppInfoReference.androidId,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontFamily: 'monospace',
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        fontFamily: 'monospace',
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),
@@ -274,7 +281,9 @@ class About extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Icon(
@@ -286,9 +295,8 @@ class About extends StatelessWidget {
                           const SizedBox(width: 12.0),
                           Text(
                             'About the Game',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -298,9 +306,9 @@ class About extends StatelessWidget {
                         'smooth controls, and exciting power-ups. Challenge yourself and compete '
                         'with players worldwide!',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              height: 1.6,
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
-                            ),
+                          height: 1.6,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ],
                   ),
@@ -313,35 +321,40 @@ class About extends StatelessWidget {
                 context,
                 emoji: '⚡',
                 title: 'Fast-paced Gameplay',
-                description: 'Experience smooth and responsive controls for the ultimate snake game',
+                description:
+                    'Experience smooth and responsive controls for the ultimate snake game',
               ),
               const SizedBox(height: 12.0),
               _buildFeatureCard(
                 context,
                 emoji: '🏆',
                 title: 'Global Leaderboards',
-                description: 'Compete with players worldwide and climb to the top',
+                description:
+                    'Compete with players worldwide and climb to the top',
               ),
               const SizedBox(height: 12.0),
               _buildFeatureCard(
                 context,
                 emoji: '🎮',
                 title: 'Intuitive Controls',
-                description: 'Simple swipe controls make it easy to pick up and play',
+                description:
+                    'Simple swipe controls make it easy to pick up and play',
               ),
               const SizedBox(height: 12.0),
               _buildFeatureCard(
                 context,
                 emoji: '💎',
                 title: 'Power-ups & Combos',
-                description: 'Collect power-ups and build combos for massive score multipliers',
+                description:
+                    'Collect power-ups and build combos for massive score multipliers',
               ),
               const SizedBox(height: 12.0),
               _buildFeatureCard(
                 context,
                 emoji: '📊',
                 title: 'Statistics Tracking',
-                description: 'Track your progress with detailed statistics and achievements',
+                description:
+                    'Track your progress with detailed statistics and achievements',
               ),
 
               const SizedBox(height: 30.0),
