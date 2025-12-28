@@ -8,7 +8,6 @@ import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
-import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/settings/settings.dart';
@@ -62,20 +61,6 @@ class MoreActionMenu extends StatelessWidget {
         context,
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => UserSignInOrSignUp(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      ),
-    );
-  }
-
-  void _onNavigateToAbout(BuildContext context) {
-    Navigator.pop(context);
-    Timer(
-      const Duration(microseconds: 500),
-      () => Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const About(),
           transitionDuration: const Duration(seconds: 0),
         ),
       ),
@@ -139,12 +124,6 @@ class MoreActionMenu extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
                       children: [
-                        _buildMenuItem(
-                          context,
-                          icon: Icons.info_outline,
-                          label: 'About App',
-                          onTap: () => _onNavigateToAbout(context),
-                        ),
                         _buildMenuItem(
                           context,
                           icon: Icons.settings_outlined,

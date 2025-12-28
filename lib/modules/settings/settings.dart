@@ -370,37 +370,6 @@ class _SettingsState extends State<Settings> {
                     icon: '📧',
                     onTap: _navigateToContactUs,
                   ),
-                  const Divider(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      children: [
-                        const Text(
-                          '📦',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        const SizedBox(width: 15.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'App Version',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              Text(
-                                AppInfoReference.currentAppVersion,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 20.0),
