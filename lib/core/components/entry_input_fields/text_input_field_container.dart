@@ -167,8 +167,9 @@ class _TextInputFieldContainerState extends State<TextInputFieldContainer> {
                             child: GestureDetector(
                               onTap: _updatePasswordVisibilityStatus,
                               child: Container(
-                                color: widget.inputField.inputColor!
-                                    .withOpacity(0.01),
+                                color: widget.inputField.inputColor!.withValues(
+                                  alpha: 0.01,
+                                ),
                                 child: SvgPicture.asset(
                                   _isPasswordVisible!
                                       ? 'assets/icons/login-close-eye.svg'

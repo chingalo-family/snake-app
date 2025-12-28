@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:snake_app/core/models/game_score.dart';
 
 class PodiumDisplay extends StatelessWidget {
-  const PodiumDisplay({
-    super.key,
-    required this.topScores,
-  });
+  const PodiumDisplay({super.key, required this.topScores});
 
   final List<GameScore> topScores;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     if (topScores.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -35,7 +32,7 @@ class PodiumDisplay extends StatelessWidget {
               second,
               2,
               80,
-              colorScheme.primary.withOpacity(0.7),
+              colorScheme.primary.withValues(alpha: 0.7),
             ),
           const SizedBox(width: 10),
           // First place (center, larger)
@@ -56,7 +53,7 @@ class PodiumDisplay extends StatelessWidget {
               third,
               3,
               80,
-              colorScheme.primary.withOpacity(0.5),
+              colorScheme.primary.withValues(alpha: 0.5),
             ),
         ],
       ),
@@ -78,10 +75,7 @@ class PodiumDisplay extends StatelessWidget {
         if (showCrown)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              '👑',
-              style: TextStyle(fontSize: size * 0.3),
-            ),
+            child: Text('👑', style: TextStyle(fontSize: size * 0.3)),
           ),
         // Avatar with border
         Stack(
@@ -92,16 +86,13 @@ class PodiumDisplay extends StatelessWidget {
               height: size,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: borderColor,
-                  width: 4,
-                ),
+                border: Border.all(color: borderColor, width: 4),
                 color: Colors.grey.shade800,
               ),
               child: Center(
                 child: Text(
-                  gameScore.user.isNotEmpty 
-                      ? gameScore.user[0].toUpperCase() 
+                  gameScore.user.isNotEmpty
+                      ? gameScore.user[0].toUpperCase()
                       : '?',
                   style: TextStyle(
                     fontSize: size * 0.4,
@@ -142,9 +133,9 @@ class PodiumDisplay extends StatelessWidget {
           width: 100,
           child: Text(
             gameScore.user,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -159,9 +150,9 @@ class PodiumDisplay extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               '${gameScore.score} points',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
           ],
         ),

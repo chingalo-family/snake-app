@@ -18,7 +18,8 @@ class GridUtil {
 
   static int getPanelBoxSize(BuildContext context, int gridColumnsCount) {
     double gamePanelWidth = getGamePanelWidth(context);
-    return _getBoxSize(gamePanelWidth, gridColumnsCount).toInt();
+    double boxSize = _getBoxSize(gamePanelWidth, gridColumnsCount);
+    return boxSize.toInt();
   }
 
   static int getNumberOfRows(

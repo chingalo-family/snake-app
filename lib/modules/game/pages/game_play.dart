@@ -16,14 +16,16 @@ class GamePlay extends StatelessWidget {
             .toDouble();
         return PopScope(
           canPop: false,
-          child: Scaffold(
-            appBar: AppBarContainer(),
-            body: Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(gameScoreHeight),
-                child: GamePlayAction(gamePanelHeight: gamePanelHeight),
+          child: SafeArea(
+            child: Scaffold(
+              appBar: AppBarContainer(),
+              body: Scaffold(
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(gameScoreHeight),
+                  child: GamePlayAction(gamePanelHeight: gamePanelHeight),
+                ),
+                body: GamePlayContainer(gamePanelHeight: gamePanelHeight),
               ),
-              body: GamePlayContainer(gamePanelHeight: gamePanelHeight),
             ),
           ),
         );

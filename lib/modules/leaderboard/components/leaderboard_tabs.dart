@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LeaderboardTabs extends StatefulWidget {
-  const LeaderboardTabs({
-    super.key,
-    required this.onTabChanged,
-  });
+  const LeaderboardTabs({super.key, required this.onTabChanged});
 
   final Function(int) onTabChanged;
 
@@ -18,11 +15,11 @@ class _LeaderboardTabsState extends State<LeaderboardTabs> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.2),
+        color: Colors.grey.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Row(
@@ -40,7 +37,7 @@ class _LeaderboardTabsState extends State<LeaderboardTabs> {
 
   Widget _buildTab(String label, int index, ColorScheme colorScheme) {
     final isSelected = _selectedIndex == index;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {

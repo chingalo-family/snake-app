@@ -13,25 +13,16 @@ class FormFieldInputIcon extends StatelessWidget {
   // this is a default constructor for the `FormFieldInputIcon`
   // It accepts a `String` svg icon path and a background `Color`
   //
-  const FormFieldInputIcon({
-    super.key,
-    this.svgIcon,
-    this.backGroundColor,
-  });
+  const FormFieldInputIcon({super.key, this.svgIcon, this.backGroundColor});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        right: 5.0,
-        top: 5.0,
-      ),
+      padding: const EdgeInsets.only(right: 5.0, top: 5.0),
       child: Container(
         decoration: BoxDecoration(
           color: backGroundColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(7.0),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(7.0)),
         ),
         child: Container(
           margin: const EdgeInsets.all(9.0),
