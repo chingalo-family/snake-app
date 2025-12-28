@@ -266,28 +266,32 @@ class _SettingsState extends State<Settings> {
                 builder: (context, userState, child) {
                   bool isUserLoggedIn = userState.isUserLoggedIn;
                   return isUserLoggedIn
-                      ? _buildSettingsSection(
-                          context,
-                          title: 'Account',
-                          icon: IconReference.person,
+                      ? Column(
                           children: [
-                            _buildNavigationItem(
-                              title: 'Change Password',
-                              icon: '🔐',
-                              onTap: _navigateToChangePassword,
+                            _buildSettingsSection(
+                              context,
+                              title: 'Account',
+                              icon: IconReference.person,
+                              children: [
+                                _buildNavigationItem(
+                                  title: 'Change Password',
+                                  icon: '🔐',
+                                  onTap: _navigateToChangePassword,
+                                ),
+                                const Divider(height: 20),
+                                _buildNavigationItem(
+                                  title: 'Logout',
+                                  icon: '🚪',
+                                  onTap: _handleLogout,
+                                ),
+                              ],
                             ),
-                            const Divider(height: 20),
-                            _buildNavigationItem(
-                              title: 'Logout',
-                              icon: '🚪',
-                              onTap: _handleLogout,
-                            ),
+                            const SizedBox(height: 15.0),
                           ],
                         )
                       : const SizedBox.shrink();
                 },
               ),
-              const SizedBox(height: 15.0),
 
               // Information
               _buildSettingsSection(
