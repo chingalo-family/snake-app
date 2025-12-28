@@ -135,18 +135,61 @@ class _SettingsState extends State<Settings> {
   void _handleLogout() async {
     bool? confirm = await showDialog<bool>(
       context: context,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Logout'),
-          content: const Text('Are you sure you want to logout?'),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.logout,
+                color: Theme.of(context).colorScheme.primary,
+                size: 28,
+              ),
+              const SizedBox(width: 12.0),
+              Text(
+                'Confirm Logout',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Are you sure you want to logout?',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              child: Text(
+                'Cancel',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Logout'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              child: Text(
+                'Logout',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ),
           ],
         );
