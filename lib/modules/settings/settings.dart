@@ -5,12 +5,11 @@ import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
-import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
-import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/privacy/privacy_policy.dart';
 import 'package:snake_app/modules/user/change_password.dart';
+import 'package:snake_app/modules/user/user_profile.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -133,78 +132,14 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  void _handleLogout() async {
-    bool? confirm = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          title: Row(
-            children: [
-              Icon(
-                Icons.logout,
-                color: Theme.of(context).colorScheme.primary,
-                size: 28,
-              ),
-              const SizedBox(width: 12.0),
-              Text(
-                'Confirm Logout',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ],
-          ),
-          content: Text(
-            'Are you sure you want to logout?',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              child: Text(
-                'Cancel',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              child: Text(
-                'Logout',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ),
-          ],
-        );
-      },
+  void _navigateToProfile() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const UserProfile(),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
     );
-
-    if (confirm == true && mounted) {
-      await UserService().logout();
-      Provider.of<UserState>(context, listen: false).clearCurrentUser();
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const Game()),
-        (route) => false,
-      );
-    }
   }
 
   void _navigateToAbout() {
@@ -328,15 +263,15 @@ class _SettingsState extends State<Settings> {
                               icon: IconReference.person,
                               children: [
                                 _buildNavigationItem(
-                                  title: 'Change Password',
-                                  icon: '🔐',
-                                  onTap: _navigateToChangePassword,
+                                  title: 'Profile',
+                                  icon: '👤',
+                                  onTap: _navigateToProfile,
                                 ),
                                 const Divider(height: 20),
                                 _buildNavigationItem(
-                                  title: 'Logout',
-                                  icon: '🚪',
-                                  onTap: _handleLogout,
+                                  title: 'Change Password',
+                                  icon: '🔐',
+                                  onTap: _navigateToChangePassword,
                                 ),
                               ],
                             ),
