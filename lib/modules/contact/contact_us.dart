@@ -5,6 +5,7 @@ import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/email_connection.dart';
 import 'package:snake_app/core/models/email_notification.dart';
 import 'package:snake_app/core/services/email_service.dart';
+import 'package:snake_app/core/utils/email_templates.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
@@ -34,6 +35,13 @@ class _ContactUsState extends State<ContactUs> {
       });
 
       try {
+        final htmlBody = EmailTemplates.getContactFormEmail(
+          category: _selectedCategory,
+          subject: _subjectController.text,
+          message: _messageController.text,
+          senderEmail: EmailConnection.senderEmail,
+        );
+
         final emailNotification = EmailNotification(
           recipients: [EmailConnection.senderEmail],
           subject: '[$_selectedCategory] ${_subjectController.text}',
@@ -45,7 +53,7 @@ Subject: ${_subjectController.text}
 Message:
 ${_messageController.text}
 ''',
-          htmlBody: null,
+          htmlBody: htmlBody,
         );
 
         await EmailService.sendEmail(emailNotification: emailNotification);
