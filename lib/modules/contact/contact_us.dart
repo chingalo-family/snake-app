@@ -6,6 +6,10 @@ import 'package:snake_app/core/constants/email_connection.dart';
 import 'package:snake_app/core/models/email_notification.dart';
 import 'package:snake_app/core/services/email_service.dart';
 import 'package:snake_app/core/utils/email_templates.dart';
+import 'package:snake_app/modules/contact/components/category_dropdown_field.dart';
+import 'package:snake_app/modules/contact/components/contact_header.dart';
+import 'package:snake_app/modules/contact/components/contact_info_section.dart';
+import 'package:snake_app/modules/contact/components/labeled_text_field.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
@@ -92,38 +96,6 @@ ${_messageController.text}
     }
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hint,
-    required String? Function(String?) validator,
-    int maxLines = 1,
-    TextInputType keyboardType = TextInputType.text,
-    Widget? prefixIcon,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16.0),
-      child: TextFormField(
-        controller: controller,
-        maxLines: maxLines,
-        keyboardType: keyboardType,
-        validator: validator,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: prefixIcon,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-          filled: true,
-          fillColor: Theme.of(
-            context,
-          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 16.0,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,39 +114,9 @@ ${_messageController.text}
                 body: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Icon(
-                          Icons.mail_outline,
-                          size: 32,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Get in Touch',
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text(
-                              'We\'d love to hear from you',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: const ContactHeader(
+                    title: 'Get in Touch',
+                    subtitle: 'We\'d love to hear from you',
                   ),
                 ),
               ),
@@ -188,74 +130,18 @@ ${_messageController.text}
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Category Dropdown
-                    Text(
-                      'Category',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 16.0),
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedCategory,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.category_outlined,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          filled: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerHighest
-                              .withValues(alpha: 0.3),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 16.0,
-                          ),
-                        ),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'General Inquiry',
-                            child: Text('General Inquiry'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Technical Support',
-                            child: Text('Technical Support'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Bug Report',
-                            child: Text('Bug Report'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Feature Request',
-                            child: Text('Feature Request'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Feedback',
-                            child: Text('Feedback'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                          });
-                        },
-                      ),
+                    CategoryDropdownField(
+                      value: _selectedCategory,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCategory = value!;
+                        });
+                      },
                     ),
 
                     // Subject
-                    Text(
-                      'Subject',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    _buildTextField(
+                    LabeledTextField(
+                      label: 'Subject',
                       controller: _subjectController,
                       hint: 'Brief description of your inquiry',
                       prefixIcon: Icon(
@@ -271,14 +157,8 @@ ${_messageController.text}
                     ),
 
                     // Message
-                    Text(
-                      'Message',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    _buildTextField(
+                    LabeledTextField(
+                      label: 'Message',
                       controller: _messageController,
                       hint: 'Tell us more about your inquiry...',
                       maxLines: 6,
@@ -344,23 +224,8 @@ ${_messageController.text}
                 body: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Other Ways to Reach Us',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      _buildContactMethod(
-                        context,
-                        icon: Icons.email_outlined,
-                        label: 'Email',
-                        value: EmailConnection.senderEmail,
-                      ),
-                    ],
+                  child: ContactInfoSection(
+                    email: EmailConnection.senderEmail,
                   ),
                 ),
               ),
@@ -368,67 +233,6 @@ ${_messageController.text}
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildContactMethod(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Theme.of(
-          context,
-        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Icon(
-              icon,
-              size: 24,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 4.0),
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 1.0),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
