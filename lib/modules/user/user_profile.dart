@@ -4,6 +4,7 @@ import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart'
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
+import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/modules/user/components/user_game_stats.dart';
