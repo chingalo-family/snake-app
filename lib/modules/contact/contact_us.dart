@@ -161,13 +161,7 @@ ${_messageController.text}
                             const SizedBox(height: 4.0),
                             Text(
                               'We\'d love to hear from you',
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withValues(alpha: 0.6),
-                                  ),
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
