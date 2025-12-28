@@ -143,7 +143,7 @@ class Game extends StatelessWidget {
                     return MaterialCard(
                       elevation: 2.0,
                       body: Container(
-                        width: double.infinity,
+                        width: size.width * 0.80,
                         padding: const EdgeInsets.all(16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
