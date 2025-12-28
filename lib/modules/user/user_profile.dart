@@ -135,7 +135,7 @@ class UserProfile extends StatelessWidget {
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
               textAlign: TextAlign.center,
             ),
@@ -226,7 +226,7 @@ class UserProfile extends StatelessWidget {
                                       child: Text(
                                         'Play more games to unlock achievements!',
                                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              color: Colors.grey,
+                                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                             ),
                                         textAlign: TextAlign.center,
                                       ),

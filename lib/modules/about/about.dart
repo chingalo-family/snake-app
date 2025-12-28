@@ -31,7 +31,7 @@ class About extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                   ),
                   const SizedBox(height: 5.0),
@@ -78,7 +78,7 @@ class About extends StatelessWidget {
                     Text(
                       'Classic Arcade Snake Game',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.grey,
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                     ),
                   ],

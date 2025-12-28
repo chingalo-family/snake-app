@@ -82,7 +82,7 @@ class _SettingsState extends State<Settings> {
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey,
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                 ),
               ],
@@ -120,7 +120,10 @@ class _SettingsState extends State<Settings> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            const Icon(Icons.chevron_right, color: Colors.grey),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ],
         ),
       ),
@@ -195,7 +198,7 @@ class _SettingsState extends State<Settings> {
                     Text(
                       'Customize your game experience',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Colors.grey,
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                     ),
                   ],
@@ -290,7 +293,7 @@ class _SettingsState extends State<Settings> {
                               Text(
                                 AppInfoReference.currentAppVersion,
                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey,
+                                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                     ),
                               ),
                             ],

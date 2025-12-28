@@ -90,7 +90,7 @@ class UserSignInOrSignUp extends StatelessWidget {
                             Text(
                               'Global ranks',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
                             ),
                           ],
@@ -117,7 +117,7 @@ class UserSignInOrSignUp extends StatelessWidget {
                             Text(
                               'View your stats',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
                             ),
                           ],
@@ -144,7 +144,7 @@ class UserSignInOrSignUp extends StatelessWidget {
                             Text(
                               'Never lose data',
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.grey,
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
                             ),
                           ],

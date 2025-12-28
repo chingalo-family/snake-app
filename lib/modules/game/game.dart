@@ -168,7 +168,7 @@ class Game extends StatelessWidget {
                                   Text(
                                     'Welcome back!',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Colors.grey,
+                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                         ),
                                   ),
                                   Text(
