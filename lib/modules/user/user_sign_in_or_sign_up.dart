@@ -196,18 +196,6 @@ class UserSignInOrSignUp extends StatelessWidget {
   }
 }
 
-                elevation: 3.0,
-                borderRadius: 16.0,
-                body: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20.0),
-                  child: const SignInOrSignUpContainer(),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-            ],
-          ),
-        ),
       ),
     );
   }

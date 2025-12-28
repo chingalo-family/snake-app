@@ -76,20 +76,22 @@ class _SignUpContainerState extends State<SignUpContainer> {
 
   void _sendWelcomeEmails(User user) async {
     try {
-      // Send welcome email to user
-      final welcomeHtml = EmailTemplates.getWelcomeEmail(
-        username: user.username,
-        fullName: user.fullName,
-      );
-      
-      final userEmail = EmailNotification(
-        recipients: [user.email ?? EmailConnection.senderEmail],
-        subject: 'Welcome to Snake App! 🎉',
-        textBody: 'Welcome to Snake App! Your account has been successfully created.',
-        htmlBody: welcomeHtml,
-      );
-      
-      await EmailService.sendEmail(emailNotification: userEmail);
+      // Only send welcome email to user if they have an email
+      if (user.email != null && user.email!.isNotEmpty) {
+        final welcomeHtml = EmailTemplates.getWelcomeEmail(
+          username: user.username,
+          fullName: user.fullName,
+        );
+        
+        final userEmail = EmailNotification(
+          recipients: [user.email!],
+          subject: 'Welcome to Snake App! 🎉',
+          textBody: 'Welcome to Snake App! Your account has been successfully created.',
+          htmlBody: welcomeHtml,
+        );
+        
+        await EmailService.sendEmail(emailNotification: userEmail);
+      }
 
       // Send notification to admins
       final adminNotificationHtml = EmailTemplates.getNewSignupNotificationEmail(

@@ -1,13 +1,18 @@
 import 'package:snake_app/core/constants/app_info_reference.dart';
 
 class EmailTemplates {
+  /// Helper method to get app color as hex string
+  static String _getAppColorHex() {
+    return '#${AppInfoReference.defaultAppColor.value.toRadixString(16).substring(2)}';
+  }
+
   /// Generates HTML email template with app branding
   static String _getEmailTemplate({
     required String title,
     required String content,
     String? footerText,
   }) {
-    final appColor = '#${AppInfoReference.defaultAppColor.value.toRadixString(16).substring(2)}';
+    final appColor = _getAppColorHex();
     
     return '''
 <!DOCTYPE html>
@@ -63,7 +68,7 @@ class EmailTemplates {
     required String message,
     required String senderEmail,
   }) {
-    final appColor = '#${AppInfoReference.defaultAppColor.value.toRadixString(16).substring(2)}';
+    final appColor = _getAppColorHex();
     
     final content = '''
 <h2 style="margin: 0 0 24px; color: #333333; font-size: 24px; font-weight: 600;">New Contact Form Submission</h2>
@@ -102,7 +107,7 @@ class EmailTemplates {
     required String username,
     required String fullName,
   }) {
-    final appColor = '#${AppInfoReference.defaultAppColor.value.toRadixString(16).substring(2)}';
+    final appColor = _getAppColorHex();
     
     final content = '''
 <h2 style="margin: 0 0 16px; color: #333333; font-size: 26px; font-weight: 600;">Welcome to ${AppInfoReference.appName}! 🎉</h2>
@@ -171,7 +176,7 @@ class EmailTemplates {
     required String fullName,
     required String email,
   }) {
-    final appColor = '#${AppInfoReference.defaultAppColor.value.toRadixString(16).substring(2)}';
+    final appColor = _getAppColorHex();
     
     final content = '''
 <h2 style="margin: 0 0 24px; color: #333333; font-size: 24px; font-weight: 600;">New User Registration 🎉</h2>
