@@ -7,7 +7,9 @@ import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/modules/about/about.dart';
+import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/game/game.dart';
+import 'package:snake_app/modules/user/change_password.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -171,6 +173,26 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  void _navigateToContactUs() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const ContactUs(),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _navigateToChangePassword() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const ChangePassword(),
+        transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -250,6 +272,12 @@ class _SettingsState extends State<Settings> {
                           icon: IconReference.person,
                           children: [
                             _buildNavigationItem(
+                              title: 'Change Password',
+                              icon: '🔐',
+                              onTap: _navigateToChangePassword,
+                            ),
+                            const Divider(height: 20),
+                            _buildNavigationItem(
                               title: 'Logout',
                               icon: '🚪',
                               onTap: _handleLogout,
@@ -272,6 +300,13 @@ class _SettingsState extends State<Settings> {
                     icon: '📱',
                     onTap: _navigateToAbout,
                   ),
+                  const Divider(height: 20),
+                  _buildNavigationItem(
+                    title: 'Contact Us',
+                    icon: '📧',
+                    onTap: _navigateToContactUs,
+                  ),
+                  const Divider(height: 20),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
                     padding: const EdgeInsets.symmetric(vertical: 8.0),

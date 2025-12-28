@@ -9,6 +9,7 @@ import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/about/about.dart';
+import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/settings/settings.dart';
 import 'package:snake_app/modules/user/user_profile.dart';
@@ -95,6 +96,20 @@ class MoreActionMenu extends StatelessWidget {
     );
   }
 
+  void _onNavigateToContactUs(BuildContext context) {
+    Navigator.pop(context);
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const ContactUs(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserState>(
@@ -135,6 +150,12 @@ class MoreActionMenu extends StatelessWidget {
                           icon: Icons.settings_outlined,
                           label: 'Settings',
                           onTap: () => _onNavigateToSettings(context),
+                        ),
+                        _buildMenuItem(
+                          context,
+                          icon: Icons.mail_outline,
+                          label: 'Contact Us',
+                          onTap: () => _onNavigateToContactUs(context),
                         ),
                         _buildMenuItem(
                           context,
