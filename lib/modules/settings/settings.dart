@@ -7,6 +7,7 @@ import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/services/game_settings_service.dart';
+import 'package:snake_app/core/services/game_sound_service.dart';
 import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/privacy/privacy_policy.dart';
@@ -250,6 +251,14 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         _soundEnabled = value;
                       });
+                      
+                      // Immediately apply sound settings
+                      final soundManager = GameSoundService.instance;
+                      if (value) {
+                        await soundManager.playBackgroundMusic();
+                      } else {
+                        await soundManager.stopBackgroundMusic();
+                      }
                     },
                   ),
                   _buildSettingItem(

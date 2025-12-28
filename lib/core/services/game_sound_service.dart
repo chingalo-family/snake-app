@@ -28,6 +28,11 @@ class GameSoundService {
     }
   }
 
+  Future<void> stopBackgroundMusic() async {
+    await _bgPlayer.stop();
+    isPaused = false;
+  }
+
   void dispose() {
     _bgPlayer.dispose();
   }

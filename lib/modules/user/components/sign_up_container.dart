@@ -149,16 +149,21 @@ class _SignUpContainerState extends State<SignUpContainer> {
                       formSections: formSections,
                       dataObject: userEntryFormState.formState,
                       mandatoryFieldObject: mandatoryFieldObject,
+                      elevation: 0.0, // Remove card elevation for modern look
                     ),
-                    const SizedBox(height: 24.0),
+                    const SizedBox(height: 32.0),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
                         style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 18.0,
+                            horizontal: 32.0,
                           ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          elevation: 2.0,
                         ),
                         onPressed: !isSignUpFormValid
                             ? null
@@ -168,8 +173,9 @@ class _SignUpContainerState extends State<SignUpContainer> {
                         child: Text(
                           _isSaving ? "Creating Account..." : "Sign Up",
                           style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
