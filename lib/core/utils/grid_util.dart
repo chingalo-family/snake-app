@@ -12,13 +12,14 @@ class GridUtil {
   }
 
   static double _getBoxSize(double gamePanelWidth, int gridColumnsCount) {
-    // Use fixed box size for uniform appearance across all devices
-    return AppInfoReference.targetBoxSize;
+    return (gamePanelWidth - AppInfoReference.gridPadding) / gridColumnsCount -
+        AppInfoReference.gridPadding;
   }
 
   static int getPanelBoxSize(BuildContext context, int gridColumnsCount) {
-    // Return fixed box size for consistent grid across devices
-    return AppInfoReference.targetBoxSize.toInt();
+    double gamePanelWidth = getGamePanelWidth(context);
+    double boxSize = _getBoxSize(gamePanelWidth, gridColumnsCount);
+    return boxSize.toInt();
   }
 
   static int getNumberOfRows(
@@ -26,17 +27,10 @@ class GridUtil {
     int gamePanelHeight,
     int gridColumnsCount,
   ) {
-    double boxSize = AppInfoReference.targetBoxSize;
-    double spacing = 2.0; // Account for mainAxisSpacing in GridView
-    
-    // Calculate available height after padding
-    double availableHeight = gamePanelHeight - AppInfoReference.gridPadding * 2;
-    
-    // Calculate how many rows can fit: (height) / (boxSize + spacing)
-    // Subtract one spacing since the last row doesn't need spacing after it
-    int maxRows = ((availableHeight + spacing) / (boxSize + spacing)).floor();
-    
-    // Ensure we don't exceed reasonable limits
-    return maxRows.clamp(10, 50);
+    double gamePanelWidth = getGamePanelWidth(context);
+    double boxSize = _getBoxSize(gamePanelWidth, gridColumnsCount);
+    return ((gamePanelHeight - AppInfoReference.gridPadding) /
+            (boxSize + AppInfoReference.gridPadding))
+        .toInt();
   }
 }
