@@ -155,11 +155,7 @@ class EmailTemplates {
     </div>
 </div>
 
-<div style="text-align: center; margin: 32px 0;">
-    <a href="#" style="display: inline-block; padding: 14px 32px; background-color: $appColor; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Start Playing Now</a>
-</div>
-
-<p style="margin: 24px 0 0; color: #666666; font-size: 15px; line-height: 1.6;">
+<p style="margin: 32px 0 0; color: #666666; font-size: 15px; line-height: 1.6;">
     Need help? Feel free to reach out to us anytime. We're here to ensure you have the best gaming experience!
 </p>
 ''';
