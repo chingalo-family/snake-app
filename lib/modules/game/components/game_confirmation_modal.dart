@@ -73,170 +73,144 @@ class GameConfirmationModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-      alignment: Alignment.topCenter,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).colorScheme.inverseSurface,
-            Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
-          ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+        alignment: Alignment.topCenter,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.inverseSurface,
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
+            ],
+          ),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(topBorderRadius),
+          ),
         ),
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(topBorderRadius),
-        ),
-      ),
-      child: Consumer<SnakeState>(
-        builder: (context, snakeState, child) {
-          bool isGameOver = snakeState.isGameOver;
-          int foodCollected = snakeState.foodCollected;
-          int highestCombo = snakeState.highestCombo;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  isGameOver ? 'Game Over' : 'Game Paused',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+        child: Consumer<SnakeState>(
+          builder: (context, snakeState, child) {
+            bool isGameOver = snakeState.isGameOver;
+            int foodCollected = snakeState.foodCollected;
+            int highestCombo = snakeState.highestCombo;
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    isGameOver ? 'Game Over' : 'Game Paused',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                Text(
+                  IconReference.trophy,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontSize: 50.0),
+                ),
+                const SizedBox(height: 10.0),
+                Text(
+                  '${snakeState.score}',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                IconReference.trophy,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontSize: 50.0),
-              ),
-              const SizedBox(height: 10.0),
-              Text(
-                '${snakeState.score}',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
+                Text(
+                  'Points Earned',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-              Text(
-                'Points Earned',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              if (isGameOver) ...[
+                if (isGameOver) ...[
+                  const SizedBox(height: 20.0),
+                  // Game stats
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surface.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        _StatRow(
+                          icon: '🍎',
+                          label: 'Food Collected',
+                          value: foodCollected.toString(),
+                        ),
+                        const SizedBox(height: 8),
+                        _StatRow(
+                          icon: '🔥',
+                          label: 'Highest Combo',
+                          value: 'x$highestCombo',
+                        ),
+                        const SizedBox(height: 8),
+                        _StatRow(
+                          icon: '📏',
+                          label: 'Snake Length',
+                          value: snakeState.snake.length.toString(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 20.0),
-                // Game stats
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.surface.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      _StatRow(
-                        icon: '🍎',
-                        label: 'Food Collected',
-                        value: foodCollected.toString(),
-                      ),
-                      const SizedBox(height: 8),
-                      _StatRow(
-                        icon: '🔥',
-                        label: 'Highest Combo',
-                        value: 'x$highestCombo',
-                      ),
-                      const SizedBox(height: 8),
-                      _StatRow(
-                        icon: '📏',
-                        label: 'Snake Length',
-                        value: snakeState.snake.length.toString(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              const SizedBox(height: 20.0),
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (isGameOver) {
-                    _onResetGame(context);
-                  } else {
-                    _onPauseOrResumeGame(context);
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  width: size.width * 0.70,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 5.0),
-                        child: Text(
-                          IconReference.gamePad,
-                          style: Theme.of(context).textTheme.titleMedium,
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (isGameOver) {
+                      _onResetGame(context);
+                    } else {
+                      _onPauseOrResumeGame(context);
+                    }
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    width: size.width * 0.70,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 5.0),
+                          child: Text(
+                            IconReference.gamePad,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      _StatRow(
-                        icon: '🔥',
-                        label: 'Best Combo',
-                        value: 'x$highestCombo',
-                      ),
-                      const SizedBox(height: 6),
-                      _StatRow(
-                        icon: '📏',
-                        label: 'Length',
-                        value: snakeState.snake.length.toString(),
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        _StatRow(
+                          icon: '🔥',
+                          label: 'Best Combo',
+                          value: 'x$highestCombo',
+                        ),
+                        const SizedBox(height: 6),
+                        _StatRow(
+                          icon: '📏',
+                          label: 'Length',
+                          value: snakeState.snake.length.toString(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 16.0),
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (isGameOver) {
-                    _onResetGame(context);
-                  } else {
-                    _onPauseOrResumeGame(context);
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  width: size.width * 0.70,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 5.0),
-                        child: Text(
-                          IconReference.gamePad,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                      Text(
-                        snakeState.isGameOver ? 'Restart Game' : 'Resume Game',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              Visibility(
-                visible: isGameOver,
-                child: OutlinedButton(
-                  onPressed: () => _onDirectToLeaderboard(context),
+                const SizedBox(height: 16.0),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (isGameOver) {
+                      _onResetGame(context);
+                    } else {
+                      _onPauseOrResumeGame(context);
+                    }
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -247,23 +221,56 @@ class GameConfirmationModal extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.only(right: 5.0),
                           child: Text(
-                            IconReference.trophy,
+                            IconReference.gamePad,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                         Text(
-                          "Leaderboard",
+                          snakeState.isGameOver
+                              ? 'Restart Game'
+                              : 'Resume Game',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8.0),
-            ],
-          );
-        },
+                const SizedBox(height: 8.0),
+                Visibility(
+                  visible: isGameOver,
+                  child: OutlinedButton(
+                    onPressed: () => _onDirectToLeaderboard(context),
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      width: size.width * 0.70,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 5.0),
+                            child: Text(
+                              IconReference.trophy,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          Text(
+                            "Leaderboard",
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -290,14 +297,20 @@ class _StatRow extends StatelessWidget {
           children: [
             Text(icon, style: const TextStyle(fontSize: 20)),
             const SizedBox(width: 8),
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ],
         ),
         Text(
           value,
-          style: Theme.of(
-            context,
-          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ],
     );
