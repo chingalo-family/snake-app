@@ -26,10 +26,12 @@ class GridUtil {
     int gamePanelHeight,
     int gridColumnsCount,
   ) {
-    double gamePanelWidth = getGamePanelWidth(context);
-    double boxSize = _getBoxSize(gamePanelWidth, gridColumnsCount);
-    return ((gamePanelHeight - AppInfoReference.gridPadding) /
+    double boxSize = AppInfoReference.targetBoxSize;
+    int maxRows = ((gamePanelHeight - AppInfoReference.gridPadding) /
             (boxSize + AppInfoReference.gridPadding))
-        .toInt();
+        .floor(); // Use floor instead of toInt to avoid overflow
+    
+    // Ensure we don't exceed reasonable limits and account for padding
+    return maxRows.clamp(10, 50);
   }
 }

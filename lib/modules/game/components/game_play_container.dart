@@ -164,10 +164,8 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
-                  Theme.of(
-                    context,
-                  ).colorScheme.inversePrimary.withValues(alpha: 0.1),
+                  Theme.of(context).colorScheme.surface.withOpacity(0.3),
+                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
                 ],
               ),
             ),
@@ -176,6 +174,9 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
               crossAxisCount: gridColumnsCount,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio: 1.0,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
               children: List.generate(totalBoxes, (index) {
                 bool isSnake = snake.contains(index);
                 bool isHead = snake.isNotEmpty && snake.first == index;
