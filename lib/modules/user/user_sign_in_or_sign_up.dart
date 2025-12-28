@@ -40,17 +40,19 @@ class UserSignInOrSignUp extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: accentColor,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: accentColor,
+              ),
             ),
             const SizedBox(height: 4.0),
             Text(
               subtitle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
           ],
         ),
@@ -62,7 +64,7 @@ class UserSignInOrSignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return Scaffold(
       appBar: AppBarContainer(),
       body: SingleChildScrollView(
@@ -120,14 +122,18 @@ class UserSignInOrSignUp extends StatelessWidget {
                       Text(
                         'Welcome to ${AppInfoReference.appName}',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.5,
                             ),
                       ),
                       const SizedBox(height: 10.0),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 6.0,
+                        ),
                         decoration: BoxDecoration(
                           color: primaryColor.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(20.0),
@@ -135,7 +141,8 @@ class UserSignInOrSignUp extends StatelessWidget {
                         child: Text(
                           'Sign in to unlock the full experience!',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -186,16 +193,11 @@ class UserSignInOrSignUp extends StatelessWidget {
                   child: const SignInOrSignUpContainer(),
                 ),
               ),
-              
+
               const SizedBox(height: 20.0),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
       ),
     );
   }

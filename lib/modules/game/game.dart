@@ -88,8 +88,12 @@ class Game extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-                        Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.3),
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.1),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(16.0),
@@ -107,16 +111,18 @@ class Game extends StatelessWidget {
                       const SizedBox(height: 15.0),
                       Text(
                         AppInfoReference.appName,
-                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.headlineLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8.0),
                       Text(
                         'Classic Arcade action, Beat the high Score',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                       ),
                     ],
@@ -150,8 +156,8 @@ class Game extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  userState.currentUser.fullName.isNotEmpty
-                                      ? userState.currentUser.fullName[0].toUpperCase()
+                                  userState.usernameIcon.isNotEmpty
+                                      ? userState.usernameIcon
                                       : '?',
                                   style: const TextStyle(
                                     fontSize: 24,
@@ -167,20 +173,28 @@ class Game extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Welcome back!',
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withValues(alpha: 0.6),
                                         ),
                                   ),
                                   Text(
                                     userState.currentUser.fullName,
-                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ),
-                            const Icon(Icons.verified, color: AppInfoReference.defaultAppColor),
+                            const Icon(
+                              Icons.verified,
+                              color: AppInfoReference.defaultAppColor,
+                            ),
                           ],
                         ),
                       ),
@@ -220,9 +234,8 @@ class Game extends StatelessWidget {
                           ),
                           Text(
                             isUserLoggedIn ? "Play Now" : "Sign In to Play",
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -259,8 +272,8 @@ class Game extends StatelessWidget {
                       Text(
                         "Leaderboard",
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
