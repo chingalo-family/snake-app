@@ -11,7 +11,6 @@ import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/settings/settings.dart';
-import 'package:snake_app/modules/user/user_profile.dart';
 import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
 class MoreActionMenu extends StatelessWidget {
@@ -123,15 +122,6 @@ class MoreActionMenu extends StatelessWidget {
                           iconLabel: IconReference.trophy,
                           label: 'Leaderboard',
                           onTap: () => _onDirectToLeaderboard(context),
-                        ),
-                        Visibility(
-                          visible: isUserLoggedIn,
-                          child: _buildMenuItem(
-                            context,
-                            iconLabel: IconReference.person,
-                            label: 'Profile',
-                            onTap: () => _onDirectToProfile(context),
-                          ),
                         ),
                         _buildMenuItem(
                           context,
