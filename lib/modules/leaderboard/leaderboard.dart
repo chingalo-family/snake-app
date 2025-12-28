@@ -22,7 +22,7 @@ class _LeaderboardState extends State<Leaderboard> {
       _selectedTab = index;
     });
     // TODO: Implement filtering logic based on tab selection
-    print('Selected Tab: $_selectedTab');
+    print(_selectedTab);
   }
 
   @override
