@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
-import 'package:snake_app/core/models/user.dart';
 import 'package:snake_app/core/services/user_service.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -54,12 +51,8 @@ class _ChangePasswordState extends State<ChangePassword> {
               gravity: ToastGravity.CENTER,
             );
 
-            // Update the stored user with new password
-            User? currentUser = Provider.of<UserState>(context, listen: false).currentUser;
-            if (currentUser != null) {
-              currentUser.password = _newPasswordController.text;
-              await userService.setCurrentUser(currentUser);
-            }
+            // Note: Password is not stored locally for security reasons.
+            // User will need to use the new password for next login.
 
             // Clear form and go back
             _oldPasswordController.clear();
