@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
-import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/email_connection.dart';
 import 'package:snake_app/core/models/email_notification.dart';
 import 'package:snake_app/core/services/email_service.dart';
@@ -38,7 +37,8 @@ class _ContactUsState extends State<ContactUs> {
         final emailNotification = EmailNotification(
           recipients: [EmailConnection.senderEmail],
           subject: '[$_selectedCategory] ${_subjectController.text}',
-          textBody: '''
+          textBody:
+              '''
 Category: $_selectedCategory
 Subject: ${_subjectController.text}
 
@@ -102,12 +102,15 @@ ${_messageController.text}
         decoration: InputDecoration(
           hintText: hint,
           prefixIcon: prefixIcon,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 16.0,
+          ),
         ),
       ),
     );
@@ -152,15 +155,18 @@ ${_messageController.text}
                           children: [
                             Text(
                               'Get in Touch',
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4.0),
                             Text(
                               'We\'d love to hear from you',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.6),
                                   ),
                             ),
                           ],
@@ -183,8 +189,8 @@ ${_messageController.text}
                     Text(
                       'Category',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     Container(
@@ -200,15 +206,36 @@ ${_messageController.text}
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                           filled: true,
-                          fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                              .withValues(alpha: 0.3),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 16.0,
+                          ),
                         ),
                         items: const [
-                          DropdownMenuItem(value: 'General Inquiry', child: Text('General Inquiry')),
-                          DropdownMenuItem(value: 'Technical Support', child: Text('Technical Support')),
-                          DropdownMenuItem(value: 'Bug Report', child: Text('Bug Report')),
-                          DropdownMenuItem(value: 'Feature Request', child: Text('Feature Request')),
-                          DropdownMenuItem(value: 'Feedback', child: Text('Feedback')),
+                          DropdownMenuItem(
+                            value: 'General Inquiry',
+                            child: Text('General Inquiry'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Technical Support',
+                            child: Text('Technical Support'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Bug Report',
+                            child: Text('Bug Report'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Feature Request',
+                            child: Text('Feature Request'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Feedback',
+                            child: Text('Feedback'),
+                          ),
                         ],
                         onChanged: (value) {
                           setState(() {
@@ -222,8 +249,8 @@ ${_messageController.text}
                     Text(
                       'Subject',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     _buildTextField(
@@ -245,8 +272,8 @@ ${_messageController.text}
                     Text(
                       'Message',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     _buildTextField(
@@ -297,9 +324,8 @@ ${_messageController.text}
                               )
                             : Text(
                                 'Send Message',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                       ),
                     ),
@@ -322,8 +348,8 @@ ${_messageController.text}
                       Text(
                         'Other Ways to Reach Us',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 16.0),
                       _buildContactMethod(
@@ -374,14 +400,16 @@ ${_messageController.text}
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
                 ),
                 Text(
                   value,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),

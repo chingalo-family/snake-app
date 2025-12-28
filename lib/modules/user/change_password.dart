@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
-import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/services/user_service.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -105,15 +104,20 @@ class _ChangePasswordState extends State<ChangePassword> {
             Icons.lock_outline,
             color: Theme.of(context).colorScheme.primary,
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 16.0,
+          ),
           suffixIcon: IconButton(
             icon: Icon(
-              obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+              obscureText
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
             ),
             onPressed: onToggleVisibility,
           ),
@@ -145,8 +149,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Text(
                       'Current Password',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     _buildPasswordField(
@@ -155,7 +159,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       obscureText: _obscureOldPassword,
                       onToggleVisibility: () {
                         setState(() {
-                          _obscureOldPassword = !_obscureOldPassword,
+                          _obscureOldPassword = !_obscureOldPassword;
                         });
                       },
                       validator: (value) {
@@ -170,8 +174,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Text(
                       'New Password',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     _buildPasswordField(
@@ -198,8 +202,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Text(
                       'Confirm Password',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     _buildPasswordField(
@@ -248,9 +252,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                               )
                             : Text(
                                 'Update Password',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                       ),
                     ),
