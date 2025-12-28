@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
+import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
 import 'package:snake_app/core/models/user.dart';
+import 'package:snake_app/core/services/user_service.dart';
+import 'package:snake_app/core/utils/app_util.dart';
 import 'package:snake_app/modules/user/components/user_game_stats.dart';
+import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
@@ -150,6 +154,95 @@ class UserProfile extends StatelessWidget {
     );
   }
 
+  Future<void> _showLogoutConfirmation(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.logout,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 48.0,
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  'Confirm Logout',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 12.0),
+                Text(
+                  'Are you sure you want to sign out of your account?',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        child: const Text('Cancel'),
+                      ),
+                    ),
+                    const SizedBox(width: 12.0),
+                    Expanded(
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () async {
+                          Navigator.of(dialogContext).pop();
+                          await _handleLogout(context);
+                        },
+                        child: const Text('Logout'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _handleLogout(BuildContext context) async {
+    try {
+      await UserService().logout();
+      Provider.of<UserState>(context, listen: false).setCurrentUser(User());
+      Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
+      
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => UserSignInOrSignUp(),
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+        );
+        AppUtil.showToastMessage(message: 'Logged out successfully');
+      }
+    } catch (error) {
+      AppUtil.showToastMessage(message: 'Failed to logout: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,6 +330,24 @@ class UserProfile extends StatelessWidget {
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20.0),
+
+                            // Logout Button
+                            SizedBox(
+                              width: double.infinity,
+                              child: OutlinedButton.icon(
+                                onPressed: () => _showLogoutConfirmation(context),
+                                icon: const Icon(Icons.logout),
+                                label: const Text('Logout'),
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  side: BorderSide(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                  foregroundColor: Theme.of(context).colorScheme.error,
                                 ),
                               ),
                             ),

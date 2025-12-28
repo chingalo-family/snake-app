@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
-
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
 import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
+import 'package:snake_app/core/services/game_settings_service.dart';
 import 'package:snake_app/modules/about/about.dart';
 import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/privacy/privacy_policy.dart';
@@ -21,12 +21,25 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  // Note: These settings currently only update local state.
-  // Future implementation should integrate with:
-  // - GameSoundService for sound control
-  // - Haptic feedback service for vibration control
   bool _soundEnabled = true;
   bool _hapticEnabled = true;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final soundEnabled = await GameSettingsService.getSoundEffectsEnabled();
+    final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+    setState(() {
+      _soundEnabled = soundEnabled;
+      _hapticEnabled = hapticEnabled;
+      _isLoading = false;
+    });
+  }
 
   Widget _buildSettingsSection(
     BuildContext context, {
@@ -226,24 +239,22 @@ class _SettingsState extends State<Settings> {
                     title: 'Sound Effects',
                     subtitle: 'Enable background music and sound effects',
                     value: _soundEnabled,
-                    onChanged: (value) {
+                    onChanged: (value) async {
+                      await GameSettingsService.setSoundEffectsEnabled(value);
                       setState(() {
                         _soundEnabled = value;
                       });
-                      // Note: Future implementation will integrate with GameSoundService
-                      // to control actual sound playback
                     },
                   ),
                   _buildSettingItem(
                     title: 'Haptic Feedback',
                     subtitle: 'Enable vibration for game actions',
                     value: _hapticEnabled,
-                    onChanged: (value) {
+                    onChanged: (value) async {
+                      await GameSettingsService.setHapticFeedbackEnabled(value);
                       setState(() {
                         _hapticEnabled = value;
                       });
-                      // Note: Future implementation will integrate with haptic feedback
-                      // service to control vibrations
                     },
                   ),
                 ],

@@ -147,13 +147,29 @@ class _SignUpContainerState extends State<SignUpContainer> {
                       dataObject: userEntryFormState.formState,
                       mandatoryFieldObject: mandatoryFieldObject,
                     ),
-                    FilledButton(
-                      onPressed: !isSignUpFormValid
-                          ? null
-                          : () => _isSaving
-                                ? null
-                                : onSignUp(userEntryFormState.formState),
-                      child: Text(_isSaving ? "Waiting ..." : "Sign Up"),
+                    const SizedBox(height: 24.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        onPressed: !isSignUpFormValid
+                            ? null
+                            : () => _isSaving
+                                  ? null
+                                  : onSignUp(userEntryFormState.formState),
+                        child: Text(
+                          _isSaving ? "Creating Account..." : "Sign Up",
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 );

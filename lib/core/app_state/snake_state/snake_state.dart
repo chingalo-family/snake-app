@@ -11,6 +11,7 @@ import 'package:snake_app/core/constants/snake_reference.dart';
 import 'package:snake_app/core/models/combo.dart';
 import 'package:snake_app/core/models/game_food_score.dart';
 import 'package:snake_app/core/models/power_up.dart';
+import 'package:snake_app/core/services/game_settings_service.dart';
 import 'package:snake_app/core/utils/app_util.dart';
 
 class SnakeState with ChangeNotifier {
@@ -392,7 +393,10 @@ class SnakeState with ChangeNotifier {
     if (_isGameOver && _hasShield) {
       _isGameOver = false;
       _hasShield = false;
-      await Haptics.vibrate(HapticsType.warning);
+      final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+      if (hapticEnabled) {
+        await Haptics.vibrate(HapticsType.warning);
+      }
     }
 
     if (!_isGameOver) {
@@ -412,7 +416,10 @@ class SnakeState with ChangeNotifier {
         _score += earnedScore;
         _snake.add(_snake.last);
         generateSnakeFood();
-        await Haptics.vibrate(HapticsType.success);
+        final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+        if (hapticEnabled) {
+          await Haptics.vibrate(HapticsType.success);
+        }
       }
       // Check for power-up collection
       else if (head == _powerUpIndex && _powerUpIndex != -1) {
@@ -421,13 +428,19 @@ class SnakeState with ChangeNotifier {
             .allPowerUps[random.nextInt(PowerUpReference.allPowerUps.length)];
         activatePowerUp(powerUp);
         _clearPowerUpFromGrid();
-        await Haptics.vibrate(HapticsType.heavy);
+        final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+        if (hapticEnabled) {
+          await Haptics.vibrate(HapticsType.heavy);
+        }
       } else {
         _snake.removeLast();
       }
     } else {
       _resetCombo();
-      await Haptics.vibrate(HapticsType.error);
+      final hapticEnabled = await GameSettingsService.getHapticFeedbackEnabled();
+      if (hapticEnabled) {
+        await Haptics.vibrate(HapticsType.error);
+      }
     }
     notifyListeners();
   }
