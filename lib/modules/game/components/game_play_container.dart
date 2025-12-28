@@ -146,43 +146,38 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
         int gameBoxSize = snakeState.gameBoxSize;
         bool hasShield = snakeState.hasShield;
         int gridColumnsCount = GridUtil.getGridColumnsCount(context);
+        int numberOfRows = GridUtil.getNumberOfRows(
+          context,
+          widget.gamePanelHeight,
+          gridColumnsCount,
+        );
+        int totalBoxes = numberOfRows * gridColumnsCount;
 
         return GestureDetector(
           onVerticalDragUpdate: (details) =>
               onVerticalDragUpdate(details, direction),
           onHorizontalDragUpdate: (details) =>
               onHorizontalDragUpdate(details, direction),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              // Use actual container height instead of passed parameter
-              int actualHeight = constraints.maxHeight.toInt();
-              int numberOfRows = GridUtil.getNumberOfRows(
-                context,
-                actualHeight,
-                gridColumnsCount,
-              );
-              int totalBoxes = numberOfRows * gridColumnsCount;
-
-              return Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Theme.of(context).colorScheme.surface.withOpacity(0.3),
-                      Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
-                    ],
-                  ),
-                ),
-                padding: const EdgeInsets.all(2),
-                child: GridView.count(
-                  crossAxisCount: gridColumnsCount,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1.0,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 2,
-                  children: List.generate(totalBoxes, (index) {
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.surface.withOpacity(0.3),
+                  Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+                ],
+              ),
+            ),
+            padding: const EdgeInsets.all(2),
+            child: GridView.count(
+              crossAxisCount: gridColumnsCount,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio: 1.0,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+              children: List.generate(totalBoxes, (index) {
                 bool isSnake = snake.contains(index);
                 bool isHead = snake.isNotEmpty && snake.first == index;
                 bool isPowerUp = index == powerUpIndex && powerUpIndex != -1;
@@ -286,12 +281,10 @@ class _GamePlayContainerState extends State<GamePlayContainer> {
                 );
               }),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
-  },
-);
   }
 }
 
