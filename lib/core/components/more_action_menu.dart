@@ -35,24 +35,6 @@ class MoreActionMenu extends StatelessWidget {
     );
   }
 
-  void _onDirectToProfile(BuildContext context) {
-    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
-    Provider.of<GameScoreState>(
-      context,
-      listen: false,
-    ).resetGameScoreState(orgUnitId: orgUnitId);
-    Timer(
-      const Duration(microseconds: 500),
-      () => Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => UserProfile(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      ),
-    );
-  }
-
   void _onLogin(BuildContext context) {
     Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
     Timer(

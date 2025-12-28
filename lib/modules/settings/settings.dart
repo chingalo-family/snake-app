@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snake_app/core/app_state/game_score_state/game_score_state.dart';
 
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/app_bar_container.dart';
@@ -43,16 +44,13 @@ class _SettingsState extends State<Settings> {
           children: [
             Row(
               children: [
-                Text(
-                  icon,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                Text(icon, style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(width: 10.0),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -78,23 +76,19 @@ class _SettingsState extends State<Settings> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                Text(title, style: Theme.of(context).textTheme.titleMedium),
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
                 ),
               ],
             ),
           ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-          ),
+          Switch(value: value, onChanged: onChanged),
         ],
       ),
     );
@@ -112,10 +106,7 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Text(
-              icon,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text(icon, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(width: 15.0),
             Expanded(
               child: Text(
@@ -125,7 +116,9 @@ class _SettingsState extends State<Settings> {
             ),
             Icon(
               Icons.chevron_right,
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ],
         ),
@@ -134,6 +127,11 @@ class _SettingsState extends State<Settings> {
   }
 
   void _navigateToProfile() {
+    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
+    Provider.of<GameScoreState>(
+      context,
+      listen: false,
+    ).resetGameScoreState(orgUnitId: orgUnitId);
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -202,16 +200,17 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Text(
                       '⚙️ Settings',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: Theme.of(context).textTheme.headlineLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5.0),
                     Text(
                       'Customize your game experience',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                          ),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
                     ),
                   ],
                 ),
