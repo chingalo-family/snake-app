@@ -8,10 +8,9 @@ import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/material_card.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/icon_reference.dart';
-import 'package:snake_app/modules/about/about.dart';
+import 'package:snake_app/modules/contact/contact_us.dart';
 import 'package:snake_app/modules/leaderboard/leaderboard.dart';
 import 'package:snake_app/modules/settings/settings.dart';
-import 'package:snake_app/modules/user/user_profile.dart';
 import 'package:snake_app/modules/user/user_sign_in_or_sign_up.dart';
 
 class MoreActionMenu extends StatelessWidget {
@@ -35,24 +34,6 @@ class MoreActionMenu extends StatelessWidget {
     );
   }
 
-  void _onDirectToProfile(BuildContext context) {
-    String orgUnitId = Provider.of<UserState>(context, listen: false).orgUnitId;
-    Provider.of<GameScoreState>(
-      context,
-      listen: false,
-    ).resetGameScoreState(orgUnitId: orgUnitId);
-    Timer(
-      const Duration(microseconds: 500),
-      () => Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => UserProfile(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      ),
-    );
-  }
-
   void _onLogin(BuildContext context) {
     Provider.of<UserEntryFormState>(context, listen: false).resetFormState();
     Timer(
@@ -67,20 +48,6 @@ class MoreActionMenu extends StatelessWidget {
     );
   }
 
-  void _onNavigateToAbout(BuildContext context) {
-    Navigator.pop(context);
-    Timer(
-      const Duration(microseconds: 500),
-      () => Navigator.push(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const About(),
-          transitionDuration: const Duration(seconds: 0),
-        ),
-      ),
-    );
-  }
-
   void _onNavigateToSettings(BuildContext context) {
     Navigator.pop(context);
     Timer(
@@ -89,6 +56,20 @@ class MoreActionMenu extends StatelessWidget {
         context,
         PageRouteBuilder(
           pageBuilder: (_, __, ___) => const Settings(),
+          transitionDuration: const Duration(seconds: 0),
+        ),
+      ),
+    );
+  }
+
+  void _onNavigateToContactUs(BuildContext context) {
+    Navigator.pop(context);
+    Timer(
+      const Duration(microseconds: 500),
+      () => Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const ContactUs(),
           transitionDuration: const Duration(seconds: 0),
         ),
       ),
@@ -126,30 +107,21 @@ class MoreActionMenu extends StatelessWidget {
                       children: [
                         _buildMenuItem(
                           context,
-                          icon: Icons.info_outline,
-                          label: 'About App',
-                          onTap: () => _onNavigateToAbout(context),
-                        ),
-                        _buildMenuItem(
-                          context,
                           icon: Icons.settings_outlined,
                           label: 'Settings',
                           onTap: () => _onNavigateToSettings(context),
                         ),
                         _buildMenuItem(
                           context,
+                          icon: Icons.mail_outline,
+                          label: 'Contact Us',
+                          onTap: () => _onNavigateToContactUs(context),
+                        ),
+                        _buildMenuItem(
+                          context,
                           iconLabel: IconReference.trophy,
                           label: 'Leaderboard',
                           onTap: () => _onDirectToLeaderboard(context),
-                        ),
-                        Visibility(
-                          visible: isUserLoggedIn,
-                          child: _buildMenuItem(
-                            context,
-                            iconLabel: IconReference.person,
-                            label: 'Profile',
-                            onTap: () => _onDirectToProfile(context),
-                          ),
                         ),
                         _buildMenuItem(
                           context,

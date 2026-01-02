@@ -28,9 +28,22 @@ class _SignInOrSignUpContainerState extends State<SignInOrSignUpContainer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Modern Tab Selector
         Container(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 0.0),
+          decoration: BoxDecoration(
+            color: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.2),
+              width: 1,
+            ),
+          ),
+          padding: const EdgeInsets.all(4.0),
           child: SegmentedButton<TabSelection>(
             segments: const <ButtonSegment<TabSelection>>[
               ButtonSegment<TabSelection>(
@@ -48,21 +61,31 @@ class _SignInOrSignUpContainerState extends State<SignInOrSignUpContainer> {
             onSelectionChanged: (Set<TabSelection> selection) =>
                 _onSetSelection(selection.first),
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primaryContainer,
-              ),
+              backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Theme.of(context).colorScheme.primary;
+                }
+                return Colors.transparent;
+              }),
+              foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Theme.of(context).colorScheme.onPrimary;
+                }
+                return Theme.of(context).colorScheme.onSurface;
+              }),
               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
+              side: WidgetStateProperty.all<BorderSide>(BorderSide.none),
             ),
           ),
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 20.0),
         _selectedTab == TabSelection.signIn
-            ? SignInContainer()
-            : SignUpContainer(),
+            ? const SignInContainer()
+            : const SignUpContainer(),
       ],
     );
   }

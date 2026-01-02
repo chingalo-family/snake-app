@@ -9,6 +9,7 @@ import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/constants/app_info_reference.dart';
 import 'package:snake_app/core/constants/app_sound_reference.dart';
+import 'package:snake_app/core/services/game_settings_service.dart';
 import 'package:snake_app/core/services/game_sound_service.dart';
 import 'package:snake_app/modules/splash/splash.dart';
 
@@ -31,15 +32,26 @@ class AppGame extends StatefulWidget {
 
 class _AppGameState extends State<AppGame> with WidgetsBindingObserver {
   final soundManger = GameSoundService.instance;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    soundManger.playBackgroundMusic();
+    _initializeSound();
+  }
+
+  Future<void> _initializeSound() async {
+    final soundEnabled = await GameSettingsService.getSoundEffectsEnabled();
+    if (soundEnabled) {
+      soundManger.playBackgroundMusic();
+    }
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    final soundEnabled = await GameSettingsService.getSoundEffectsEnabled();
+    if (!soundEnabled) return;
+
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive ||
         state == AppLifecycleState.detached) {

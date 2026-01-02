@@ -40,4 +40,9 @@ class UserState with ChangeNotifier {
     await UserService().setCurrentUser(_currentUser!);
     setCurrentUser(_currentUser!);
   }
+
+  void clearCurrentUser() {
+    _currentUser = null;
+    notifyListeners();
+  }
 }

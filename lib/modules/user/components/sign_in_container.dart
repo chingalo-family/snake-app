@@ -111,14 +111,36 @@ class _SignInContainerState extends State<SignInContainer> {
                         formSections: formSections,
                         dataObject: userEntryFormState.formState,
                         mandatoryFieldObject: mandatoryFieldObject,
+                        elevation: 0.0, // Remove card elevation for modern look
                       ),
-                      FilledButton(
-                        onPressed: !isLoginFormValid
-                            ? null
-                            : () => _isSaving
-                                  ? null
-                                  : onLogin(userEntryFormState.formState),
-                        child: Text(_isSaving ? "Waiting ..." : "Sign In"),
+                      const SizedBox(height: 32.0),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 18.0,
+                              horizontal: 32.0,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            elevation: 2.0,
+                          ),
+                          onPressed: !isLoginFormValid
+                              ? null
+                              : () => _isSaving
+                                    ? null
+                                    : onLogin(userEntryFormState.formState),
+                          child: Text(
+                            _isSaving ? "Signing In..." : "Sign In",
+                            style: const TextStyle(
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

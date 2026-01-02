@@ -18,8 +18,8 @@ class EmailService {
       ..recipients.addAll(emailNotification.recipients!)
       ..ccRecipients.addAll(emailNotification.ccRecipients)
       ..subject = emailNotification.subject
-      ..text = emailNotification.textBody;
-    // ..html = emailNotification.htmlBody;
+      ..text = emailNotification.textBody
+      ..html = emailNotification.htmlBody;
     try {
       final sendReport = await send(message, smtpServer);
       debugPrint('Message sent: $sendReport');

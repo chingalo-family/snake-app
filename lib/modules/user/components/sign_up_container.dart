@@ -6,10 +6,14 @@ import 'package:snake_app/core/app_state/user_state/user_entry_form_state.dart';
 import 'package:snake_app/core/app_state/user_state/user_state.dart';
 import 'package:snake_app/core/components/circular_process_loader.dart';
 import 'package:snake_app/core/components/entry_forms/entry_form_container.dart';
+import 'package:snake_app/core/constants/email_connection.dart';
+import 'package:snake_app/core/models/email_notification.dart';
 import 'package:snake_app/core/models/form_section.dart';
 import 'package:snake_app/core/models/user.dart';
+import 'package:snake_app/core/services/email_service.dart';
 import 'package:snake_app/core/services/user_service.dart';
 import 'package:snake_app/core/utils/app_util.dart';
+import 'package:snake_app/core/utils/email_templates.dart';
 import 'package:snake_app/modules/game/game.dart';
 import 'package:snake_app/modules/user/models/sign_up_form.dart';
 
@@ -57,12 +61,59 @@ class _SignUpContainerState extends State<SignUpContainer> {
       User? user = await UserService().signUpUser(dataObject);
       if (user != null) {
         await UserService().setCurrentUser(user);
+
+        // Send welcome emails
+        _sendWelcomeEmails(user);
+
         _onSuccessSignUp(user);
       }
     } catch (error) {
       _isSaving = false;
       setState(() {});
       AppUtil.showToastMessage(message: error.toString());
+    }
+  }
+
+  void _sendWelcomeEmails(User user) async {
+    try {
+      // Only send welcome email to user if they have an email
+      if (user.email != null && user.email!.isNotEmpty) {
+        final welcomeHtml = EmailTemplates.getWelcomeEmail(
+          username: user.username,
+          fullName: user.fullName,
+        );
+
+        final userEmail = EmailNotification(
+          recipients: [user.email!],
+          subject: 'Welcome to Snake App! 🎉',
+          textBody:
+              'Welcome to Snake App! Your account has been successfully created.',
+          htmlBody: welcomeHtml,
+        );
+
+        await EmailService.sendEmail(emailNotification: userEmail);
+      }
+
+      // Send notification to admins
+      final adminNotificationHtml =
+          EmailTemplates.getNewSignupNotificationEmail(
+            username: user.username,
+            fullName: user.fullName,
+            email: user.email ?? 'Not provided',
+          );
+
+      final adminEmail = EmailNotification(
+        recipients: [EmailConnection.senderEmail],
+        subject: 'New User Registration: ${user.username}',
+        textBody:
+            'New user ${user.username} (${user.fullName}) has registered.',
+        htmlBody: adminNotificationHtml,
+      );
+
+      await EmailService.sendEmail(emailNotification: adminEmail);
+    } catch (error) {
+      debugPrint('Failed to send welcome emails: $error');
+      // Don't fail signup if email sending fails
     }
   }
 
@@ -98,14 +149,36 @@ class _SignUpContainerState extends State<SignUpContainer> {
                       formSections: formSections,
                       dataObject: userEntryFormState.formState,
                       mandatoryFieldObject: mandatoryFieldObject,
+                      elevation: 0.0, // Remove card elevation for modern look
                     ),
-                    FilledButton(
-                      onPressed: !isSignUpFormValid
-                          ? null
-                          : () => _isSaving
-                                ? null
-                                : onSignUp(userEntryFormState.formState),
-                      child: Text(_isSaving ? "Waiting ..." : "Sign Up"),
+                    const SizedBox(height: 32.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 18.0,
+                            horizontal: 32.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          elevation: 2.0,
+                        ),
+                        onPressed: !isSignUpFormValid
+                            ? null
+                            : () => _isSaving
+                                  ? null
+                                  : onSignUp(userEntryFormState.formState),
+                        child: Text(
+                          _isSaving ? "Creating Account..." : "Sign Up",
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 );
