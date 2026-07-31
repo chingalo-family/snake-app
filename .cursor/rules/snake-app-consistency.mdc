@@ -1,0 +1,51 @@
+---
+description: Team-wide Cursor standards for Snake App
+alwaysApply: true
+---
+
+# Snake App Cursor Rule
+
+Flutter game app: offline-first Snake with responsive play, local profile saves, and platform-correct controls.
+Follow these standards for consistent contributions across developers and AI agents.
+
+## Scope and stack
+- App root: repository root (`lib/`, `test/`, `android/`, `ios/`, `linux/`, `macos/`, `windows/`, `web/`)
+- Package ID: `chingalo.family.snake_app` · Display name: **Snake App**
+- Stack: Flutter, local SQLite + SharedPreferences, audio (SFX/BGM), Provider or Riverpod
+- Target layout: `lib/app/`, `lib/core/`, `lib/features/`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
+- Product plan: `docs/IMPLEMENTATION_PLAN.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
+- Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`
+
+## Required workflow before finishing a task
+1. **Check what changed** — `git status` and `git diff`; only intentional files
+2. Run `flutter analyze` — no errors
+3. Run relevant `flutter test` — must pass
+4. If UX/architecture/theme/icon/CI conventions changed, update matching `docs/` files
+5. If this rule or skills drift from the codebase, update `.cursor/` in the same change set
+6. Desktop CI lives in `.github/workflows/` — see `docs/CI.md` when changing build/release behavior
+
+## Product constraints (do not regress)
+- Offline-first: high scores and levels persist locally; no DHIS2 auth for core play
+- Profile required to **save** scores/levels; play without profile is allowed
+- Touch: swipe · Desktop (Linux/macOS/Windows): arrow keys
+- Playground must work on phone/tablet including rotation
+- SFX and background music are **separate** settings toggles
+- Android updates: prefer Play Store / in-app update — not custom APK sideload for MVP
+- Theme: nature-arcade greens/amber from `docs/THEME_AND_COLORS.md` — avoid purple-indigo defaults
+
+## Architecture conventions
+- Domain logic in `lib/core/services/` or feature controllers — not in widgets
+- Grid metrics from layout constraints — not fixed portrait-only sizes
+- Package imports: `package:snake_app/...`
+- Prefer shared widgets in `lib/shared/` or `lib/core/` before one-offs
+- Never commit secrets (`.env`, keystores, API keys)
+
+## Naming
+- Features: `lib/features/<feature>/`
+- Tests: mirror under `test/`
+- Loop indexes: descriptive names (`rowIndex`, `cellIndex`) — not bare `i`/`j`/`k`
+
+## Pull request quality bar
+- Scoped, reviewable diffs
+- Tests for game logic, unlock rules, and persistence gates
+- Show analyze/tests ran and `git status` reviewed

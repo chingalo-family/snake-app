@@ -1,37 +1,47 @@
 name: snake_app
-description: "A simple snake game built with Flutter."
-publish_to: 'none' 
-version: 1.0.1+2
+description: "Snake App — an engaging, addictive snake game by Chingalo Family."
+publish_to: 'none'
+version: 0.0.1+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.12.2
 
 dependencies:
   flutter:
     sdk: flutter
-  syncfusion_flutter_pdfviewer: ^31.1.23
-  mailer: ^6.5.0
-  flutter_svg: ^2.2.1
-  sqflite: ^2.4.2
-  http: ^1.5.0
-  shared_preferences: ^2.5.3
-  provider: ^6.1.5+1
-  dhis2_dart_utils: ^1.1.26
-  fluttertoast: ^9.0.0
-  path: ^1.9.1
-  audioplayers: ^6.5.1
-  haptic_feedback: ^0.6.0
-  path_provider: ^2.1.5
-  install_plugin: ^2.1.0
+  cupertino_icons: ^1.0.8
+  window_manager: ^0.5.1
+  screen_retriever: ^0.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/app-icon.png
+  remove_alpha_ios: true
+  adaptive_icon_background: "#0B1F1A"
+  adaptive_icon_foreground: assets/app-icon.png
+  adaptive_icon_foreground_inset: 0
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: assets/app-icon.png
+    background_color: "#0B1F1A"
+    theme_color: "#1FA87A"
+  windows:
+    generate: true
+    image_path: assets/app-icon.png
+    icon_size: 256
+  macos:
+    generate: true
+    image_path: assets/app-icon.png
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/img/
-    - assets/icons/
-    - assets/sounds/
+    - assets/app-icon.png

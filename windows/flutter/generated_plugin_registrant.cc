@@ -6,15 +6,12 @@
 
 #include "generated_plugin_registrant.h"
 
-#include <audioplayers_windows/audioplayers_windows_plugin.h>
-#include <syncfusion_pdfviewer_windows/syncfusion_pdfviewer_windows_plugin.h>
-#include <url_launcher_windows/url_launcher_windows.h>
+#include <screen_retriever_windows/screen_retriever_windows_plugin_c_api.h>
+#include <window_manager/window_manager_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-  AudioplayersWindowsPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("AudioplayersWindowsPlugin"));
-  SyncfusionPdfviewerWindowsPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("SyncfusionPdfviewerWindowsPlugin"));
-  UrlLauncherWindowsRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("UrlLauncherWindows"));
+  ScreenRetrieverWindowsPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ScreenRetrieverWindowsPluginCApi"));
+  WindowManagerPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WindowManagerPlugin"));
 }

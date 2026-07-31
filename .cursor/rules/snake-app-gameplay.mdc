@@ -1,0 +1,29 @@
+---
+description: Snake App gameplay and responsive board conventions
+globs: lib/features/game/**/*.dart,lib/features/levels/**/*.dart,lib/core/**/*grid*,lib/core/**/*snake*
+alwaysApply: false
+---
+
+# Snake App Gameplay
+
+Follow `docs/IMPLEMENTATION_PLAN.md` §4.4–4.8 and `.cursor/skills/snake-app-gameplay/SKILL.md`.
+
+## Controls
+- Touch: swipe with dominant-axis + distance threshold; block reverse into self
+- Desktop: arrow keys (WASD optional); Esc pauses
+- Keyboard focus only while playground is active
+
+## Board
+- Derive columns/rows from available board constraints
+- Support portrait and landscape on phone/tablet
+- On orientation change: recompute metrics; avoid unfair mid-move deaths (soft pause OK)
+
+## Scoring & levels
+- Collectibles are tiered objects/animals with icons and different base scores
+- Levels unlock via clear rules; persist highest unlocked + per-level bests
+- Saving requires a local profile (see offline-profile skill)
+
+## Audio feedback
+- Eat / collide / UI use SFX channel
+- Menu / gameplay loops use BGM channel
+- Respect independent Settings toggles

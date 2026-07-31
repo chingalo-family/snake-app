@@ -1,0 +1,340 @@
+name: Desktop — Build (Windows, macOS, Linux)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".cursor/**"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".cursor/**"
+  workflow_dispatch:
+
+concurrency:
+  group: desktop-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WINDOWS_RELEASE_DIR: build/windows/x64/runner/Release
+  LINUX_BUNDLE_DIR: build/linux/x64/release/bundle
+  MACOS_APP_NAME: Snake App.app
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Package Windows bundle
+        id: package
+        shell: pwsh
+        run: |
+          $versionLine = (Get-Content "pubspec.yaml" | Select-String '^version:').Line
+          $full = ($versionLine -replace '^version:\s*', '').Trim()
+          $semver = $full.Split('+')[0]
+          $zipName = "snake-app-v${semver}-windows-x64.zip"
+          if (-not (Test-Path "${{ env.WINDOWS_RELEASE_DIR }}")) {
+            throw "Windows release dir not found: ${{ env.WINDOWS_RELEASE_DIR }}"
+          }
+          Compress-Archive -Path "${{ env.WINDOWS_RELEASE_DIR }}\*" -DestinationPath $zipName -Force
+          "zip_name=$zipName" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "semver=$semver" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snake-app-windows
+          path: ${{ steps.package.outputs.zip_name }}
+          if-no-files-found: error
+
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable macOS desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Build macOS release
+        run: flutter build macos --release
+
+      - name: Package macOS app
+        id: package
+        run: |
+          VERSION_FULL=$(grep '^version:' pubspec.yaml | sed 's/version:[[:space:]]*//')
+          SEMVER="${VERSION_FULL%%+*}"
+          ARCH=$(uname -m)
+          case "$ARCH" in
+            arm64) ARCH_LABEL=arm64 ;;
+            x86_64) ARCH_LABEL=x64 ;;
+            *) ARCH_LABEL="$ARCH" ;;
+          esac
+          APP_PATH="build/macos/Build/Products/Release/${MACOS_APP_NAME}"
+          ZIP_NAME="snake-app-v${SEMVER}-macos-${ARCH_LABEL}.zip"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "::error::macOS app not found at ${APP_PATH}"
+            ls -la build/macos/Build/Products/Release/ || true
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$ZIP_NAME"
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "semver=$SEMVER" >> "$GITHUB_OUTPUT"
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snake-app-macos
+          path: ${{ steps.package.outputs.zip_name }}
+          if-no-files-found: error
+
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux desktop dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config \
+            libgtk-3-dev liblzma-dev libstdc++-12-dev
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Linux desktop
+        run: flutter config --enable-linux-desktop
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Build Linux release
+        run: flutter build linux --release
+
+      - name: Package Linux bundle
+        id: package
+        run: |
+          VERSION_FULL=$(grep '^version:' pubspec.yaml | sed 's/version:[[:space:]]*//')
+          SEMVER="${VERSION_FULL%%+*}"
+          ZIP_NAME="snake-app-v${SEMVER}-linux-x64.zip"
+          if [ ! -d "${LINUX_BUNDLE_DIR}" ]; then
+            echo "::error::Linux bundle not found at ${LINUX_BUNDLE_DIR}"
+            find build/linux -maxdepth 4 -type d || true
+            exit 1
+          fi
+          (
+            cd "${LINUX_BUNDLE_DIR}/.."
+            zip -r "$GITHUB_WORKSPACE/${ZIP_NAME}" "$(basename "${LINUX_BUNDLE_DIR}")"
+          )
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "semver=$SEMVER" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snake-app-linux
+          path: ${{ steps.package.outputs.zip_name }}
+          if-no-files-found: error
+
+  publish-release:
+    name: Create GitHub Release
+    needs: [build-windows, build-macos, build-linux]
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: snake-app-windows
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: snake-app-macos
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: snake-app-linux
+
+      - name: Collect assets and version
+        id: release
+        run: |
+          set -euo pipefail
+          FULL=$(grep '^version:' pubspec.yaml | sed 's/version:[[:space:]]*//')
+          SEMVER="${FULL%%+*}"
+          BUILD="${FULL#*+}"
+          if [ "$BUILD" = "$FULL" ]; then BUILD=0; fi
+
+          # Unique release per pubspec version+build (e.g. 1.0.0+2 → v1.0.0-build.2)
+          TAG="v${SEMVER}-build.${BUILD}"
+          TITLE="Snake App ${SEMVER} (build ${BUILD})"
+
+          WIN_ZIP=$(ls -1 snake-app-v${SEMVER}-windows-*.zip | head -1)
+          MAC_ZIP=$(ls -1 snake-app-v${SEMVER}-macos-*.zip | head -1)
+          LINUX_ZIP=$(ls -1 snake-app-v${SEMVER}-linux-*.zip | head -1)
+
+          for asset in "$WIN_ZIP" "$MAC_ZIP" "$LINUX_ZIP"; do
+            if [ -z "$asset" ] || [ ! -f "$asset" ]; then
+              echo "::error::Missing desktop zip asset (expected Windows, macOS, and Linux)."
+              ls -la *.zip || true
+              exit 1
+            fi
+          done
+
+          {
+            echo "full=$FULL"
+            echo "semver=$SEMVER"
+            echo "build=$BUILD"
+            echo "tag=$TAG"
+            echo "title=$TITLE"
+            echo "win_zip=$WIN_ZIP"
+            echo "mac_zip=$MAC_ZIP"
+            echo "linux_zip=$LINUX_ZIP"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Assets ready for ${TAG}:"
+          ls -lh "$WIN_ZIP" "$MAC_ZIP" "$LINUX_ZIP"
+
+      - name: Build release summary notes
+        id: notes
+        env:
+          SEMVER: ${{ steps.release.outputs.semver }}
+          BUILD: ${{ steps.release.outputs.build }}
+          TAG: ${{ steps.release.outputs.tag }}
+          WIN_ZIP: ${{ steps.release.outputs.win_zip }}
+          MAC_ZIP: ${{ steps.release.outputs.mac_zip }}
+          LINUX_ZIP: ${{ steps.release.outputs.linux_zip }}
+        run: |
+          set -euo pipefail
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+
+          PREV_TAG=$(git tag -l 'v*-build.*' --sort=-v:refname | head -1 || true)
+          if [ -n "$PREV_TAG" ] && [ "$PREV_TAG" != "$TAG" ]; then
+            RANGE="${PREV_TAG}..${{ github.sha }}"
+            RANGE_LABEL="since \`${PREV_TAG}\`"
+          else
+            RANGE="${{ github.sha }}~15..${{ github.sha }}"
+            RANGE_LABEL="recent commits"
+          fi
+
+          CHANGELOG_FILE=$(mktemp)
+          git log "$RANGE" --pretty=format:'- %s (%h)' --no-merges -- . \
+            ':(exclude).cursor' ':(exclude)docs' ':(exclude)**/*.md' \
+            > "$CHANGELOG_FILE" 2>/dev/null || true
+          sed -i '/^$/d' "$CHANGELOG_FILE" || true
+          if [ ! -s "$CHANGELOG_FILE" ]; then
+            git log -10 --pretty=format:'- %s (%h)' --no-merges > "$CHANGELOG_FILE" || true
+            sed -i '/^$/d' "$CHANGELOG_FILE" || true
+          fi
+          if [ ! -s "$CHANGELOG_FILE" ]; then
+            echo "- Desktop rebuild for Snake App **${SEMVER}** (build ${BUILD})" > "$CHANGELOG_FILE"
+          fi
+          head -40 "$CHANGELOG_FILE" > "${CHANGELOG_FILE}.trim"
+          mv "${CHANGELOG_FILE}.trim" "$CHANGELOG_FILE"
+
+          {
+            echo "## Summary"
+            echo
+            echo "Desktop release **Snake App ${SEMVER}** (build **${BUILD}**) with installable builds for Windows, macOS, and Linux."
+            echo
+            echo "- Published: ${TIMESTAMP}"
+            echo "- Commit: \`${SHORT_SHA}\`"
+            echo "- Workflow: [run #${{ github.run_number }}](${RUN_URL})"
+            echo
+            echo "## What changed (${RANGE_LABEL})"
+            echo
+            cat "$CHANGELOG_FILE"
+            echo
+            echo "## Download assets"
+            echo
+            echo "| Platform | File |"
+            echo "|----------|------|"
+            echo "| Windows (x64) | \`${WIN_ZIP}\` |"
+            echo "| macOS | \`${MAC_ZIP}\` |"
+            echo "| Linux (x64) | \`${LINUX_ZIP}\` |"
+            echo
+            echo "## How to install"
+            echo
+            echo "1. **Windows** — download \`${WIN_ZIP}\`, extract, run \`snake_app.exe\`"
+            echo "2. **macOS** — download \`${MAC_ZIP}\`, extract, open \`Snake App.app\` (right-click → Open if Gatekeeper blocks unsigned builds)"
+            echo "3. **Linux** — download \`${LINUX_ZIP}\`, extract the \`bundle\` folder, run \`./snake_app\`"
+            echo
+            echo "---"
+            echo "Package: \`chingalo.family.snake_app\` · Tag: \`${TAG}\`"
+          } > release_notes.md
+
+          echo "----- release notes -----"
+          cat release_notes.md
+
+      - name: Create or replace GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          TITLE: ${{ steps.release.outputs.title }}
+          WIN_ZIP: ${{ steps.release.outputs.win_zip }}
+          MAC_ZIP: ${{ steps.release.outputs.mac_zip }}
+          LINUX_ZIP: ${{ steps.release.outputs.linux_zip }}
+        run: |
+          set -euo pipefail
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists — updating notes and replacing assets."
+            gh release edit "$TAG" \
+              --title "$TITLE" \
+              --notes-file release_notes.md \
+              --target "${{ github.sha }}"
+            gh release upload "$TAG" "$WIN_ZIP" "$MAC_ZIP" "$LINUX_ZIP" --clobber
+          else
+            echo "Creating new release ${TAG}."
+            gh release create "$TAG" "$WIN_ZIP" "$MAC_ZIP" "$LINUX_ZIP" \
+              --title "$TITLE" \
+              --notes-file release_notes.md \
+              --target "${{ github.sha }}" \
+              --latest
+          fi
+
+          echo "Release URL:"
+          gh release view "$TAG" --json url --jq .url

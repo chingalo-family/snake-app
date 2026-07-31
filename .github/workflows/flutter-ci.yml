@@ -1,0 +1,63 @@
+name: Flutter CI — Analyze & Test
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".cursor/**"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".cursor/**"
+  workflow_dispatch:
+
+concurrency:
+  group: flutter-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Analyze & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Unit and widget tests
+        run: flutter test --coverage
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage/lcov.info
+          if-no-files-found: warn
+
+      - name: Coverage summary
+        run: |
+          if [ ! -f coverage/lcov.info ]; then
+            echo "No coverage file produced"
+            exit 0
+          fi
+          total_lines=$(grep -h "^LF:" coverage/lcov.info | awk -F: '{sum+=$2} END {print sum+0}')
+          covered_lines=$(grep -h "^LH:" coverage/lcov.info | awk -F: '{sum+=$2} END {print sum+0}')
+          if [ "$total_lines" -gt 0 ]; then
+            coverage=$(awk "BEGIN { printf \"%.2f\", ($covered_lines/$total_lines)*100 }")
+            echo "Coverage: ${coverage}% (${covered_lines}/${total_lines})"
+          else
+            echo "Coverage: 0.00% (0/0)"
+          fi
