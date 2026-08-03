@@ -36,6 +36,19 @@ flutter pub get
 flutter run
 ```
 
+### Linux desktop build deps
+
+On Debian/Ubuntu, install Flutter Linux toolchain packages and GStreamer (required by `audioplayers`):
+
+```bash
+sudo apt-get install -y \
+  clang cmake ninja-build pkg-config \
+  libgtk-3-dev liblzma-dev \
+  libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+```
+
+See [docs/CI.md](docs/CI.md) for the full CI package list.
+
 ## Product highlights (planned)
 
 - Onboarding, About, Settings
