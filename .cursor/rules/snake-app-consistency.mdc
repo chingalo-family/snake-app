@@ -11,18 +11,26 @@ Follow these standards for consistent contributions across developers and AI age
 ## Scope and stack
 - App root: repository root (`lib/`, `test/`, `android/`, `ios/`, `linux/`, `macos/`, `windows/`, `web/`)
 - Package ID: `chingalo.family.snake_app` · Display name: **Snake App**
-- Stack: Flutter, local SQLite + SharedPreferences, audio (SFX/BGM), Provider or Riverpod
+- Stack: Flutter, local SQLite via **Drift (`AppDatabase`)**, SharedPreferences via **PreferenceService**, audio (SFX/BGM), Provider or Riverpod
 - Target layout: `lib/app/`, `lib/core/`, `lib/features/`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
-- Product plan: `docs/IMPLEMENTATION_PLAN.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
+- Product plan: `docs/IMPLEMENTATION_PLAN.md` · Modes: `docs/GAME_MODES.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
 - Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`
 
 ## Required workflow before finishing a task
 1. **Check what changed** — `git status` and `git diff`; only intentional files
 2. Run `flutter analyze` — no errors
 3. Run relevant `flutter test` — must pass
-4. If UX/architecture/theme/icon/CI conventions changed, update matching `docs/` files
-5. If this rule or skills drift from the codebase, update `.cursor/` in the same change set
-6. Desktop CI lives in `.github/workflows/` — see `docs/CI.md` when changing build/release behavior
+4. If UX / architecture / theme / icon / CI / gameplay-modes / plan conventions changed, update the matching `docs/` files in the same change set:
+   - `docs/ARCHITECTURE.md` — structure, packages, layers
+   - `docs/UX_DESIGN.md` — screens, flows, controls, feedback
+   - `docs/THEME_AND_COLORS.md` — palette, typography, tokens
+   - `docs/IMPLEMENTATION_PLAN.md` — features, phases, acceptance
+   - `docs/GAME_MODES.md` — Classic / Wrap / Obstacles and variants (planning)
+   - `docs/CI.md` — GitHub Actions / desktop release behavior
+   - `docs/APP_ICON_CONCEPT.md` — icon / branding mark
+5. If marketing-facing product facts change (level count, game modes, controls, offline/profile claims, store links), also update sibling website docs at `../snake-app-website/docs/` when that repo is present beside this checkout
+6. If this rule or skills drift from the codebase, update `.cursor/` in the same change set
+7. Desktop CI lives in `.github/workflows/` — see `docs/CI.md` when changing build/release behavior
 
 ## Product constraints (do not regress)
 - Offline-first: high scores and levels persist locally; no DHIS2 auth for core play
@@ -30,6 +38,7 @@ Follow these standards for consistent contributions across developers and AI age
 - Touch: swipe · Desktop (Linux/macOS/Windows): arrow keys
 - Playground must work on phone/tablet including rotation
 - SFX and background music are **separate** settings toggles
+- UI languages: English (default) and Kiswahili via Flutter gen-l10n (`lib/l10n/`)
 - Android updates: prefer Play Store / in-app update — not custom APK sideload for MVP
 - Theme: nature-arcade greens/amber from `docs/THEME_AND_COLORS.md` — avoid purple-indigo defaults
 
@@ -38,12 +47,18 @@ Follow these standards for consistent contributions across developers and AI age
 - Grid metrics from layout constraints — not fixed portrait-only sizes
 - Package imports: `package:snake_app/...`
 - Prefer shared widgets in `lib/shared/` or `lib/core/` before one-offs
+- User-facing strings: ARB + `context.l10n` — no hardcoded UI English
 - Never commit secrets (`.env`, keystores, API keys)
 
 ## Naming
 - Features: `lib/features/<feature>/`
 - Tests: mirror under `test/`
-- Loop indexes: descriptive names (`rowIndex`, `cellIndex`) — not bare `i`/`j`/`k`
+- **Variables must be meaningful** (domain words, not abbreviations)
+  - Indexes: `rowIndex`, `cellIndex`, `levelIndex` — never bare `i`/`j`/`k`
+  - Avoid: `snap`, `db`, `tp`, `rng`, `item`, `info`, `data`, `tmp` when a clearer name exists
+  - Booleans: `is…` / `has…` / `can…`
+  - Prefer `engineSnapshot`, `levelConfig`, `eatEvent`, `sharedPreferences`, `packageInfo`
+  - OK idioms: `context`, `ref`, `child`, `theme`, `_`
 
 ## Pull request quality bar
 - Scoped, reviewable diffs

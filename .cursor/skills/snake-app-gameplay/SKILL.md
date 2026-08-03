@@ -47,8 +47,15 @@ Use when implementing or changing the play loop, controls, board layout, collect
 - Level unlock predicates
 - Score calculation with tiers (and combos/power-ups if present)
 
+## Naming (gameplay code)
+- Prefer `engineSnapshot`, `eatEvent`, `nextDirection`, `levelConfig`, `cellIndex`, `rowIndex`, `columnIndex`
+- Avoid `snap`, `eat`, `dir`, `config`, `tp`, `t`, `dx`/`dy` without domain words (`velocityX` / `velocityY`)
+- Collectible lambdas use `collectible`, not `item`
+- See project skill Naming section for full rules
+
 ## Do not
 - Lock orientation to portrait only
 - Combine music + SFX into one setting
 - Hardcode a phone-only grid size for all devices
 - Require network for gameplay
+- Use cryptic abbreviations in engine/HUD locals

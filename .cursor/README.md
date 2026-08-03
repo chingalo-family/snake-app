@@ -21,6 +21,7 @@ Shared Cursor configuration for this repository.
 ## Purpose
 - Align AI-assisted development with `docs/IMPLEMENTATION_PLAN.md`
 - Keep offline-first, responsive, and platform-correct control rules consistent
+- Enforce **meaningful variable names** (see `snake-app-project` skill Naming)
 - Standardize analyze/test/docs checks before handoff
 
 ## Docs baseline
@@ -29,11 +30,14 @@ Shared Cursor configuration for this repository.
 - `docs/UX_DESIGN.md`
 - `docs/THEME_AND_COLORS.md`
 - `docs/ARCHITECTURE.md`
+- `docs/GAME_MODES.md`
 - `docs/APP_ICON_CONCEPT.md`
 - `docs/CI.md`
 
+When marketing-facing product facts change and `../snake-app-website` is present, update that repo’s `docs/` as well.
+
 ## Keeping skills current
-When layout, gameplay contracts, persistence schema, theme tokens, CI workflows, or quality gates change, update this `.cursor/` folder in the same PR. Treat stale skills/rules as defects.
+When layout, gameplay contracts, persistence schema, theme tokens, locales/ARB strings, CI workflows, or quality gates change, update this `.cursor/` folder in the same PR. Treat stale skills/rules as defects.
 
 ## Team usage
 - Keep these files version-controlled

@@ -10,9 +10,9 @@ Use this skill whenever working in this repository to keep implementation style,
 ## Project identity
 - Product: **Snake App** (Chingalo Family)
 - Package: `snake_app` · Application ID: `chingalo.family.snake_app`
-- Stack: Flutter game, offline-first local storage, SFX/BGM audio, responsive multi-platform UI
+- Stack: Flutter game, offline-first local storage (Drift `AppDatabase` + PreferenceService), SFX/BGM audio, responsive multi-platform UI
 - Platforms: Android, iOS, Linux, macOS, Windows, Web
-- Docs baseline: `README.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`
+- Docs baseline: `README.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`
 
 ## First-step checklist
 1. Read `docs/IMPLEMENTATION_PLAN.md` for scope and acceptance criteria.
@@ -40,9 +40,32 @@ Until folders exist, place new code toward this layout rather than dumping every
 - Responsive board + rotation support
 - Theme tokens centralized — no purple default Material demos
 - Package imports: `package:snake_app/...`
-- Descriptive loop indexes (not `i`/`j`/`k`)
+- **Meaningful variable names** — see Naming below
+- **User-facing copy via l10n** — English (`en`, default) and Swahili (`sw`); ARBs in `lib/l10n/`; use `context.l10n` (see `lib/core/l10n/`)
 - Update docs when behavior/architecture/theme changes
 - App icon source: `assets/app-icon.png` via `flutter_launcher_icons` in `pubspec.yaml`
+
+## Naming
+Names must describe **what** the value is in domain terms — not how short you can type it.
+
+### Do
+- Prefer full words: `engineSnapshot`, `packageInfo`, `sharedPreferences`, `levelConfig`, `eatEvent`, `cellIndex`
+- Loop / list indexes: `rowIndex`, `columnIndex`, `levelIndex`, `pageIndex`, `collectibleIndex`, `segmentIndex`
+- Booleans as predicates: `isWideLayout`, `hasProfile`, `isHighValueCollectible`
+- Locals mirror their type when helpful: `LevelConfig levelConfig`, `EatEvent? eatEvent`
+
+### Do not
+- Bare loop letters: `i`, `j`, `k`
+- Cryptic abbreviations: `snap`, `db`, `tp`, `rng`, `prefs`, `cfg`, `repo`, `dir` (use `direction`)
+- Vague catch-alls: `data`, `temp`, `tmp`, `val`, `res`, `item`, `info`, `obj` when a domain name exists
+- Single-letter locals except rare math (`x`/`y` only for true coordinates if unavoidable — prefer `velocityX` / `offsetY`)
+
+### Allowed idioms (do not rename for purity)
+- Flutter: `context`, `ref`, `child`, `key`, `theme`, `tester`
+- Unused: `_`
+- Package import aliases when conventional: `import 'package:path/path.dart' as p`
+
+When editing existing code, rename unclear locals/params in the same change if you touch that file.
 
 ## After any code change — check what changed
 ```bash
@@ -69,8 +92,18 @@ flutter test
 | Colors / type | `docs/THEME_AND_COLORS.md` |
 | Structure / packages | `docs/ARCHITECTURE.md` |
 | Icon / branding mark | `docs/APP_ICON_CONCEPT.md` |
+| Game modes (planning) | `docs/GAME_MODES.md` |
 | CI / desktop builds | `docs/CI.md` + `.github/workflows/` |
 | Overview | `README.md` |
+| UI strings / locales | `lib/l10n/app_*.arb` (+ regenerate) |
+| Marketing-facing product facts | Sibling `../snake-app-website/docs/` when that repo is present |
+
+## Localization
+- Template: `lib/l10n/app_en.arb` (default)
+- Swahili: `lib/l10n/app_sw.arb`
+- Access: `context.l10n` from `package:snake_app/core/l10n/l10n_extensions.dart`
+- Language preference persisted in settings (`locale_code`: `en` | `sw`)
+- Do not hardcode user-visible English in feature widgets — add ARB keys instead
 
 ## Related skills
 - [snake-app-gameplay](../snake-app-gameplay/SKILL.md)
