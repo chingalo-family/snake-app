@@ -14,6 +14,7 @@ GitHub Actions for Snake App — inspired by Kanisani Hub desktop CI patterns.
 - **Push / PR to `main`** — run tests; build desktop zips
 - **Push to `main` or manual `workflow_dispatch` on `main`** — after all three desktop builds succeed, create/update a GitHub Release
 - Docs / `.cursor` / markdown-only changes are ignored for CI paths
+- Desktop / Flutter CI **do not run on `develop` alone** — GStreamer (and other) workflow fixes only take effect after they land on `main` (or on a PR targeting `main` whose head includes the workflow change)
 
 ## GitHub Release (after desktop builds)
 
@@ -50,8 +51,30 @@ flutter build macos --release
 flutter build linux --release
 ```
 
+### Linux system packages (Debian / Ubuntu)
+
+`flutter build linux` needs the usual Flutter desktop toolchain **plus** GStreamer headers used by `audioplayers_linux` (`pkg_check_modules` for `gstreamer-1.0`, `gstreamer-app-1.0`, `gstreamer-audio-1.0`):
+
+```bash
+sudo apt-get update -y
+sudo apt-get install -y \
+  clang cmake ninja-build pkg-config \
+  libgtk-3-dev liblzma-dev \
+  libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+```
+
+Optional runtime plugins (not required to compile; useful if you play more formats locally):
+
+```bash
+sudo apt-get install -y \
+  gstreamer1.0-plugins-base \
+  gstreamer1.0-plugins-good
+```
+
+CI’s Linux job installs the same build packages (plus `libstdc++-12-dev`) in `.github/workflows/desktop-build.yml`.
+
 ## Notes
 
 - macOS CI builds are typically **unsigned**. First open on a Mac may require right-click → Open.
-- Linux CI installs GTK/CMake toolchains on `ubuntu-latest`.
+- Linux CI on `ubuntu-latest` installs GTK/CMake **and** GStreamer `-dev` packages so `audioplayers` can link.
 - Bump `version:` in `pubspec.yaml` (especially the `+build` number) before merging to `main` when you want a new release tag.

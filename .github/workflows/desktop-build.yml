@@ -124,10 +124,20 @@ jobs:
 
       - name: Install Linux desktop dependencies
         run: |
+          set -euo pipefail
           sudo apt-get update -y
           sudo apt-get install -y \
             clang cmake ninja-build pkg-config \
-            libgtk-3-dev liblzma-dev libstdc++-12-dev
+            libgtk-3-dev liblzma-dev libstdc++-12-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+          # audioplayers_linux CMakeLists.txt: gstreamer-1.0, gstreamer-app-1.0, gstreamer-audio-1.0
+          for module in gstreamer-1.0 gstreamer-app-1.0 gstreamer-audio-1.0; do
+            if ! pkg-config --exists "$module"; then
+              echo "::error::Missing pkg-config module: ${module} (GStreamer -dev packages required for audioplayers_linux)"
+              exit 1
+            fi
+            echo "pkg-config OK: ${module} ($(pkg-config --modversion "$module"))"
+          done
 
       - uses: subosito/flutter-action@v2
         with:
