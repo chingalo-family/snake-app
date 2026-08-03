@@ -13,7 +13,6 @@ Future<ProviderContainer> bootstrap() async {
     ],
   );
 
-  // Warm Drift migrations + settings / audio side effects.
   await container.read(appDatabaseProvider).customSelect('SELECT 1').get();
   container.read(settingsControllerProvider);
   container.read(profileControllerProvider);

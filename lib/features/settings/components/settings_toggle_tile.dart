@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/features/settings/components/settings_tile_icon.dart';
 
-/// Switch row with icon + title/subtitle — Duka settings chrome, Snake palette.
+/// Switch row with icon + title/subtitle - Duka settings chrome, Snake palette.
 class SettingsToggleTile extends StatelessWidget {
   const SettingsToggleTile({
     super.key,
@@ -25,8 +25,9 @@ class SettingsToggleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final dividerColor =
-        isDark ? AppColors.darkGridLine : AppColors.lightGridLine;
+    final dividerColor = isDark
+        ? AppColors.darkGridLine
+        : AppColors.lightGridLine;
 
     return Column(
       children: [
@@ -64,8 +65,7 @@ class SettingsToggleTile extends StatelessWidget {
             ],
           ),
         ),
-        if (!isLast)
-          Divider(height: 1, color: dividerColor, indent: 70),
+        if (!isLast) Divider(height: 1, color: dividerColor, indent: 70),
       ],
     );
   }

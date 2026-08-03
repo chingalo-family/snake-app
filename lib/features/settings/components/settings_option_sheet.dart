@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 
-/// Bottom sheet option list — Duka settings selector pattern, Snake palette.
+/// Bottom sheet option list - Duka settings selector pattern, Snake palette.
 Future<void> showSettingsOptionSheet({
   required BuildContext context,
   required String title,
@@ -29,13 +29,15 @@ Future<void> showSettingsOptionSheet({
                 child: Text(
                   title,
                   style: Theme.of(sheetContext).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-              for (var optionIndex = 0;
-                  optionIndex < options.length;
-                  optionIndex++) ...[
+              for (
+                var optionIndex = 0;
+                optionIndex < options.length;
+                optionIndex++
+              ) ...[
                 if (optionIndex > 0)
                   const Divider(
                     height: 1,
@@ -89,8 +91,7 @@ class _SettingsOptionRow extends StatelessWidget {
                     color: isSelected
                         ? AppColors.brandPrimaryLight
                         : theme.colorScheme.onSurface,
-                    fontWeight:
-                        isSelected ? FontWeight.w700 : FontWeight.w400,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
                   ),
                 ),
               ),

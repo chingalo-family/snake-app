@@ -278,7 +278,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perLevel => 'Per level';
 
   @override
-  String get noScoresYet => 'No scores yet — finish a run to set a best.';
+  String get noScoresYet => 'No scores yet - finish a run to set a best.';
 
   @override
   String get createProfileForScores =>
@@ -288,14 +288,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newPersonalBest => 'New personal best!';
 
   @override
-  String get saveScoreCreateProfile => 'Save score — create profile';
+  String get saveScoreCreateProfile => 'Save score - create profile';
 
   @override
   String get onboardingWelcomeTitle => 'Welcome';
 
   @override
   String get onboardingWelcomeBody =>
-      'Grow, collect, climb levels — a premium snake experience for every screen.';
+      'Grow, collect, climb levels - a premium snake experience for every screen.';
 
   @override
   String get onboardingMoveTitle => 'How to move';
@@ -329,7 +329,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintKeyboard => 'Arrows / WASD to move · Esc pause';
 
   @override
-  String get playFreelyHint => '· Play freely — profile saves bests';
+  String get playFreelyHint => '· Play freely - profile saves bests';
 
   @override
   String get aboutDescription =>

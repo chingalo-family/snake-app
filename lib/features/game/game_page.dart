@@ -517,7 +517,6 @@ class _GamePageState extends ConsumerState<GamePage> {
           });
         }
 
-        // Paint with the engine's current grid so indices stay valid this frame.
         final metrics = gridChanged
             ? GridMetrics.fitFixedGrid(
                 maxWidth: maxWidth,

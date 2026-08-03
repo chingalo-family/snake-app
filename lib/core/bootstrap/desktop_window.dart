@@ -13,7 +13,7 @@ bool get isDesktopPlatform {
 }
 
 /// Sizes the desktop window to the current screen's usable area
-/// (not exclusive fullscreen — title bar and OS chrome stay available).
+/// (not exclusive fullscreen - title bar and OS chrome stay available).
 Future<void> configureDesktopWindow() async {
   if (!isDesktopPlatform) return;
 
@@ -41,7 +41,7 @@ Future<void> configureDesktopWindow() async {
   });
 }
 
-/// Keep title bar / window chrome in sync with Material light/dark —
+/// Keep title bar / window chrome in sync with Material light/dark -
 /// same effective theme as mobile/web.
 Future<void> syncDesktopWindowTheme(Brightness brightness) async {
   if (!isDesktopPlatform) return;
@@ -50,9 +50,7 @@ Future<void> syncDesktopWindowTheme(Brightness brightness) async {
     await windowManager.setBackgroundColor(
       brightness == Brightness.dark ? AppColors.darkBg : AppColors.lightBg,
     );
-  } catch (_) {
-    // Window may not be ready yet during early bootstrap.
-  }
+  } catch (_) {}
 }
 
 /// Resolve [ThemeMode] the same way [MaterialApp] does on every platform.

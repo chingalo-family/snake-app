@@ -23,11 +23,7 @@ final settingsServiceProvider = Provider<SettingsService>((ref) {
 });
 
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
-  final database = AppDatabase.instance;
-  ref.onDispose(() {
-    // Keep singleton open for app lifetime; tests use forTesting + close.
-  });
-  return database;
+  return AppDatabase.instance;
 });
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {

@@ -58,14 +58,12 @@ class SnakeEngineSnapshot {
   int get totalCells => columns * rows;
 }
 
-/// Pure snake simulation — no Flutter timers or widgets.
+/// Pure snake simulation - no Flutter timers or widgets.
 class SnakeEngine {
-  SnakeEngine({
-    required this.level,
-    Random? random,
-  })  : _random = random ?? Random(),
-        columns = LevelsCatalog.byLevel(level).columns,
-        rows = LevelsCatalog.byLevel(level).rows {
+  SnakeEngine({required this.level, Random? random})
+    : _random = random ?? Random(),
+      columns = LevelsCatalog.byLevel(level).columns,
+      rows = LevelsCatalog.byLevel(level).rows {
     reset();
   }
 
@@ -88,21 +86,21 @@ class SnakeEngine {
   EatEvent? _lastEat;
 
   SnakeEngineSnapshot get snapshot => SnakeEngineSnapshot(
-        snake: List.unmodifiable(_snake),
-        direction: _direction,
-        pendingDirection: _pendingDirection,
-        foodIndex: _foodIndex,
-        food: _food,
-        score: _score,
-        comboCount: _comboCount,
-        bestCombo: _bestCombo,
-        phase: _phase,
-        level: level,
-        columns: columns,
-        rows: rows,
-        itemsEaten: _itemsEaten,
-        lastEat: _lastEat,
-      );
+    snake: List.unmodifiable(_snake),
+    direction: _direction,
+    pendingDirection: _pendingDirection,
+    foodIndex: _foodIndex,
+    food: _food,
+    score: _score,
+    comboCount: _comboCount,
+    bestCombo: _bestCombo,
+    phase: _phase,
+    level: level,
+    columns: columns,
+    rows: rows,
+    itemsEaten: _itemsEaten,
+    lastEat: _lastEat,
+  );
 
   void reset() {
     final startColumnIndex = (columns / 2).floor().clamp(2, columns - 1);
@@ -233,8 +231,7 @@ class SnakeEngine {
       _food = CollectiblesCatalog.all.first;
       return;
     }
-    _foodIndex =
-        emptyCellIndexes[_random.nextInt(emptyCellIndexes.length)];
+    _foodIndex = emptyCellIndexes[_random.nextInt(emptyCellIndexes.length)];
     _food = CollectiblesCatalog.pickWeighted(level, _random);
   }
 
@@ -270,13 +267,14 @@ class SnakeEngine {
       return;
     }
 
-    // Keep at least a short snake if remap collapsed segments.
     while (remappedSnake.length < 3) {
       final tailCellIndex = remappedSnake.last;
       final tailRowIndex = tailCellIndex ~/ newColumns;
       final tailColumnIndex = tailCellIndex % newColumns;
-      final extensionColumnIndex =
-          (tailColumnIndex - 1).clamp(0, newColumns - 1);
+      final extensionColumnIndex = (tailColumnIndex - 1).clamp(
+        0,
+        newColumns - 1,
+      );
       final extensionCellIndex =
           tailRowIndex * newColumns + extensionColumnIndex;
       if (remappedSnake.contains(extensionCellIndex)) break;

@@ -143,6 +143,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                         _OnboardSlide(
                           title: l10n.onboardingCollectTitle,
                           body: l10n.onboardingCollectBody,
+                          constrainHeroToCircle: false,
                           hero: Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -160,12 +161,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                 )
                                 .toList(),
                           ),
-                          hints: [
-                            FeatureHintCard(
-                              icon: Icons.bolt_outlined,
-                              title: l10n.onboardingCollectBody,
-                            ),
-                          ],
                         ),
                         _OnboardSlide(
                           title: l10n.onboardingProfileTitle,
@@ -244,12 +239,18 @@ class _OnboardSlide extends StatelessWidget {
     required this.body,
     required this.hero,
     this.hints = const [],
+    this.constrainHeroToCircle = true,
   });
 
   final String title;
   final String body;
   final Widget hero;
   final List<Widget> hints;
+
+  /// When true, hero sits in the soft 148 circle used for icons.
+  /// Multi-item visuals (collectible chips) must opt out so they size
+  /// naturally instead of overflowing the circle and painting over copy.
+  final bool constrainHeroToCircle;
 
   @override
   Widget build(BuildContext context) {
@@ -259,24 +260,6 @@ class _OnboardSlide extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 12),
-          Container(
-            width: 148,
-            height: 148,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.brandPrimary.withValues(alpha: 0.12),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.brandPrimary.withValues(alpha: 0.18),
-                  blurRadius: 28,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            child: hero,
-          ),
-          const SizedBox(height: 28),
           Text(
             title,
             style: theme.textTheme.headlineSmall?.copyWith(
@@ -285,22 +268,61 @@ class _OnboardSlide extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
-          Text(
-            body,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              height: 1.45,
-              fontSize: 15,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+          const SizedBox(height: 24),
+          if (constrainHeroToCircle)
+            Container(
+              width: 148,
+              height: 148,
+              alignment: Alignment.center,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.brandPrimary.withValues(alpha: 0.12),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.brandPrimary.withValues(alpha: 0.18),
+                    blurRadius: 28,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: hero,
+            )
+          else
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                color: AppColors.brandPrimary.withValues(alpha: 0.12),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.brandPrimary.withValues(alpha: 0.14),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: hero,
             ),
-            textAlign: TextAlign.center,
-          ),
+          if (body.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            Text(
+              body,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                height: 1.45,
+                fontSize: 15,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
           if (hints.isNotEmpty) ...[
             const SizedBox(height: 24),
             ...hints.map(
-              (hint) => Padding(
+              (hintCard) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: hint,
+                child: hintCard,
               ),
             ),
           ],

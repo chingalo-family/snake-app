@@ -15,13 +15,32 @@ class SnakeApp extends ConsumerStatefulWidget {
   ConsumerState<SnakeApp> createState() => _SnakeAppState();
 }
 
-class _SnakeAppState extends ConsumerState<SnakeApp> {
+class _SnakeAppState extends ConsumerState<SnakeApp>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       syncDesktopWindowTheme(Brightness.dark);
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final audio = ref.read(audioServiceProvider);
+    if (state == AppLifecycleState.resumed) {
+      audio.resumeBgm();
+    } else if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
+      audio.pauseBgm();
+    }
   }
 
   @override
@@ -31,7 +50,6 @@ class _SnakeAppState extends ConsumerState<SnakeApp> {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appName,
       debugShowCheckedModeBanner: false,
-      // Nature-arcade dark only — same on mobile, desktop, and web.
       themeMode: ThemeMode.dark,
       theme: AppTheme.dark(),
       darkTheme: AppTheme.dark(),

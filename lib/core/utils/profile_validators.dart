@@ -30,7 +30,7 @@ abstract final class ProfileValidators {
     return null;
   }
 
-  /// Optional email — validated only when non-empty.
+  /// Optional email - validated only when non-empty.
   static String? email(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) return null;
@@ -38,7 +38,7 @@ abstract final class ProfileValidators {
     return null;
   }
 
-  /// Optional phone — validated only when non-empty.
+  /// Optional phone - validated only when non-empty.
   /// Accepts common formats (+255 712 345 678, 0712345678, etc.).
   static String? phone(String? value) {
     final trimmed = value?.trim() ?? '';

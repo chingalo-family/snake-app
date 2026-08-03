@@ -46,7 +46,7 @@ class AppSettings {
 
   static const defaults = AppSettings(
     sfxEnabled: true,
-    bgmEnabled: true,
+    bgmEnabled: false,
     hapticsEnabled: true,
     showControlHints: true,
     themeMode: ThemeMode.dark,
@@ -67,7 +67,7 @@ class SettingsService {
       sfxEnabled:
           _preferenceService.getBool(PreferenceKeys.sfxEnabled) ?? true,
       bgmEnabled:
-          _preferenceService.getBool(PreferenceKeys.bgmEnabled) ?? true,
+          _preferenceService.getBool(PreferenceKeys.bgmEnabled) ?? false,
       hapticsEnabled:
           _preferenceService.getBool(PreferenceKeys.hapticsEnabled) ?? true,
       showControlHints:

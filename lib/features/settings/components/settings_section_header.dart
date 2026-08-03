@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 
-/// Section label with leading icon — Duka settings chrome, Snake palette.
+/// Section label with leading icon - Duka settings chrome, Snake palette.
 class SettingsSectionHeader extends StatelessWidget {
   const SettingsSectionHeader({
     super.key,

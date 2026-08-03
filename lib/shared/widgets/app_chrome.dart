@@ -127,8 +127,6 @@ class SurfaceCard extends StatelessWidget {
     final borderColor =
         isDark ? AppColors.darkGridLine : AppColors.lightGridLine;
 
-    // Material ancestor is required so ListTile / SwitchListTile ink and
-    // tile backgrounds paint correctly inside raised cards.
     final paddedChild = Padding(padding: padding, child: child);
     return SizedBox(
       width: double.infinity,

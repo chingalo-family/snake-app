@@ -55,7 +55,7 @@ abstract final class LevelsCatalog {
     return levels[clamped - 1];
   }
 
-  /// Tick interval in ms — slower early, ramps toward a playable floor.
+  /// Tick interval in ms - slower early, ramps toward a playable floor.
   static int _tickFor(int level) {
     if (level <= 5) return 280 - ((level - 1) * 16);
     if (level <= 10) return 216 - ((level - 6) * 12);

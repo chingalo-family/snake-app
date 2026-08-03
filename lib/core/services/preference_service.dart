@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Thin string preference layer (inspired by duka_mkononi_app).
 ///
-/// Snake App has no passwords or secrets for MVP — use this for UI flags only.
+/// Snake App has no passwords or secrets for MVP - use this for UI flags only.
 /// If secrets are added later, wrap them in a dedicated secure-storage service
 /// instead of putting them here or in Drift plaintext columns.
 class PreferenceService {

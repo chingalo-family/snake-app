@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/features/settings/components/settings_tile_icon.dart';
 
-/// Tappable settings row with chevron — Duka settings chrome, Snake palette.
+/// Tappable settings row with chevron - Duka settings chrome, Snake palette.
 class SettingsNavTile extends StatelessWidget {
   const SettingsNavTile({
     super.key,
@@ -25,8 +25,9 @@ class SettingsNavTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final dividerColor =
-        isDark ? AppColors.darkGridLine : AppColors.lightGridLine;
+    final dividerColor = isDark
+        ? AppColors.darkGridLine
+        : AppColors.lightGridLine;
     final mutedColor = theme.colorScheme.onSurface.withValues(alpha: 0.45);
 
     return Column(
@@ -71,8 +72,7 @@ class SettingsNavTile extends StatelessWidget {
             ),
           ),
         ),
-        if (!isLast)
-          Divider(height: 1, color: dividerColor, indent: 70),
+        if (!isLast) Divider(height: 1, color: dividerColor, indent: 70),
       ],
     );
   }

@@ -280,7 +280,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get noScoresYet =>
-      'Bado hakuna alama — maliza mchezo ili kuweka bora.';
+      'Bado hakuna alama - maliza mchezo ili kuweka bora.';
 
   @override
   String get createProfileForScores =>
@@ -290,14 +290,14 @@ class AppLocalizationsSw extends AppLocalizations {
   String get newPersonalBest => 'Rekodi mpya binafsi!';
 
   @override
-  String get saveScoreCreateProfile => 'Hifadhi alama — unda wasifu';
+  String get saveScoreCreateProfile => 'Hifadhi alama - unda wasifu';
 
   @override
   String get onboardingWelcomeTitle => 'Karibu';
 
   @override
   String get onboardingWelcomeBody =>
-      'Kua, kusanya, panda viwango — mchezo wa nyoka wa hali ya juu kwa kila skrini.';
+      'Kua, kusanya, panda viwango - mchezo wa nyoka wa hali ya juu kwa kila skrini.';
 
   @override
   String get onboardingMoveTitle => 'Jinsi ya kusogeza';
@@ -331,7 +331,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get hintKeyboard => 'Mishale / WASD kusogeza · Esc simamisha';
 
   @override
-  String get playFreelyHint => '· Cheza huru — wasifu huhifadhi alama';
+  String get playFreelyHint => '· Cheza huru - wasifu huhifadhi alama';
 
   @override
   String get aboutDescription =>

@@ -629,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @noScoresYet.
   ///
   /// In en, this message translates to:
-  /// **'No scores yet — finish a run to set a best.'**
+  /// **'No scores yet - finish a run to set a best.'**
   String get noScoresYet;
 
   /// No description provided for @createProfileForScores.
@@ -647,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @saveScoreCreateProfile.
   ///
   /// In en, this message translates to:
-  /// **'Save score — create profile'**
+  /// **'Save score - create profile'**
   String get saveScoreCreateProfile;
 
   /// No description provided for @onboardingWelcomeTitle.
@@ -659,7 +659,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Grow, collect, climb levels — a premium snake experience for every screen.'**
+  /// **'Grow, collect, climb levels - a premium snake experience for every screen.'**
   String get onboardingWelcomeBody;
 
   /// No description provided for @onboardingMoveTitle.
@@ -719,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @playFreelyHint.
   ///
   /// In en, this message translates to:
-  /// **'· Play freely — profile saves bests'**
+  /// **'· Play freely - profile saves bests'**
   String get playFreelyHint;
 
   /// No description provided for @aboutDescription.

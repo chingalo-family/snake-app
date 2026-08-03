@@ -51,7 +51,6 @@ class HomePage extends ConsumerWidget {
                 );
               }
 
-              // Portrait: brand + status + nav up top; Play pinned in thumb zone.
               return Padding(
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
                 child: Column(
