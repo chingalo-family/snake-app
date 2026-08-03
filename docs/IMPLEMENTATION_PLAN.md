@@ -351,8 +351,10 @@ lib/
 
 - [UX Design & Flows](./UX_DESIGN.md)
 - [Theme & Colors](./THEME_AND_COLORS.md)
+- [Game Modes (planning)](./GAME_MODES.md) — Classic / Wrap / Obstacles and future variants
 - [App Icon Concept](./APP_ICON_CONCEPT.md)
 - [Architecture Notes](./ARCHITECTURE.md)
+- [CI / GitHub Actions](./CI.md)
 
 ---
 
