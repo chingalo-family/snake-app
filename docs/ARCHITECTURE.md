@@ -46,6 +46,14 @@ App start → package_info version
          → dialog → update / dismiss
 ```
 
+## Audio
+
+- `AudioService` owns separate BGM and SFX players (`audioplayers`).
+- Settings (`sfx_enabled` / `bgm_enabled`) mute channels independently; SFX defaults **on**, BGM defaults **off**.
+- Bootstrap calls `startBgm()`; app lifecycle pauses/resumes BGM in background.
+- Bundled clips live under `assets/audio/` (see README there). Missing BGM → silent loop path; missing SFX → `SystemSound` fallback.
+- Gameplay: eat → `playSfx`, collision/game over → `playCollision`.
+
 ## Testing focus
 
 - Grid math unit tests (columns/rows for sample sizes)
@@ -53,3 +61,4 @@ App start → package_info version
 - Level unlock rules
 - Profile required for persistence
 - Settings toggles mute the correct audio channel
+- Audio asset path constants / mute gating

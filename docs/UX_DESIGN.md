@@ -21,11 +21,13 @@
 
 ### 2. Onboarding (3–4 pages)
 
+Slide composition (scrollable body; footer pinned): **title → visual → short body and/or distinct hint cards** — never duplicate the same sentence as both body and hint.
+
 | Page | Content | Visual |
 |------|---------|--------|
 | Welcome | “Snake App” + tagline | Full-bleed soft green atmosphere + snake mark |
 | Move | Swipe OR arrows (adaptive copy) | Animated gesture / key hint |
-| Collect | Animal & food icons with point chips | Icon row + score badges |
+| Collect | Point values + combo tip (body only; no duplicate hint) | Soft panel with icon + score chip wrap (not cramped in the icon circle) |
 | Save | Profile unlocks offline records | Simple profile silhouette |
 
 Footer: page dots · Skip · Next / Get Started
