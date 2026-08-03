@@ -14,6 +14,7 @@ GitHub Actions for Snake App — inspired by Kanisani Hub desktop CI patterns.
 - **Push / PR to `main`** — run tests; build desktop zips
 - **Push to `main` or manual `workflow_dispatch` on `main`** — after all three desktop builds succeed, create/update a GitHub Release
 - Docs / `.cursor` / markdown-only changes are ignored for CI paths
+- Desktop / Flutter CI **do not run on `develop` alone** — GStreamer (and other) workflow fixes only take effect after they land on `main` (or on a PR targeting `main` whose head includes the workflow change)
 
 ## GitHub Release (after desktop builds)
 
