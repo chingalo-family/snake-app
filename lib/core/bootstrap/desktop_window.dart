@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_retriever/screen_retriever.dart';
+import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:window_manager/window_manager.dart';
 
 /// True for Linux, macOS, and Windows (not web/mobile).
@@ -25,7 +26,7 @@ Future<void> configureDesktopWindow() async {
   final windowOptions = WindowOptions(
     title: 'Snake App',
     size: screenSize,
-    backgroundColor: const Color(0xFF0B1F1A),
+    backgroundColor: AppColors.darkBg,
     skipTaskbar: false,
     fullScreen: false,
   );
@@ -34,7 +35,34 @@ Future<void> configureDesktopWindow() async {
     await windowManager.setFullScreen(false);
     await windowManager.setSize(screenSize);
     await windowManager.setPosition(screenPosition);
+    await syncDesktopWindowTheme(Brightness.dark);
     await windowManager.show();
     await windowManager.focus();
   });
+}
+
+/// Keep title bar / window chrome in sync with Material light/dark —
+/// same effective theme as mobile/web.
+Future<void> syncDesktopWindowTheme(Brightness brightness) async {
+  if (!isDesktopPlatform) return;
+  try {
+    await windowManager.setBrightness(brightness);
+    await windowManager.setBackgroundColor(
+      brightness == Brightness.dark ? AppColors.darkBg : AppColors.lightBg,
+    );
+  } catch (_) {
+    // Window may not be ready yet during early bootstrap.
+  }
+}
+
+/// Resolve [ThemeMode] the same way [MaterialApp] does on every platform.
+Brightness resolveThemeBrightness({
+  required ThemeMode themeMode,
+  required Brightness platformBrightness,
+}) {
+  return switch (themeMode) {
+    ThemeMode.light => Brightness.light,
+    ThemeMode.dark => Brightness.dark,
+    ThemeMode.system => platformBrightness,
+  };
 }

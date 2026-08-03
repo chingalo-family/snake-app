@@ -21,6 +21,7 @@ Flutter scaffold is ready. Feature implementation follows the reviewed plan in `
 | [Theme & Colors](docs/THEME_AND_COLORS.md) | Palette, typography, Flutter theme tokens |
 | [App Icon Concept](docs/APP_ICON_CONCEPT.md) | Icon directions & asset checklist |
 | [Architecture](docs/ARCHITECTURE.md) | Technical structure |
+| [Game Modes](docs/GAME_MODES.md) | Planning: Classic / Wrap / Obstacles + future variants |
 | [CI / GitHub Actions](docs/CI.md) | Test + desktop build workflows |
 | [Cursor setup](.cursor/README.md) | Project rules & agent skills |
 

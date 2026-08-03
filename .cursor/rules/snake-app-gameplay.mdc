@@ -18,6 +18,9 @@ Follow `docs/IMPLEMENTATION_PLAN.md` §4.4–4.8 and `.cursor/skills/snake-app-g
 - Support portrait and landscape on phone/tablet
 - On orientation change: recompute metrics; avoid unfair mid-move deaths (soft pause OK)
 
+## Naming
+- Meaningful locals: `engineSnapshot`, `eatEvent`, `levelConfig`, `cellIndex` — not `snap` / `eat` / `dir` / bare `i`
+
 ## Scoring & levels
 - Collectibles are tiered objects/animals with icons and different base scores
 - Levels unlock via clear rules; persist highest unlocked + per-level bests
