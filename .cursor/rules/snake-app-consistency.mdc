@@ -18,8 +18,11 @@ Follow these standards for consistent contributions across developers and AI age
 
 ## Required workflow before finishing a task
 1. **Check what changed** — `git status` and `git diff`; only intentional files
-2. Run `flutter analyze` — no errors
-3. Run relevant `flutter test` — must pass
+2. Run `flutter analyze` — must report **no errors**. Do not mark the task done until this passes.
+3. **Tests after any `lib/` change** — run `flutter test` before finishing:
+   - Prefer full `flutter test` when touching audio, core services, game engine, persistence/profile, providers/bootstrap, or when unsure
+   - Narrow `flutter test test/<area>_test.dart` is OK only for clearly isolated UI/string tweaks with an existing focused test
+   - Do not mark the task done until analyze **and** tests pass
 4. If UX / architecture / theme / icon / CI / gameplay-modes / plan conventions changed, update the matching `docs/` files in the same change set:
    - `docs/ARCHITECTURE.md` — structure, packages, layers
    - `docs/UX_DESIGN.md` — screens, flows, controls, feedback

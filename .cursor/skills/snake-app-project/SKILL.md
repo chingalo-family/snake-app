@@ -82,7 +82,11 @@ flutter analyze
 flutter test
 ```
 
-`flutter analyze` must report no errors. Prefer targeted tests for narrow changes.
+Do **not** finish a task that changed anything under `lib/` until:
+1. `flutter analyze` reports **no errors**
+2. `flutter test` passes — prefer the **full** suite when audio, core services, game engine, persistence/profile, or app bootstrap/providers changed (or when unsure). Targeted tests are OK only for clearly isolated tweaks.
+
+`flutter analyze` must report no errors. Prefer targeted tests for narrow non-`lib/` or docs-only changes.
 
 ## Documentation sync
 | Change type | Update |
