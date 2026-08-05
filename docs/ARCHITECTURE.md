@@ -34,9 +34,16 @@ On orientation change: recompute metrics; optionally soft-pause one frame to rem
 
 ```
 submitScore()
-  if (!profileExists) → prompt CreateProfile
+  if (!profileExists)
+    → stash PendingRun in ProfileController
+    → prompt CreateProfile (“Save score — create profile”)
+    → on successful profile save → flush PendingRun via submitRun
   else → upsert best scores / level unlocks
 ```
+
+Guest runs are not written to Drift until a profile exists; the latest unfinished
+opt-in run is held in memory so creating a profile after game over still keeps
+that score.
 
 ## Updates (Android)
 

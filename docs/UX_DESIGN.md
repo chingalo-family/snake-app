@@ -84,7 +84,7 @@ Landscape tablet/desktop optional:
 
 - Pause: Resume · Restart · Quit to Levels
 - Game over: Score · Level · Personal best delta  
-  - If no profile: **Save score — create profile**  
+  - If no profile: **Save score — create profile** (keeps the just-finished run in memory and persists it when the profile is saved)  
   - If profile: “New best!” or “Almost — try again”
 
 ### 7. Profile

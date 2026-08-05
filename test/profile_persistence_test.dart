@@ -1,5 +1,6 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/offline_db/app_database.dart';
 import 'package:snake_app/core/services/profile_repository.dart';
@@ -25,6 +26,31 @@ void main() {
     );
     expect(result.saved, isFalse);
     expect(await profileRepository.allHighScores(), isEmpty);
+  });
+
+  test('create profile after guest run persists the pending score', () async {
+    final profileController = ProfileController(profileRepository);
+    await profileController.refresh();
+
+    final guestResult = await profileController.submitRun(
+      level: 1,
+      score: 420,
+      bestCombo: 2,
+    );
+    expect(guestResult.saved, isFalse);
+    expect(profileController.state.pendingRun, isNotNull);
+    expect(profileController.state.pendingRun!.score, 420);
+    expect(await profileRepository.allHighScores(), isEmpty);
+
+    final saveResult = await profileController.saveProfile(
+      username: 'guest_saver',
+      fullName: 'Guest Saver',
+    );
+    expect(saveResult.didSavePendingScore, isTrue);
+    expect(profileController.state.pendingRun, isNull);
+    expect(await profileRepository.bestForLevel(1), 420);
+    expect(profileController.state.progress?.bestOverallScore, 420);
+    expect(profileController.state.progress?.gamesPlayed, 1);
   });
 
   test('submit with profile upserts best and unlocks', () async {
