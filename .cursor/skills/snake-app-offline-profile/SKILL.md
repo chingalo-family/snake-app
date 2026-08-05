@@ -39,7 +39,10 @@ Use when working on local player profile, offline score/level persistence, or th
 ## Persistence gate
 ```
 onGameOver / submitScore / unlockLevel
-  if (!hasProfile) → prompt CreateProfile (do not silently discard if user opts in)
+  if (!hasProfile)
+    → stash PendingRun (level, score, bestCombo)
+    → prompt CreateProfile (do not silently discard if user opts in)
+    → after createOrUpdate → flush PendingRun with submitRun
   else → upsert bests + level unlocks
 ```
 
@@ -74,7 +77,8 @@ lib/core/offline_db/
 - Keep save paths backward-compatible when possible
 
 ## Tests to prefer
-- Submit score without profile → no DB best written
+- Submit score without profile → no DB best written; PendingRun stashed
+- Create profile after guest run → pending score flushed to Drift
 - Submit with profile → best updated only when higher
 - Level unlock persisted (in-memory Drift OK)
 
