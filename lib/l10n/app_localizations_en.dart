@@ -262,6 +262,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSaved => 'Profile saved locally';
 
   @override
+  String get profileSavedWithScore => 'Profile saved — your score was kept';
+
+  @override
   String get profileHelp =>
       'A profile is only required to save high scores and level progress. You can play without one.';
 

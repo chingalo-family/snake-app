@@ -596,6 +596,12 @@ abstract class AppLocalizations {
   /// **'Profile saved locally'**
   String get profileSaved;
 
+  /// No description provided for @profileSavedWithScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved — your score was kept'**
+  String get profileSavedWithScore;
+
   /// No description provided for @profileHelp.
   ///
   /// In en, this message translates to:

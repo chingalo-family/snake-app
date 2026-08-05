@@ -80,6 +80,10 @@ class SettingsController extends StateNotifier<AppSettings> {
   Future<void> setHaptics(bool value) async {
     state = state.copyWith(hapticsEnabled: value);
     await _persist();
+    // Confirm the toggle on device — otherwise mobile users may think it is broken.
+    if (value) {
+      await _haptics.medium();
+    }
   }
 
   Future<void> setControlHints(bool value) async {
@@ -112,20 +116,61 @@ final settingsControllerProvider =
   );
 });
 
+/// In-memory run waiting for a profile so game-over “save score” can opt in.
+@immutable
+class PendingRun {
+  const PendingRun({
+    required this.level,
+    required this.score,
+    required this.bestCombo,
+  });
+
+  final int level;
+  final int score;
+  final int bestCombo;
+}
+
 class ProfileState {
   const ProfileState({
     this.profile,
     this.progress,
+    this.pendingRun,
     this.loading = true,
   });
 
   final PlayerProfile? profile;
   final PlayerProgress? progress;
+  final PendingRun? pendingRun;
   final bool loading;
 
   bool get hasProfile => profile != null;
 
   int get highestLevelUnlocked => progress?.highestLevelUnlocked ?? 1;
+
+  ProfileState copyWith({
+    PlayerProfile? profile,
+    PlayerProgress? progress,
+    PendingRun? pendingRun,
+    bool clearPendingRun = false,
+    bool? loading,
+  }) {
+    return ProfileState(
+      profile: profile ?? this.profile,
+      progress: progress ?? this.progress,
+      pendingRun: clearPendingRun ? null : (pendingRun ?? this.pendingRun),
+      loading: loading ?? this.loading,
+    );
+  }
+}
+
+class ProfileSaveResult {
+  const ProfileSaveResult({
+    required this.profile,
+    required this.didSavePendingScore,
+  });
+
+  final PlayerProfile profile;
+  final bool didSavePendingScore;
 }
 
 class ProfileController extends StateNotifier<ProfileState> {
@@ -136,7 +181,8 @@ class ProfileController extends StateNotifier<ProfileState> {
   final ProfileRepository _profileRepository;
 
   Future<void> refresh() async {
-    state = const ProfileState(loading: true);
+    final pendingRun = state.pendingRun;
+    state = ProfileState(loading: true, pendingRun: pendingRun);
     final profile = await _profileRepository.getProfile();
     final progress = profile == null
         ? null
@@ -144,11 +190,12 @@ class ProfileController extends StateNotifier<ProfileState> {
     state = ProfileState(
       profile: profile,
       progress: progress,
+      pendingRun: pendingRun,
       loading: false,
     );
   }
 
-  Future<PlayerProfile> saveProfile({
+  Future<ProfileSaveResult> saveProfile({
     required String username,
     required String fullName,
     String? email,
@@ -160,8 +207,24 @@ class ProfileController extends StateNotifier<ProfileState> {
       email: email,
       phone: phone,
     );
+
+    final pendingRun = state.pendingRun;
+    var didSavePendingScore = false;
+    if (pendingRun != null) {
+      final submitResult = await _profileRepository.submitRun(
+        level: pendingRun.level,
+        score: pendingRun.score,
+        bestCombo: pendingRun.bestCombo,
+      );
+      didSavePendingScore = submitResult.saved;
+      state = state.copyWith(clearPendingRun: true);
+    }
+
     await refresh();
-    return savedProfile;
+    return ProfileSaveResult(
+      profile: savedProfile,
+      didSavePendingScore: didSavePendingScore,
+    );
   }
 
   Future<ScoreSubmitResult> submitRun({
@@ -174,7 +237,19 @@ class ProfileController extends StateNotifier<ProfileState> {
       score: score,
       bestCombo: bestCombo,
     );
-    if (result.saved) await refresh();
+    if (result.saved) {
+      state = state.copyWith(clearPendingRun: true);
+      await refresh();
+    } else {
+      // Keep the latest guest run so “create profile” can still persist it.
+      state = state.copyWith(
+        pendingRun: PendingRun(
+          level: level,
+          score: score,
+          bestCombo: bestCombo,
+        ),
+      );
+    }
     return result;
   }
 }

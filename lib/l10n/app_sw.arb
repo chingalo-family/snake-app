@@ -84,6 +84,7 @@
   "emailInvalid": "Weka barua pepe sahihi",
   "phoneInvalid": "Weka nambari ya simu sahihi (tarakimu 7–15)",
   "profileSaved": "Wasifu umehifadhiwa kwenye kifaa",
+  "profileSavedWithScore": "Wasifu umehifadhiwa — alama yako imehifadhiwa",
   "profileHelp": "Wasifu unahitajika tu kuhifadhi alama za juu na maendeleo ya viwango. Unaweza kucheza bila wasifu.",
   "best": "Bora",
   "games": "Michezo",

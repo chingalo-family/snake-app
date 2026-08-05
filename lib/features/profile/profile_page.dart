@@ -49,15 +49,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
     try {
-      await ref.read(profileControllerProvider.notifier).saveProfile(
-            username: _username.text.trim(),
-            fullName: _fullName.text.trim(),
-            email: ProfileValidators.normalizeEmail(_email.text),
-            phone: ProfileValidators.normalizePhone(_phone.text),
-          );
+      final saveResult =
+          await ref.read(profileControllerProvider.notifier).saveProfile(
+                username: _username.text.trim(),
+                fullName: _fullName.text.trim(),
+                email: ProfileValidators.normalizeEmail(_email.text),
+                phone: ProfileValidators.normalizePhone(_phone.text),
+              );
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.profileSaved)),
+        SnackBar(
+          content: Text(
+            saveResult.didSavePendingScore
+                ? context.l10n.profileSavedWithScore
+                : context.l10n.profileSaved,
+          ),
+        ),
       );
       context.go(AppRoutes.home);
     } finally {

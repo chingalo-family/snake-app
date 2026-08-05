@@ -263,6 +263,10 @@ class AppLocalizationsSw extends AppLocalizations {
   String get profileSaved => 'Wasifu umehifadhiwa kwenye kifaa';
 
   @override
+  String get profileSavedWithScore =>
+      'Wasifu umehifadhiwa — alama yako imehifadhiwa';
+
+  @override
   String get profileHelp =>
       'Wasifu unahitajika tu kuhifadhi alama za juu na maendeleo ya viwango. Unaweza kucheza bila wasifu.';
 

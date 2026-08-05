@@ -95,6 +95,7 @@
   "emailInvalid": "Enter a valid email address",
   "phoneInvalid": "Enter a valid phone number (7–15 digits)",
   "profileSaved": "Profile saved locally",
+  "profileSavedWithScore": "Profile saved — your score was kept",
   "profileHelp": "A profile is only required to save high scores and level progress. You can play without one.",
   "best": "Best",
   "games": "Games",

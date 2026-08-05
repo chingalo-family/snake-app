@@ -6,29 +6,30 @@ class HapticService {
 
   bool enabled = true;
 
-  bool get _supported {
+  /// True on iOS/Android device builds. Web and desktop are no-ops.
+  bool get isSupported {
     if (kIsWeb) return false;
     return defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android;
   }
 
   Future<void> light() async {
-    if (!enabled || !_supported) return;
+    if (!enabled || !isSupported) return;
     await HapticFeedback.lightImpact();
   }
 
   Future<void> medium() async {
-    if (!enabled || !_supported) return;
+    if (!enabled || !isSupported) return;
     await HapticFeedback.mediumImpact();
   }
 
   Future<void> heavy() async {
-    if (!enabled || !_supported) return;
+    if (!enabled || !isSupported) return;
     await HapticFeedback.heavyImpact();
   }
 
   Future<void> success() async {
-    if (!enabled || !_supported) return;
+    if (!enabled || !isSupported) return;
     await HapticFeedback.mediumImpact();
   }
 }
