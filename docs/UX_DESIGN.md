@@ -26,7 +26,7 @@ Slide composition (scrollable body; footer pinned): **title → visual → short
 | Page | Content | Visual |
 |------|---------|--------|
 | Welcome | “Snake App” + tagline | Full-bleed soft green atmosphere + snake mark |
-| Move | Swipe OR arrows (adaptive copy) | Animated gesture / key hint |
+| Move | Swipe OR arrows + reverse tip | Animated gesture / key hint |
 | Collect | Point values + combo tip (body only; no duplicate hint) | Soft panel with icon + score chip wrap (not cramped in the icon circle) |
 | Save | Profile unlocks offline records | Simple profile silhouette |
 
@@ -39,8 +39,9 @@ Footer: page dots · Skip · Next / Get Started
 1. Brand / wordmark
 2. Primary CTA: **Play**
 3. Secondary: Level progress chip (“Level 4 unlocked”)
-4. Row: High Scores · Profile · Settings
-5. Footer link: About · Update available? (if any)
+4. Optional **A tip for you** card — fresh random quote each app open (dismissible for the session; Settings toggle)
+5. Row: High Scores · Profile · Settings
+6. Footer link: About · Update available? (if any)
 
 Avoid stacking stats walls on the first viewport.
 
@@ -48,6 +49,8 @@ Avoid stacking stats walls on the first viewport.
 
 - Scrollable list or grid of level cards
 - Locked levels: muted + lock icon + unlock hint
+- Mode chip (**Classic** / **Wrap** / **Maze** / **Wrap maze**) + short tip
+- Mini board silhouette (edge + obstacles preview)
 - Selected level: difficulty tags (Speed / Density)
 - CTA: Start Level
 
@@ -77,13 +80,18 @@ Landscape tablet/desktop optional:
 ```
 
 **Empty board cells:** subtle grid, low contrast  
-**Snake:** rounded segments, clear head  
+**Snake:** unlockable skins; clear head with facing wedge; soft blink (Reduce Motion off)  
 **Food:** icon-centered, gentle pulse on rare/epic  
+**Wrap:** dashed edge cue · **Maze:** bark/amber blockers  
 
 ### 6. Pause / Game over sheets
 
 - Pause: Resume · Restart · Quit to Levels
-- Game over: Score · Level · Personal best delta  
+- Game over: Score · Level · Personal best delta · skin unlock lines  
+  - **Share as image** when score > 0 (9:16 branded PNG with app icon, name, Google Play & App Store, unlocks)  
+    - Mobile (Android/iOS) + macOS/Windows: system share sheet  
+    - Linux: saves PNG under Downloads/Snake App and opens the folder (file share unsupported there)  
+    - After adding the share plugin, use a full app restart (not hot restart) so native code registers  
   - If no profile: **Save score — create profile** (keeps the just-finished run in memory and persists it when the profile is saved)  
   - If profile: “New best!” or “Almost — try again”
 
@@ -100,7 +108,7 @@ Grouped:
 
 - **Audio** — SFX, Music
 - **Feel** — Haptics (mobile)
-- **Display** — Theme, control hints
+- **Display** — Control hints, daily tip, snake look, language
 - **App** — Check for updates, About, Privacy
 
 ### 9. About
@@ -109,7 +117,8 @@ Short story, version, package id, Chingalo Family, policy links.
 
 ### 10. High scores
 
-Local only: overall best + per-level bests. Empty state encourages Play + Profile.
+Local only: overall best + per-level bests. Empty state encourages Play + Profile.  
+Share overall best as a social image when `bestOverallScore > 0` (same platform behavior as game-over share).
 
 ---
 
@@ -120,10 +129,11 @@ Local only: overall best + per-level bests. Empty state encourages Play + Profil
 - Direction from dominant axis of the gesture
 - Minimum distance ~24–32 logical px
 - One direction change per tick window (prevent spam)
+- Reverse into self rejected (no toast; optional light haptic)
 
 ### Keyboard (desktop)
 
-- Arrow keys change pending direction
+- Arrow keys change pending direction (reverse rejected same as swipe)
 - Esc → Pause
 - Space → Pause/Resume (optional)
 - Enter on game over → Restart
@@ -137,6 +147,7 @@ Local only: overall best + per-level bests. Empty state encourages Play + Profil
 | Power-up | Glow on head/HUD | Distinct sting | Medium |
 | Collision | Screen shake light | Thud | Heavy |
 | New best | Confetti/brief banner | Fanfare short | Success |
+| Share score | Branded PNG card | — | — |
 
 ---
 
@@ -144,8 +155,8 @@ Local only: overall best + per-level bests. Empty state encourages Play + Profil
 
 - Minimum tap targets 48×48 on touch
 - Contrast AA for text on surfaces
-- Don’t rely on color alone for locked vs unlocked
-- Respect Reduce Motion: disable non-essential pulses
+- Don’t rely on color alone for locked vs unlocked (or skins — pattern/stripe too)
+- Respect Reduce Motion: disable non-essential pulses / head blink
 
 ---
 
@@ -155,5 +166,8 @@ Local only: overall best + per-level bests. Empty state encourages Play + Profil
 2. Food pulse (subtle)
 3. Score float on eat
 4. Level unlock celebration (short)
+5. Head idle blink (Reduce Motion off)
+6. Tip card enter/dismiss
+7. Share card prepare (brief)
 
 Avoid continuous glow stacks and particle spam in HUD.

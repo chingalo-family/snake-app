@@ -1,6 +1,6 @@
-# Snake App — Game Modes & Level Variants (Planning)
+# Snake App — Game Modes & Level Variants
 
-**Status:** Planning only — not implemented yet  
+**Status:** Implemented (Classic · Wrap · Maze · Wrap maze)  
 **Related:** [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) · [UX_DESIGN.md](./UX_DESIGN.md) · [ARCHITECTURE.md](./ARCHITECTURE.md)  
 **Goal:** Give players meaningful variety beyond “same rules, faster tick,” while keeping offline-first play, fair controls, and clear progression.
 
@@ -8,7 +8,7 @@
 
 ## 1. Why game modes
 
-Today every level is the same rule set: **solid walls**, grow by eating, die on wall/self. Speed and board density change, but the *feel* of play stays similar after a few runs.
+Today the campaign mixes **Classic**, **Wrap**, **Maze**, and **Wrap maze**. Speed and board density still rise with level; maze levels also grow **obstacle box count and size**.
 
 Modes should:
 
@@ -191,21 +191,21 @@ Stay on nature-arcade palette (`THEME_AND_COLORS.md`); avoid purple defaults.
 ### Phase 0 — Spec & fixtures (docs + constants design)
 
 - [x] This planning doc
-- [ ] Finalize mode enum names and campaign mix table
-- [ ] Sketch 3–5 obstacle patterns (JSON/list of cell indexes or row masks)
+- [x] Finalize mode enum names and campaign mix table
+- [x] Seeded obstacle generation (scaling box count/size by level)
 
 ### Phase 1 — Engine modes (must-have)
 
-- [ ] `GameMode.classic` (explicit) + `GameMode.wrap`
-- [ ] Level catalog fields + level-select mode chips
-- [ ] Tests: wrap teleport; classic still dies on edge
-- [ ] First-run tip strings (EN + SW)
+- [x] `GameMode.classic` (explicit) + `GameMode.wrap`
+- [x] Level catalog fields + level-select mode chips
+- [x] Tests: wrap teleport; classic still dies on edge
+- [x] First-run tip strings (EN + SW) on level cards / onboarding reverse hint
 
 ### Phase 2 — Obstacles
 
-- [ ] Blocker collision + food spawn exclusion
-- [ ] 4–8 authored patterns; paint blockers on board
-- [ ] Levels that use obstacles; unlock curve tweak if needed
+- [x] Blocker collision + food spawn exclusion
+- [x] Seeded patterns that densify by level; paint blockers on board
+- [x] Levels that use obstacles (`maze` from 13+, `wrapMaze` in expert band)
 
 ### Phase 3 — Session variety
 

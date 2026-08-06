@@ -78,3 +78,4 @@ CI’s Linux job installs the same build packages (plus `libstdc++-12-dev`) in `
 - macOS CI builds are typically **unsigned**. First open on a Mac may require right-click → Open.
 - Linux CI on `ubuntu-latest` installs GTK/CMake **and** GStreamer `-dev` packages so `audioplayers` can link.
 - Bump `version:` in `pubspec.yaml` (especially the `+build` number) before merging to `main` when you want a new release tag.
+- Android uses **AGP 8.13** + Kotlin 2.2.20 for now (see `android/settings.gradle.kts`). Flutter 3.44’s AGP 9 + Built-in Kotlin path still conflicts with some plugins; stay on AGP 8 until that stack is stable.

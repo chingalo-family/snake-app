@@ -55,6 +55,21 @@ Supports **light** and **dark**. Dark is default for gameplay immersion; light f
 | Rare food ring | `#F0A202` | `#D4890A` |
 | Epic food ring | `#E85D4C` + soft pulse | same |
 
+### Unlockable snake skins (cosmetic)
+
+Skins unlock by `highest_level_unlocked` (Settings → Snake look). Defaults stay Forest.
+
+| Id | Unlock | Head | Body notes |
+|----|--------|------|------------|
+| `forest` | 1 | brand primary light → primary | current default |
+| `amber_leaf` | 5 | amber | warm body + stripe |
+| `river` | 10 | teal | cooler water sheen |
+| `sunset` | 15 | warm orange | reddish body + stripe |
+| `midnight` | 20 | bright primary head | deep forest body |
+| `champion` | 25 | gold tip | dark body + amber stripe |
+
+Head always shows a facing wedge; optional blink respects Reduce Motion.
+
 ---
 
 ## Typography
