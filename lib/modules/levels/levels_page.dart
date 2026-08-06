@@ -6,6 +6,7 @@ import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/models/game_mode.dart';
+import 'package:snake_app/core/utils/page_insets.dart';
 import 'package:snake_app/modules/levels/components/level_mode_chip.dart';
 import 'package:snake_app/modules/levels/components/level_preview_thumb.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
@@ -28,7 +29,7 @@ class LevelsPage extends ConsumerWidget {
       ),
       body: AtmosphereBackground(
         child: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+          padding: pageScrollPadding(context),
           itemCount: LevelsCatalog.levels.length,
           separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (context, levelIndex) {

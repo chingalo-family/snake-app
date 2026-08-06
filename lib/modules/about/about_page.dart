@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
+import 'package:snake_app/core/utils/page_insets.dart';
 import 'package:snake_app/modules/about/components/about_info_line.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
 
@@ -25,7 +26,7 @@ class AboutPage extends StatelessWidget {
             final packageInfo = snapshot.data;
             final theme = Theme.of(context);
             return ListView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+              padding: pageScrollPadding(context),
               children: [
                 const BrandMark(),
                 const SizedBox(height: 20),

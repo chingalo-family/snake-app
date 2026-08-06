@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snake_app/app/providers.dart';
@@ -67,7 +68,13 @@ class _SnakeAppState extends ConsumerState<SnakeApp>
       ],
       routerConfig: appRouter,
       builder: (context, child) {
-        return child ?? const SizedBox.shrink();
+        final overlayStyle = Theme.of(context).brightness == Brightness.dark
+            ? AppTheme.darkSystemOverlay
+            : AppTheme.lightSystemOverlay;
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: overlayStyle,
+          child: child ?? const SizedBox.shrink(),
+        );
       },
     );
   }

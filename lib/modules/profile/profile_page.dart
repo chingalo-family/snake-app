@@ -7,6 +7,7 @@ import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/constants/profile_avatars.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
+import 'package:snake_app/core/utils/page_insets.dart';
 import 'package:snake_app/core/utils/profile_validators.dart';
 import 'package:snake_app/modules/profile/components/profile_avatar_picker.dart';
 import 'package:snake_app/modules/profile/components/profile_stat.dart';
@@ -113,7 +114,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ),
       body: AtmosphereBackground(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+          padding: pageScrollPadding(context),
           children: [
             Center(
               child: CircleAvatar(

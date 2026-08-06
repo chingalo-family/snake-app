@@ -165,6 +165,15 @@ Share overall best as a social image when `bestOverallScore > 0` (same platform 
 
 ---
 
+## System chrome (edge-to-edge)
+
+- Android draws under status / navigation bars when targeting SDK 35+ (app enables `SystemUiMode.edgeToEdge` for older Android too)
+- Transparent system bars; icon brightness follows light/dark theme
+- Interactive content clears insets via `SafeArea` (home, game, splash, onboarding, sheets) or `pageScrollPadding` (scrollable app-bar pages)
+- Do not opt out with `windowOptOutEdgeToEdgeEnforcement`
+
+---
+
 ## Motion budget (intentional, not noisy)
 
 1. Onboarding page transition (slide/fade)

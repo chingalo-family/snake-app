@@ -5,8 +5,27 @@ import 'package:snake_app/core/theme/app_colors.dart';
 abstract final class AppTheme {
   static const String _fontFamily = 'Nunito';
 
-  
   static const VisualDensity _visualDensity = VisualDensity.standard;
+
+  static const SystemUiOverlayStyle darkSystemOverlay = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    statusBarBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    systemNavigationBarContrastEnforced: false,
+    systemStatusBarContrastEnforced: false,
+  );
+
+  static const SystemUiOverlayStyle lightSystemOverlay = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.dark,
+    systemNavigationBarContrastEnforced: false,
+    systemStatusBarContrastEnforced: false,
+  );
 
   static ThemeData dark() {
     final baseText = ThemeData.dark().textTheme.apply(
@@ -49,7 +68,7 @@ abstract final class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: AppColors.darkTextPrimary,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: darkSystemOverlay,
         titleTextStyle: baseText.titleLarge?.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -159,7 +178,7 @@ abstract final class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: AppColors.lightTextPrimary,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: lightSystemOverlay,
         titleTextStyle: baseText.titleLarge?.copyWith(
           fontSize: 20,
           fontWeight: FontWeight.w700,

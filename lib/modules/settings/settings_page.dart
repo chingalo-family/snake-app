@@ -7,6 +7,7 @@ import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/core/l10n/app_locale.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/services/update_service.dart';
+import 'package:snake_app/core/utils/page_insets.dart';
 import 'package:snake_app/modules/settings/components/settings_nav_tile.dart';
 import 'package:snake_app/modules/settings/components/settings_option_sheet.dart';
 import 'package:snake_app/modules/settings/components/settings_section_header.dart';
@@ -41,7 +42,13 @@ class SettingsPage extends ConsumerWidget {
       ),
       body: AtmosphereBackground(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+          padding: pageScrollPadding(
+            context,
+            left: 16,
+            top: 12,
+            right: 16,
+            bottom: 32,
+          ),
           children: [
             SettingsSectionHeader(
               title: l10n.audio,

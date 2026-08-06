@@ -6,6 +6,7 @@ import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/models/player_profile.dart';
 import 'package:snake_app/core/services/share_score_service.dart';
+import 'package:snake_app/core/utils/page_insets.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
 import 'package:snake_app/shared/widgets/share_score_card.dart';
 
@@ -88,7 +89,13 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
         child: !profile.hasProfile
             ? Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(28),
+                  padding: pageScrollPadding(
+                    context,
+                    left: 28,
+                    top: 28,
+                    right: 28,
+                    bottom: 28,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -123,7 +130,7 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
                   final canShareOverall = bestOverall > 0;
 
                   return ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+                    padding: pageScrollPadding(context),
                     children: [
                       SurfaceCard(
                         child: Column(
