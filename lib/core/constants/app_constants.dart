@@ -8,11 +8,11 @@ abstract final class AppConstants {
       'https://play.google.com/store/apps/details?id=$packageId';
   static const String playStoreMarketUrl = 'market://details?id=$packageId';
 
-  /// iOS bundle id (Xcode `PRODUCT_BUNDLE_IDENTIFIER`).
+  
   static const String iosBundleId = 'chingalo.family.snakeApp';
 
-  /// Apple App Store numeric id from App Store Connect.
-  /// Leave empty until the listing exists; then open uses search fallback.
+  
+  
   static const String appStoreId = '';
 
   static String get appStoreUrl {
@@ -33,7 +33,7 @@ abstract final class AppConstants {
   static const double maxCellSize = 36;
   static const double desktopMaxBoard = 640;
 
-  /// Bounds for orientation-aware grid sizing.
+  
   static const int minGridColumns = 10;
   static const int maxGridColumns = 36;
   static const int minGridRows = 8;

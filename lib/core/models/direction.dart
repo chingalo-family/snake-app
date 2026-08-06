@@ -5,6 +5,8 @@ extension DirectionHelpers on Direction {
 
   bool get isVertical => this == Direction.up || this == Direction.down;
 
+  bool isSameAxisAs(Direction other) => isHorizontal == other.isHorizontal;
+
   bool isOppositeOf(Direction other) {
     return (this == Direction.up && other == Direction.down) ||
         (this == Direction.down && other == Direction.up) ||

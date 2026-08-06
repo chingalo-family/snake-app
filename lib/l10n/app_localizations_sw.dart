@@ -51,6 +51,21 @@ class AppLocalizationsSw extends AppLocalizations {
   String get scoreboard => 'Ubao wa alama';
 
   @override
+  String get homeWelcomeBack => 'Karibu tena';
+
+  @override
+  String get homeWelcomeGuest => 'Karibu';
+
+  @override
+  String get guestPlayer => 'Mgeni';
+
+  @override
+  String get homeWelcomeProfileHint => 'Wasifu wako · gusa kuhariri';
+
+  @override
+  String get homeWelcomeGuestHint => 'Gusa kuunda wasifu';
+
+  @override
   String get skip => 'Ruka';
 
   @override

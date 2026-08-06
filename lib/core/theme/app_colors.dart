@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Brand and surface tokens - see docs/THEME_AND_COLORS.md
 abstract final class AppColors {
   static const Color brandPrimary = Color(0xFF1FA87A);
   static const Color brandPrimaryDark = Color(0xFF14825C);

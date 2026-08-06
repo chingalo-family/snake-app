@@ -51,6 +51,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scoreboard => 'Scoreboard';
 
   @override
+  String get homeWelcomeBack => 'Welcome back';
+
+  @override
+  String get homeWelcomeGuest => 'Welcome';
+
+  @override
+  String get guestPlayer => 'Guest';
+
+  @override
+  String get homeWelcomeProfileHint => 'Your profile · tap to edit';
+
+  @override
+  String get homeWelcomeGuestHint => 'Tap to create a profile';
+
+  @override
   String get skip => 'Skip';
 
   @override

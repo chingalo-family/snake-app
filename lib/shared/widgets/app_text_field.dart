@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 
-/// Outlined text field with external label (Duka-inspired form chrome).
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,

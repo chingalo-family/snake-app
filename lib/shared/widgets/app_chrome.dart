@@ -151,7 +151,6 @@ class SurfaceCard extends StatelessWidget {
   }
 }
 
-/// Soft feature row used under onboarding heroes.
 class FeatureHintCard extends StatelessWidget {
   const FeatureHintCard({super.key, required this.icon, required this.title});
 

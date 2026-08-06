@@ -182,6 +182,36 @@ abstract class AppLocalizations {
   /// **'Scoreboard'**
   String get scoreboard;
 
+  /// No description provided for @homeWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get homeWelcomeBack;
+
+  /// No description provided for @homeWelcomeGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get homeWelcomeGuest;
+
+  /// No description provided for @guestPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get guestPlayer;
+
+  /// No description provided for @homeWelcomeProfileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile · tap to edit'**
+  String get homeWelcomeProfileHint;
+
+  /// No description provided for @homeWelcomeGuestHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to create a profile'**
+  String get homeWelcomeGuestHint;
+
   /// No description provided for @skip.
   ///
   /// In en, this message translates to:

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-/// Axis-aligned blocker rectangle in grid cells.
 class ObstacleBox {
   const ObstacleBox({
     required this.rowIndex,
@@ -23,7 +22,6 @@ class ObstacleBox {
   }
 }
 
-/// Seeded obstacle layouts that grow denser and larger with level.
 abstract final class ObstacleGenerator {
   static List<ObstacleBox> generate({
     required int level,
@@ -38,7 +36,7 @@ abstract final class ObstacleGenerator {
     final boxes = <ObstacleBox>[];
     final blockedCellIndexes = <int>{};
 
-    // Keep a clear spawn corridor around mid-row facing right (snake starts mid).
+    
     final spawnRowIndex = (rows / 2).floor();
     final spawnColumnIndex = (columns / 2).floor().clamp(2, columns - 1);
     for (var columnOffset = -2; columnOffset <= 4; columnOffset++) {
@@ -70,7 +68,7 @@ abstract final class ObstacleGenerator {
           candidate.cellIndexes(columns: columns).toSet();
       if (candidateCells.any(blockedCellIndexes.contains)) continue;
 
-      // Leave margin so the board is never sealed.
+      
       final freeAfter =
           columns * rows - blockedCellIndexes.length - candidateCells.length;
       if (freeAfter < columns * rows ~/ 3) continue;

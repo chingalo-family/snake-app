@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
-import 'package:snake_app/features/about/about_page.dart';
-import 'package:snake_app/features/game/game_page.dart';
-import 'package:snake_app/features/home/home_page.dart';
-import 'package:snake_app/features/levels/levels_page.dart';
-import 'package:snake_app/features/onboarding/onboarding_page.dart';
-import 'package:snake_app/features/profile/profile_page.dart';
-import 'package:snake_app/features/scores/scores_page.dart';
-import 'package:snake_app/features/settings/settings_page.dart';
-import 'package:snake_app/features/splash/splash_page.dart';
+import 'package:snake_app/modules/about/about_page.dart';
+import 'package:snake_app/modules/game/game_page.dart';
+import 'package:snake_app/modules/home/home_page.dart';
+import 'package:snake_app/modules/levels/levels_page.dart';
+import 'package:snake_app/modules/onboarding/onboarding_page.dart';
+import 'package:snake_app/modules/profile/profile_page.dart';
+import 'package:snake_app/modules/scores/scores_page.dart';
+import 'package:snake_app/modules/settings/settings_page.dart';
+import 'package:snake_app/modules/splash/splash_page.dart';
 
 final appRouter = GoRouter(
   initialLocation: AppRoutes.splash,

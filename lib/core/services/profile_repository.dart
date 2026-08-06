@@ -72,7 +72,7 @@ class ProfileRepository {
     return (await getProfile())!;
   }
 
-  /// Persist score/unlocks only when a profile exists.
+  
   Future<ScoreSubmitResult> submitRun({
     required int level,
     required int score,

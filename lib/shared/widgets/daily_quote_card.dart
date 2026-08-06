@@ -3,7 +3,6 @@ import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
 
-/// Soft once-per-day motivation card for Home (does not block Play).
 class DailyQuoteCard extends StatelessWidget {
   const DailyQuoteCard({
     super.key,

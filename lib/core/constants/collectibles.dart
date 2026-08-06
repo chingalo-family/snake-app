@@ -37,7 +37,7 @@ abstract final class CollectiblesCatalog {
     Collectible(icon: '🦌', score: 90, tier: CollectibleTier.epic),
   ];
 
-  /// Weighted pick; rarer tiers unlock gradually by level.
+  
   static Collectible pickWeighted(int level, [Random? random]) {
     final randomSource = random ?? Random();
     final allowed = all.where((collectible) {

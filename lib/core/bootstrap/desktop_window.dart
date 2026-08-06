@@ -4,7 +4,6 @@ import 'package:screen_retriever/screen_retriever.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:window_manager/window_manager.dart';
 
-/// True for Linux, macOS, and Windows (not web/mobile).
 bool get isDesktopPlatform {
   if (kIsWeb) return false;
   return defaultTargetPlatform == TargetPlatform.linux ||
@@ -12,8 +11,6 @@ bool get isDesktopPlatform {
       defaultTargetPlatform == TargetPlatform.windows;
 }
 
-/// Sizes the desktop window to the current screen's usable area
-/// (not exclusive fullscreen - title bar and OS chrome stay available).
 Future<void> configureDesktopWindow() async {
   if (!isDesktopPlatform) return;
 
@@ -41,8 +38,6 @@ Future<void> configureDesktopWindow() async {
   });
 }
 
-/// Keep title bar / window chrome in sync with Material light/dark -
-/// same effective theme as mobile/web.
 Future<void> syncDesktopWindowTheme(Brightness brightness) async {
   if (!isDesktopPlatform) return;
   try {
@@ -53,7 +48,6 @@ Future<void> syncDesktopWindowTheme(Brightness brightness) async {
   } catch (_) {}
 }
 
-/// Resolve [ThemeMode] the same way [MaterialApp] does on every platform.
 Brightness resolveThemeBrightness({
   required ThemeMode themeMode,
   required Brightness platformBrightness,

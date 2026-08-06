@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/l10n/app_localizations.dart';
 
-/// Unlockable cosmetic snake looks (no gameplay advantage).
 class SnakeSkin {
   const SnakeSkin({
     required this.id,
@@ -114,7 +113,7 @@ abstract final class SnakeSkinsCatalog {
     return highestLevelUnlocked >= skin.unlockLevel;
   }
 
-  /// Skins newly available when highest unlocked rises from [previous] to [next].
+  
   static List<SnakeSkin> unlockedBetween({
     required int previousHighest,
     required int nextHighest,

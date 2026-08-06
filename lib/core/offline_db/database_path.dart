@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 
 const String offlineDatabaseFileName = 'snake_app.db';
 
-/// Resolves on-disk path for Drift / SQLite (inspired by duka_mkononi_app).
 Future<String> resolveOfflineDatabasePath(String fileName) async {
   if (Platform.isAndroid) {
     final appDir = await getApplicationSupportDirectory();

@@ -27,7 +27,7 @@ class UpdateCheckResult {
 }
 
 class UpdateService {
-  /// Store updates are only offered on Android (Play) and iOS (App Store).
+  
   bool get supportsStoreUpdates {
     if (kIsWeb) return false;
     return defaultTargetPlatform == TargetPlatform.android ||

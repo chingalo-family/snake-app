@@ -11,30 +11,22 @@ import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/shared/widgets/share_score_card.dart';
 
-/// Result of a share / save attempt after the preview step.
 enum ShareScoreOutcome {
-  /// Preview dismissed without sharing.
+  
   cancelled,
 
-  /// Native share sheet completed or was dismissed by the user.
+  
   shared,
 
-  /// PNG written to disk and revealed (desktop fallback, esp. Linux).
+  
   savedToDisk,
 
-  /// Native share and disk fallback both failed.
+  
   failed,
 }
 
-/// Captures a visible [ShareScoreCard] to PNG and shares or saves it.
-///
-/// Platform notes:
-/// - **Android / iOS / macOS / Windows / Web:** system share sheet via `share_plus`
-/// - **Linux:** file share is unsupported by `share_plus` → save + open folder
-/// - After adding `share_plus`, do a **full stop + rebuild** (hot restart does not
-///   register native plugins and causes [MissingPluginException]).
 class ShareScoreService {
-  /// Shows a preview dialog, then shares or saves the card as a PNG.
+  
   Future<ShareScoreOutcome> shareSocialPostImage({
     required BuildContext context,
     required ShareScoreCard card,
@@ -60,7 +52,7 @@ class ShareScoreService {
     }
     if (!context.mounted) return ShareScoreOutcome.cancelled;
 
-    // Let the dialog fully dismiss before presenting the native sheet.
+    
     await Future<void>.delayed(const Duration(milliseconds: 120));
     if (!context.mounted) return ShareScoreOutcome.cancelled;
 
@@ -100,7 +92,7 @@ class ShareScoreService {
       if (nativeOutcome == ShareScoreOutcome.shared) {
         return ShareScoreOutcome.shared;
       }
-      // Mobile/web: do not silently write Downloads when the sheet fails.
+      
       if (!_shouldFallbackToDiskSave) {
         return ShareScoreOutcome.failed;
       }
@@ -116,8 +108,8 @@ class ShareScoreService {
     return ShareScoreOutcome.savedToDisk;
   }
 
-  /// Native file share works everywhere share_plus supports files.
-  /// Linux only supports text (mailto), not image files.
+  
+  
   bool get _canUseNativeFileShare {
     if (kIsWeb) return true;
     if (Platform.isLinux) return false;
@@ -127,7 +119,7 @@ class ShareScoreService {
         Platform.isWindows;
   }
 
-  /// Desktop can always fall back to saving a PNG the user can attach manually.
+  
   bool get _shouldFallbackToDiskSave {
     if (kIsWeb) return false;
     return Platform.isLinux || Platform.isMacOS || Platform.isWindows;
@@ -227,8 +219,8 @@ class ShareScoreService {
     try {
       if (kIsWeb) return null;
       final directory = await getTemporaryDirectory();
-      // Must not use a folder whose path starts with ".../share_plus":
-      // share_plus Android rejects those (prefix check on its cache dir).
+      
+      
       final shareDirectory = Directory('${directory.path}/snake_app_share');
       if (!await shareDirectory.exists()) {
         await shareDirectory.create(recursive: true);
@@ -242,7 +234,7 @@ class ShareScoreService {
     }
   }
 
-  /// Prefer Downloads; fall back to Documents / temp for desktop reveal.
+  
   Future<String?> _saveForDesktopSharing({
     required Uint8List pngBytes,
     required String fileName,
@@ -290,7 +282,7 @@ class ShareScoreService {
     }
   }
 
-  /// iOS (esp. iPad / newer iOS) requires a non-zero origin inside the screen.
+  
   Rect _shareOriginFor(BuildContext context) {
     final box = context.findRenderObject() as RenderBox?;
     if (box != null && box.hasSize && box.size.width > 0 && box.size.height > 0) {
@@ -352,7 +344,7 @@ class _ShareScorePreviewDialogState extends State<_ShareScorePreviewDialog> {
         setState(() => _isPreparing = false);
         return;
       }
-      // Return bytes to the caller; native share opens after this dialog pops.
+      
       Navigator.of(context).pop(pngBytes);
     } catch (_) {
       if (!mounted) return;

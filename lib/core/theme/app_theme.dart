@@ -5,7 +5,7 @@ import 'package:snake_app/core/theme/app_colors.dart';
 abstract final class AppTheme {
   static const String _fontFamily = 'Nunito';
 
-  /// Same density on phone, tablet, and desktop so dark/light look identical.
+  
   static const VisualDensity _visualDensity = VisualDensity.standard;
 
   static ThemeData dark() {

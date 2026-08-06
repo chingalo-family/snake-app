@@ -1,17 +1,16 @@
 import 'package:snake_app/l10n/app_localizations.dart';
 
-/// Campaign wall / obstacle rule set for a level.
 enum GameMode {
-  /// Solid edges — leaving the board ends the run.
+  
   classic,
 
-  /// Edges loop to the opposite side; self-collision still ends the run.
+  
   wrap,
 
-  /// Solid edges plus internal blocker cells.
+  
   maze,
 
-  /// Wrap edges plus internal blocker cells (expert band).
+  
   wrapMaze,
 }
 

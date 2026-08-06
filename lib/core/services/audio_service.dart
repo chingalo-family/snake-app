@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:snake_app/core/constants/audio_assets.dart';
 
-/// Minimal player surface so unit tests avoid platform channels.
 abstract class GameAudioPlayer {
   PlayerState get state;
 
@@ -101,11 +100,6 @@ class FakeGameAudioPlayer implements GameAudioPlayer {
   }
 }
 
-/// Separate SFX and BGM channels.
-///
-/// SFX prefers bundled clips under `assets/audio/`, then falls back to
-/// [SystemSound]. BGM loops [AudioAssets.bgm] when present; otherwise stays
-/// silent (no placeholder tone).
 class AudioService {
   AudioService({
     AssetBundle? assetBundle,
@@ -196,7 +190,7 @@ class AudioService {
     await SystemSound.play(SystemSoundType.click);
   }
 
-  /// Starts (or restarts) looping BGM when the bundled track is available.
+  
   Future<void> startBgm() async {
     _bgmStarted = true;
     await _probeAssetsIfNeeded();
@@ -261,7 +255,7 @@ class AudioService {
     }
   }
 
-  /// Re-probe assets (tests / hot-added files in debug).
+  
   @visibleForTesting
   Future<void> probeAssetsForTest() async {
     _assetsProbed = false;

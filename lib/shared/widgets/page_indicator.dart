@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 
-/// Pill page dots (Duka-style indicator).
 class PageIndicator extends StatelessWidget {
   const PageIndicator({
     super.key,

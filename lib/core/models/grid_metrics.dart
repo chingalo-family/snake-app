@@ -21,8 +21,8 @@ class GridMetrics {
 
   int get totalCells => columns * rows;
 
-  /// Aspect-aware grid for the playground: keeps level density while matching
-  /// the available box so landscape uses width and portrait stays tall.
+  
+  
   static GridMetrics fromConstraints({
     required double maxWidth,
     required double maxHeight,
@@ -83,7 +83,7 @@ class GridMetrics {
     );
   }
 
-  /// Fit an already-chosen column/row count into the box (square cells).
+  
   static GridMetrics fitFixedGrid({
     required double maxWidth,
     required double maxHeight,

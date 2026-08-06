@@ -6,7 +6,7 @@ class HapticService {
 
   bool enabled = true;
 
-  /// True on iOS/Android device builds. Web and desktop are no-ops.
+  
   bool get isSupported {
     if (kIsWeb) return false;
     return defaultTargetPlatform == TargetPlatform.iOS ||

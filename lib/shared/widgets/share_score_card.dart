@@ -5,8 +5,6 @@ import 'package:snake_app/core/models/game_mode.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/core/theme/snake_skins.dart';
 
-/// Fixed 9:16 social-post canvas (Stories / Reels / feed-friendly).
-/// Captured at pixelRatio 3 → ~1080×1920 PNG.
 class ShareScoreCard extends StatelessWidget {
   const ShareScoreCard({
     super.key,

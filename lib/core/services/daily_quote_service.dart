@@ -4,10 +4,6 @@ import 'package:snake_app/core/constants/preference_keys.dart';
 import 'package:snake_app/core/services/preference_service.dart';
 import 'package:snake_app/l10n/app_localizations.dart';
 
-/// Random motivational tips shown on Home each time the app opens.
-///
-/// A fresh quote is chosen per process launch (avoids immediate repeats).
-/// Dismiss hides the card for the rest of this session only.
 class DailyQuoteService {
   DailyQuoteService(this._preferenceService, {Random? random})
       : _random = random ?? Random();
@@ -27,7 +23,7 @@ class DailyQuoteService {
     return !_dismissedThisSession;
   }
 
-  /// Quote for this app session. Stable until the next cold start.
+  
   String sessionQuote(AppLocalizations l10n) {
     return _quoteAt(l10n, _ensureSessionQuoteIndex());
   }
@@ -45,7 +41,7 @@ class DailyQuoteService {
       nextIndex = (nextIndex + 1 + _random.nextInt(quoteCount - 1)) % quoteCount;
     }
     _sessionQuoteIndex = nextIndex;
-    // Fire-and-forget persist so the next launch can avoid a repeat.
+    
     _preferenceService.setInt(PreferenceKeys.dailyQuoteLastIndex, nextIndex);
     return nextIndex;
   }
@@ -54,7 +50,7 @@ class DailyQuoteService {
     _dismissedThisSession = true;
   }
 
-  /// Test helper: force a known session index without random.
+  
   void debugSetSessionQuoteIndex(int quoteIndex) {
     _sessionQuoteIndex = quoteIndex % quoteCount;
   }

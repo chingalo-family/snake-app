@@ -1,4 +1,4 @@
-/// Canonical path constants for [GoRouter] navigation.
+
 abstract final class AppRoutes {
   static const splash = '/splash';
   static const onboarding = '/onboarding';

@@ -18,7 +18,7 @@ part 'offline_database_migrations.dart';
 class AppDatabase extends _$AppDatabase {
   AppDatabase._(super.e);
 
-  /// In-memory or custom executor for unit tests.
+  
   AppDatabase.forTesting(super.e);
 
   static AppDatabase? _instance;
@@ -26,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
   static AppDatabase get instance =>
       _instance ??= AppDatabase._(openOfflineDatabaseConnection());
 
-  /// Resets the singleton (tests only).
+  
   static void resetInstanceForTesting() {
     _instance = null;
   }

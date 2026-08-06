@@ -90,7 +90,7 @@ class SettingsController extends StateNotifier<AppSettings> {
   Future<void> setHaptics(bool value) async {
     state = state.copyWith(hapticsEnabled: value);
     await _persist();
-    // Confirm the toggle on device — otherwise mobile users may think it is broken.
+    
     if (value) {
       await _haptics.medium();
     }
@@ -136,7 +136,6 @@ final settingsControllerProvider =
   );
 });
 
-/// In-memory run waiting for a profile so game-over “save score” can opt in.
 @immutable
 class PendingRun {
   const PendingRun({
@@ -261,7 +260,7 @@ class ProfileController extends StateNotifier<ProfileState> {
       state = state.copyWith(clearPendingRun: true);
       await refresh();
     } else {
-      // Keep the latest guest run so “create profile” can still persist it.
+      
       state = state.copyWith(
         pendingRun: PendingRun(
           level: level,

@@ -1,7 +1,5 @@
 part of 'app_database.dart';
 
-/// Schema version **1** is the initial [MigrationStrategy.onCreate] schema.
-/// Each entry in [_offlineDatabaseMigrations] bumps the version by one.
 int get offlineDatabaseSchemaVersion => _offlineDatabaseMigrations.length + 1;
 
 MigrationStrategy buildOfflineDatabaseMigrationStrategy(AppDatabase database) {
@@ -41,7 +39,6 @@ typedef _OfflineDatabaseMigration = Future<void> Function(
   AppDatabase database,
 );
 
-/// Ordered upgrade steps (v1→v2, …). Append new migrations at the end.
 final List<_OfflineDatabaseMigration> _offlineDatabaseMigrations = [
   (migrator, database) async {
     await migrator.addColumn(database.profiles, database.profiles.avatarId);

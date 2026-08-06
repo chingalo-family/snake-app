@@ -64,7 +64,6 @@ class SnakeEngineSnapshot {
   int get totalCells => columns * rows;
 }
 
-/// Pure snake simulation - no Flutter timers or widgets.
 class SnakeEngine {
   SnakeEngine({required this.level, Random? random})
       : _random = random ?? Random(),
@@ -120,7 +119,7 @@ class SnakeEngine {
     final startRowIndex = (rows / 2).floor();
     final headCellIndex = startRowIndex * columns + startColumnIndex;
     _snake = [headCellIndex, headCellIndex - 1, headCellIndex - 2];
-    // Ensure spawn is never on an obstacle (generator reserves corridor).
+    
     _snake = _snake
         .where((cellIndex) => !_obstacleCellIndexes.contains(cellIndex))
         .toList();
@@ -164,13 +163,12 @@ class SnakeEngine {
     }
   }
 
-  /// Queue a direction change; reverse into self is rejected.
+  
   bool queueDirection(Direction nextDirection) {
     if (_phase != GamePhase.running && _phase != GamePhase.ready) {
       return false;
     }
-    final pendingDirection = _pendingDirection;
-    if (nextDirection.isOppositeOf(pendingDirection)) return false;
+    if (nextDirection.isSameAxisAs(_direction)) return false;
     _pendingDirection = nextDirection;
     if (_phase == GamePhase.ready) {
       _phase = GamePhase.running;
@@ -178,7 +176,7 @@ class SnakeEngine {
     return true;
   }
 
-  /// Advance one tick. Returns eat event when food is collected.
+  
   EatEvent? tick() {
     _lastEat = null;
     if (_phase != GamePhase.running) return null;
@@ -291,8 +289,8 @@ class SnakeEngine {
     _food = CollectiblesCatalog.pickWeighted(level, _random);
   }
 
-  /// Remap snake + food onto a new grid (orientation / size change).
-  /// Positions are mapped by fractional row/column so play stays fair.
+  
+  
   void resizeTo({required int newColumns, required int newRows}) {
     if (newColumns == columns && newRows == rows) return;
     if (newColumns < 3 || newRows < 3) return;
@@ -349,7 +347,7 @@ class SnakeEngine {
     rows = newRows;
     _rebuildObstacles();
 
-    // Drop snake segments that landed on new obstacles.
+    
     _snake = remappedSnake
         .where((cellIndex) => !_obstacleCellIndexes.contains(cellIndex))
         .toList();
@@ -388,7 +386,7 @@ class SnakeEngine {
     return newRowIndex * newColumns + newColumnIndex;
   }
 
-  /// Test helper: place food on a known empty cell.
+  
   void debugPlaceFood(int cellIndex, Collectible food) {
     assert(!_snake.contains(cellIndex));
     assert(!_obstacleCellIndexes.contains(cellIndex));
@@ -396,7 +394,7 @@ class SnakeEngine {
     _food = food;
   }
 
-  /// Test helper: replace obstacle set (must not cover snake/food).
+  
   void debugSetObstacles(Set<int> cellIndexes) {
     _obstacleBoxes = const [];
     _obstacleCellIndexes = Set.unmodifiable(cellIndexes);
