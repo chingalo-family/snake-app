@@ -52,12 +52,13 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void queueDirection(Direction direction) {
+  bool queueDirection(Direction direction) {
     final changed = _engine.queueDirection(direction);
     if (changed && snapshot.phase == GamePhase.running && _timer == null) {
       _restartTimer();
     }
     if (changed) notifyListeners();
+    return changed;
   }
 
   void onLayoutChanged() {

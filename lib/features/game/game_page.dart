@@ -11,11 +11,15 @@ import 'package:snake_app/core/constants/collectibles.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/game/snake_engine.dart';
 import 'package:snake_app/core/models/direction.dart';
+import 'package:snake_app/core/models/game_mode.dart';
 import 'package:snake_app/core/models/grid_metrics.dart';
 import 'package:snake_app/core/services/profile_repository.dart';
+import 'package:snake_app/core/services/share_score_service.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
+import 'package:snake_app/core/theme/snake_skins.dart';
 import 'package:snake_app/features/game/game_controller.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
+import 'package:snake_app/shared/widgets/share_score_card.dart';
 
 class GamePage extends ConsumerStatefulWidget {
   const GamePage({super.key, required this.level});
@@ -26,22 +30,32 @@ class GamePage extends ConsumerStatefulWidget {
   ConsumerState<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends ConsumerState<GamePage> {
+class _GamePageState extends ConsumerState<GamePage>
+    with SingleTickerProviderStateMixin {
   late final GameController _controller;
   late final FocusNode _focusNode;
+  late final AnimationController _headPulseController;
   ScoreSubmitResult? _submitResult;
   bool _submitted = false;
   int? _floatPoints;
   int _floatToken = 0;
   Size? _lastBoardSize;
+  int _highestBeforeRun = 1;
+  bool _isSharing = false;
 
   @override
   void initState() {
     super.initState();
     _controller = GameController(level: widget.level);
     _focusNode = FocusNode();
+    _headPulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat(reverse: true);
     _controller.addListener(_onGameTick);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _highestBeforeRun =
+          ref.read(profileControllerProvider).highestLevelUnlocked;
       _focusNode.requestFocus();
       _controller.start();
     });
@@ -150,6 +164,13 @@ class _GamePageState extends ConsumerState<GamePage> {
     final engineSnapshot = _controller.snapshot;
     final hasProfile = ref.read(profileControllerProvider).hasProfile;
     final result = _submitResult;
+    final settings = ref.read(settingsControllerProvider);
+    final unlockedSkins = result == null
+        ? const <SnakeSkin>[]
+        : SnakeSkinsCatalog.unlockedBetween(
+            previousHighest: _highestBeforeRun,
+            nextHighest: result.highestUnlocked,
+          );
 
     await showModalBottomSheet<void>(
       context: context,
@@ -161,73 +182,182 @@ class _GamePageState extends ConsumerState<GamePage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (sheetContext) {
-        return _GameSheetScaffold(
-          children: [
-            Text(
-              sheetContext.l10n.gameOver,
-              style: Theme.of(sheetContext).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.brandDanger,
+        return StatefulBuilder(
+          builder: (sheetContext, setSheetState) {
+            return _GameSheetScaffold(
+              children: [
+                Text(
+                  sheetContext.l10n.gameOver,
+                  style:
+                      Theme.of(sheetContext).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.brandDanger,
+                          ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${sheetContext.l10n.scoreLevelSummary(engineSnapshot.score, engineSnapshot.level)}'
+                  '${engineSnapshot.bestCombo > 1 ? sheetContext.l10n.bestComboSuffix(engineSnapshot.bestCombo) : ''}',
+                  style: Theme.of(sheetContext).textTheme.titleMedium,
+                ),
+                if (result?.isNewBest == true) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    sheetContext.l10n.newPersonalBest,
+                    style:
+                        Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
+                              color: AppColors.brandSecondary,
+                              fontWeight: FontWeight.w700,
+                            ),
                   ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${sheetContext.l10n.scoreLevelSummary(engineSnapshot.score, engineSnapshot.level)}'
-              '${engineSnapshot.bestCombo > 1 ? sheetContext.l10n.bestComboSuffix(engineSnapshot.bestCombo) : ''}',
-              style: Theme.of(sheetContext).textTheme.titleMedium,
-            ),
-            if (result?.isNewBest == true) ...[
-              const SizedBox(height: 8),
-              Text(
-                sheetContext.l10n.newPersonalBest,
-                style: Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
-                      color: AppColors.brandSecondary,
-                      fontWeight: FontWeight.w700,
+                ],
+                if (result?.unlockedNext == true) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    sheetContext.l10n
+                        .levelUnlockedBanner(result!.highestUnlocked),
+                    style:
+                        Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
+                              color: AppColors.brandPrimaryLight,
+                              fontWeight: FontWeight.w700,
+                            ),
+                  ),
+                ],
+                for (final skin in unlockedSkins) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    sheetContext.l10n
+                        .skinUnlockedBanner(skin.label(sheetContext.l10n)),
+                    style:
+                        Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
+                              color: AppColors.brandSecondary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                  ),
+                ],
+                if (engineSnapshot.score > 0) ...[
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: _isSharing
+                        ? null
+                        : () async {
+                            setSheetState(() => _isSharing = true);
+                            await _shareScore(
+                              sheetContext: sheetContext,
+                              engineSnapshot: engineSnapshot,
+                              skin: settings.snakeSkin,
+                              unlockedSkins: unlockedSkins,
+                              result: result,
+                            );
+                            if (mounted) {
+                              setSheetState(() => _isSharing = false);
+                            }
+                          },
+                    icon: _isSharing
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.image_outlined),
+                    label: Text(
+                      _isSharing
+                          ? sheetContext.l10n.sharePreparing
+                          : sheetContext.l10n.shareScore,
                     ),
-              ),
-            ],
-            if (result?.unlockedNext == true) ...[
-              const SizedBox(height: 4),
-              Text(
-                sheetContext.l10n.levelUnlockedBanner(result!.highestUnlocked),
-                style: Theme.of(sheetContext).textTheme.titleSmall?.copyWith(
-                      color: AppColors.brandPrimaryLight,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ],
-            const SizedBox(height: 16),
-            if (!hasProfile)
-              FilledButton(
-                onPressed: () {
-                  Navigator.pop(sheetContext);
-                  context.push(AppRoutes.profile);
-                },
-                child: Text(sheetContext.l10n.saveScoreCreateProfile),
-              )
-            else
-              FilledButton(
-                onPressed: () {
-                  Navigator.pop(sheetContext);
-                  _submitted = false;
-                  _submitResult = null;
-                  _controller.restart();
-                  _focusNode.requestFocus();
-                },
-                child: Text(sheetContext.l10n.playAgain),
-              ),
-            const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(sheetContext);
-                context.go(AppRoutes.levels);
-              },
-              child: Text(sheetContext.l10n.backToLevels),
-            ),
-          ],
+                  ),
+                ],
+                const SizedBox(height: 16),
+                if (!hasProfile)
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.pop(sheetContext);
+                      context.push(AppRoutes.profile);
+                    },
+                    child: Text(sheetContext.l10n.saveScoreCreateProfile),
+                  )
+                else
+                  FilledButton(
+                    onPressed: () {
+                      Navigator.pop(sheetContext);
+                      _submitted = false;
+                      _submitResult = null;
+                      _highestBeforeRun = ref
+                          .read(profileControllerProvider)
+                          .highestLevelUnlocked;
+                      _controller.restart();
+                      _focusNode.requestFocus();
+                    },
+                    child: Text(sheetContext.l10n.playAgain),
+                  ),
+                const SizedBox(height: 8),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(sheetContext);
+                    context.go(AppRoutes.levels);
+                  },
+                  child: Text(sheetContext.l10n.backToLevels),
+                ),
+              ],
+            );
+          },
         );
       },
     );
+  }
+
+  Future<void> _shareScore({
+    required BuildContext sheetContext,
+    required SnakeEngineSnapshot engineSnapshot,
+    required SnakeSkin skin,
+    required List<SnakeSkin> unlockedSkins,
+    required ScoreSubmitResult? result,
+  }) async {
+    final l10n = sheetContext.l10n;
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      if (!mounted) return;
+      final outcome =
+          await ref.read(shareScoreServiceProvider).shareSocialPostImage(
+                context: context,
+                card: ShareScoreCard(
+                  score: engineSnapshot.score,
+                  level: engineSnapshot.level,
+                  mode: engineSnapshot.mode,
+                  skin: skin,
+                  isNewBest: result?.isNewBest == true,
+                  unlockedLevel: result?.unlockedNext == true
+                      ? result!.highestUnlocked
+                      : null,
+                  unlockedSkinLabels: unlockedSkins
+                      .map((unlockedSkin) => unlockedSkin.label(l10n))
+                      .toList(),
+                ),
+                shareText: l10n.shareTextCaption(
+                  engineSnapshot.score,
+                  engineSnapshot.level,
+                ),
+              );
+      if (!mounted) return;
+      switch (outcome) {
+        case ShareScoreOutcome.cancelled:
+        case ShareScoreOutcome.shared:
+          break;
+        case ShareScoreOutcome.savedToDisk:
+          messenger.showSnackBar(
+            SnackBar(content: Text(l10n.shareSavedToDisk)),
+          );
+        case ShareScoreOutcome.failed:
+          messenger.showSnackBar(
+            SnackBar(content: Text(l10n.shareFailed)),
+          );
+      }
+    } catch (_) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.shareFailed)),
+      );
+    }
   }
 
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
@@ -263,10 +393,17 @@ class _GamePageState extends ConsumerState<GamePage> {
       queuedDirection = Direction.right;
     }
     if (queuedDirection != null) {
-      _controller.queueDirection(queuedDirection);
+      _queueDirectionWithFeedback(queuedDirection);
       return KeyEventResult.handled;
     }
     return KeyEventResult.ignored;
+  }
+
+  void _queueDirectionWithFeedback(Direction direction) {
+    final accepted = _controller.queueDirection(direction);
+    if (!accepted) {
+      ref.read(hapticServiceProvider).light();
+    }
   }
 
   void _onSwipe(DragEndDetails details) {
@@ -275,9 +412,13 @@ class _GamePageState extends ConsumerState<GamePage> {
     final velocityY = velocity.dy;
     if (velocityX.abs() < 120 && velocityY.abs() < 120) return;
     if (velocityX.abs() > velocityY.abs()) {
-      _controller.queueDirection(velocityX > 0 ? Direction.right : Direction.left);
+      _queueDirectionWithFeedback(
+        velocityX > 0 ? Direction.right : Direction.left,
+      );
     } else {
-      _controller.queueDirection(velocityY > 0 ? Direction.down : Direction.up);
+      _queueDirectionWithFeedback(
+        velocityY > 0 ? Direction.down : Direction.up,
+      );
     }
   }
 
@@ -293,11 +434,11 @@ class _GamePageState extends ConsumerState<GamePage> {
     final delta = details.localPosition - start;
     if (delta.distance < AppConstants.swipeMinDistance) return;
     if (delta.dx.abs() > delta.dy.abs()) {
-      _controller.queueDirection(
+      _queueDirectionWithFeedback(
         delta.dx > 0 ? Direction.right : Direction.left,
       );
     } else {
-      _controller.queueDirection(
+      _queueDirectionWithFeedback(
         delta.dy > 0 ? Direction.down : Direction.up,
       );
     }
@@ -309,6 +450,7 @@ class _GamePageState extends ConsumerState<GamePage> {
     _controller.removeListener(_onGameTick);
     _controller.dispose();
     _focusNode.dispose();
+    _headPulseController.dispose();
     super.dispose();
   }
 
@@ -547,13 +689,26 @@ class _GamePageState extends ConsumerState<GamePage> {
                             : AppColors.lightGridLine,
                       ),
                     ),
-                    child: CustomPaint(
-                      size: Size(metrics.boardWidth, metrics.boardHeight),
-                      painter: _BoardPainter(
-                        metrics: metrics,
-                        engineSnapshot: engineSnapshot,
-                        isDark: isDark,
-                      ),
+                    child: AnimatedBuilder(
+                      animation: _headPulseController,
+                      builder: (context, child) {
+                        final reduceMotion =
+                            MediaQuery.disableAnimationsOf(context);
+                        final snakeSkin =
+                            ref.watch(settingsControllerProvider).snakeSkin;
+                        return CustomPaint(
+                          size: Size(metrics.boardWidth, metrics.boardHeight),
+                          painter: _BoardPainter(
+                            metrics: metrics,
+                            engineSnapshot: engineSnapshot,
+                            isDark: isDark,
+                            snakeSkin: snakeSkin,
+                            headPulse: reduceMotion
+                                ? 0.0
+                                : _headPulseController.value,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   if (_floatPoints != null)
@@ -775,11 +930,15 @@ class _BoardPainter extends CustomPainter {
     required this.metrics,
     required this.engineSnapshot,
     required this.isDark,
+    required this.snakeSkin,
+    required this.headPulse,
   });
 
   final GridMetrics metrics;
   final SnakeEngineSnapshot engineSnapshot;
   final bool isDark;
+  final SnakeSkin snakeSkin;
+  final double headPulse;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -800,18 +959,55 @@ class _BoardPainter extends CustomPainter {
       }
     }
 
+    // Mode edge cue.
+    final edgePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = engineSnapshot.mode.wrapsEdges ? 2.2 : 1.4
+      ..color = engineSnapshot.mode.wrapsEdges
+          ? AppColors.brandInfo.withValues(alpha: 0.55)
+          : (isDark ? AppColors.darkGridLine : AppColors.lightGridLine);
+    if (engineSnapshot.mode.wrapsEdges) {
+      const dash = 6.0;
+      const gap = 4.0;
+      _drawDashedRect(
+        canvas,
+        Rect.fromLTWH(1, 1, size.width - 2, size.height - 2),
+        edgePaint,
+        dash,
+        gap,
+      );
+    }
+
+    // Obstacles (maze rocks).
+    final rockPaint = Paint()
+      ..color = isDark
+          ? const Color(0xFF5A4632)
+          : const Color(0xFF8B7355);
+    final rockHighlight = Paint()
+      ..color = AppColors.brandSecondary.withValues(alpha: 0.35);
+    for (final cellIndex in engineSnapshot.obstacleCellIndexes) {
+      final (rowIndex, columnIndex) = metrics.rowColumnFor(cellIndex);
+      final inset = metrics.cellSize * 0.1;
+      final rect = RRect.fromRectAndRadius(
+        Rect.fromLTWH(
+          columnIndex * metrics.cellSize + inset,
+          rowIndex * metrics.cellSize + inset,
+          metrics.cellSize - inset * 2,
+          metrics.cellSize - inset * 2,
+        ),
+        Radius.circular(metrics.cellSize * 0.18),
+      );
+      canvas.drawRRect(rect, rockPaint);
+      canvas.drawRRect(rect.deflate(metrics.cellSize * 0.08), rockHighlight);
+    }
+
     final bodyPaint = Paint()
-      ..color = (isDark ? AppColors.brandPrimary : AppColors.brandPrimaryDark)
-          .withValues(alpha: 0.85);
-    final headPaint = Paint()
-      ..shader = LinearGradient(
-        colors: isDark
-            ? const [AppColors.brandPrimaryLight, AppColors.brandPrimary]
-            : const [AppColors.brandPrimary, AppColors.brandPrimaryDark],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+      ..color = snakeSkin.body.withValues(alpha: 0.88);
+    final stripePaint = Paint()
+      ..color = snakeSkin.bodyStripe.withValues(alpha: 0.9);
 
     for (var segmentIndex = engineSnapshot.snake.length - 1;
-        segmentIndex >= 0;
+        segmentIndex >= 1;
         segmentIndex--) {
       final cellIndex = engineSnapshot.snake[segmentIndex];
       final (rowIndex, columnIndex) = metrics.rowColumnFor(cellIndex);
@@ -825,10 +1021,96 @@ class _BoardPainter extends CustomPainter {
         ),
         Radius.circular(metrics.cellSize * 0.28),
       );
-      canvas.drawRRect(rect, segmentIndex == 0 ? headPaint : bodyPaint);
+      final useStripe =
+          snakeSkin.hasStripe && segmentIndex.isOdd;
+      canvas.drawRRect(rect, useStripe ? stripePaint : bodyPaint);
     }
 
-    final (foodRowIndex, foodColumnIndex) = metrics.rowColumnFor(engineSnapshot.foodIndex);
+    // Head with facing wedge + optional pulse.
+    final headCellIndex = engineSnapshot.snake.first;
+    final (headRowIndex, headColumnIndex) =
+        metrics.rowColumnFor(headCellIndex);
+    final headInset = metrics.cellSize * (0.1 - headPulse * 0.02);
+    final headRect = Rect.fromLTWH(
+      headColumnIndex * metrics.cellSize + headInset,
+      headRowIndex * metrics.cellSize + headInset,
+      metrics.cellSize - headInset * 2,
+      metrics.cellSize - headInset * 2,
+    );
+    final headPaint = Paint()
+      ..shader = LinearGradient(
+        colors: [snakeSkin.headLight, snakeSkin.headDark],
+      ).createShader(headRect);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        headRect,
+        Radius.circular(metrics.cellSize * 0.3),
+      ),
+      headPaint,
+    );
+
+    // Direction wedge on head.
+    final center = headRect.center;
+    final tipOffset = metrics.cellSize * 0.28;
+    final Offset tip;
+    final Offset leftWing;
+    final Offset rightWing;
+    switch (engineSnapshot.direction) {
+      case Direction.up:
+        tip = Offset(center.dx, center.dy - tipOffset);
+        leftWing = Offset(center.dx - tipOffset * 0.45, center.dy);
+        rightWing = Offset(center.dx + tipOffset * 0.45, center.dy);
+      case Direction.down:
+        tip = Offset(center.dx, center.dy + tipOffset);
+        leftWing = Offset(center.dx - tipOffset * 0.45, center.dy);
+        rightWing = Offset(center.dx + tipOffset * 0.45, center.dy);
+      case Direction.left:
+        tip = Offset(center.dx - tipOffset, center.dy);
+        leftWing = Offset(center.dx, center.dy - tipOffset * 0.45);
+        rightWing = Offset(center.dx, center.dy + tipOffset * 0.45);
+      case Direction.right:
+        tip = Offset(center.dx + tipOffset, center.dy);
+        leftWing = Offset(center.dx, center.dy - tipOffset * 0.45);
+        rightWing = Offset(center.dx, center.dy + tipOffset * 0.45);
+    }
+    final wedgePath = Path()
+      ..moveTo(tip.dx, tip.dy)
+      ..lineTo(leftWing.dx, leftWing.dy)
+      ..lineTo(rightWing.dx, rightWing.dy)
+      ..close();
+    canvas.drawPath(
+      wedgePath,
+      Paint()..color = Colors.white.withValues(alpha: 0.85),
+    );
+
+    // Soft eye blink (Reduce Motion → pulse 0 keeps eyes open).
+    final eyeClosed = headPulse > 0.82;
+    if (!eyeClosed) {
+      final eyePaint = Paint()..color = const Color(0xFF0B1F1A);
+      final eyeRadius = metrics.cellSize * 0.06;
+      final eyeSpread = metrics.cellSize * 0.12;
+      late final Offset eyeA;
+      late final Offset eyeB;
+      switch (engineSnapshot.direction) {
+        case Direction.up:
+          eyeA = Offset(center.dx - eyeSpread, center.dy - eyeSpread * 0.2);
+          eyeB = Offset(center.dx + eyeSpread, center.dy - eyeSpread * 0.2);
+        case Direction.down:
+          eyeA = Offset(center.dx - eyeSpread, center.dy + eyeSpread * 0.2);
+          eyeB = Offset(center.dx + eyeSpread, center.dy + eyeSpread * 0.2);
+        case Direction.left:
+          eyeA = Offset(center.dx - eyeSpread * 0.2, center.dy - eyeSpread);
+          eyeB = Offset(center.dx - eyeSpread * 0.2, center.dy + eyeSpread);
+        case Direction.right:
+          eyeA = Offset(center.dx + eyeSpread * 0.2, center.dy - eyeSpread);
+          eyeB = Offset(center.dx + eyeSpread * 0.2, center.dy + eyeSpread);
+      }
+      canvas.drawCircle(eyeA, eyeRadius, eyePaint);
+      canvas.drawCircle(eyeB, eyeRadius, eyePaint);
+    }
+
+    final (foodRowIndex, foodColumnIndex) =
+        metrics.rowColumnFor(engineSnapshot.foodIndex);
     final foodCenter = Offset(
       foodColumnIndex * metrics.cellSize + metrics.cellSize / 2,
       foodRowIndex * metrics.cellSize + metrics.cellSize / 2,
@@ -864,10 +1146,46 @@ class _BoardPainter extends CustomPainter {
     );
   }
 
+  void _drawDashedRect(
+    Canvas canvas,
+    Rect rect,
+    Paint paint,
+    double dash,
+    double gap,
+  ) {
+    void drawDashedLine(Offset start, Offset end) {
+      final total = (end - start).distance;
+      if (total == 0) return;
+      final direction = (end - start) / total;
+      var drawn = 0.0;
+      var drawSegment = true;
+      while (drawn < total) {
+        final segmentLength = drawSegment ? dash : gap;
+        final next = (drawn + segmentLength).clamp(0.0, total);
+        if (drawSegment) {
+          canvas.drawLine(
+            start + direction * drawn,
+            start + direction * next,
+            paint,
+          );
+        }
+        drawn = next;
+        drawSegment = !drawSegment;
+      }
+    }
+
+    drawDashedLine(rect.topLeft, rect.topRight);
+    drawDashedLine(rect.topRight, rect.bottomRight);
+    drawDashedLine(rect.bottomRight, rect.bottomLeft);
+    drawDashedLine(rect.bottomLeft, rect.topLeft);
+  }
+
   @override
   bool shouldRepaint(covariant _BoardPainter oldDelegate) {
     return oldDelegate.engineSnapshot != engineSnapshot ||
         oldDelegate.metrics.cellSize != metrics.cellSize ||
-        oldDelegate.isDark != isDark;
+        oldDelegate.isDark != isDark ||
+        oldDelegate.snakeSkin.id != snakeSkin.id ||
+        oldDelegate.headPulse != headPulse;
   }
 }

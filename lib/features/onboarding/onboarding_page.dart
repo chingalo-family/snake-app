@@ -138,6 +138,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                   ? l10n.hintSwipe
                                   : l10n.hintKeyboard,
                             ),
+                            FeatureHintCard(
+                              icon: Icons.u_turn_left_rounded,
+                              title: l10n.onboardingMoveReverseHint,
+                            ),
                           ],
                         ),
                         _OnboardSlide(

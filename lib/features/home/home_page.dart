@@ -6,16 +6,65 @@ import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
+import 'package:snake_app/shared/widgets/daily_quote_card.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  bool _showDailyQuote = false;
+  String _dailyQuote = '';
+  bool _didPickSessionQuote = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _ensureSessionQuote();
+  }
+
+  void _ensureSessionQuote() {
+    final settings = ref.read(settingsControllerProvider);
+    final quoteService = ref.read(dailyQuoteServiceProvider);
+    final shouldShow = quoteService.shouldShowCard(
+      dailyTipEnabled: settings.showDailyTip,
+    );
+    // Pick once per Home mount cycle for this process; quote stays stable
+    // while navigating away and back until the app is restarted.
+    final quote = shouldShow
+        ? quoteService.sessionQuote(context.l10n)
+        : '';
+    final shouldUpdate = !_didPickSessionQuote ||
+        _showDailyQuote != shouldShow ||
+        (shouldShow && _dailyQuote != quote);
+    if (!shouldUpdate) return;
+    setState(() {
+      _didPickSessionQuote = true;
+      _showDailyQuote = shouldShow;
+      _dailyQuote = quote;
+    });
+  }
+
+  void _dismissDailyQuote() {
+    ref.read(dailyQuoteServiceProvider).dismissForSession();
+    setState(() => _showDailyQuote = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final profile = ref.watch(profileControllerProvider);
     final unlockedLevel = profile.highestLevelUnlocked;
     final theme = Theme.of(context);
     final l10n = context.l10n;
+
+    ref.listen(settingsControllerProvider, (previous, next) {
+      if (previous?.showDailyTip != next.showDailyTip) {
+        _ensureSessionQuote();
+      }
+    });
 
     return Scaffold(
       body: AtmosphereBackground(
@@ -25,6 +74,13 @@ class HomePage extends ConsumerWidget {
               final isLandscape =
                   constraints.maxWidth > constraints.maxHeight;
               final isCompactHeight = constraints.maxHeight < 420;
+
+              final dailyQuoteSlot = _showDailyQuote
+                  ? DailyQuoteCard(
+                      quote: _dailyQuote,
+                      onDismiss: _dismissDailyQuote,
+                    )
+                  : null;
 
               if (isCompactHeight) {
                 return SingleChildScrollView(
@@ -40,6 +96,7 @@ class HomePage extends ConsumerWidget {
                             hasProfile: profile.hasProfile,
                             theme: theme,
                             l10n: l10n,
+                            dailyQuoteCard: dailyQuoteSlot,
                           ),
                         )
                       : _HomeCompactPortraitBody(
@@ -47,6 +104,7 @@ class HomePage extends ConsumerWidget {
                           hasProfile: profile.hasProfile,
                           theme: theme,
                           l10n: l10n,
+                          dailyQuoteCard: dailyQuoteSlot,
                         ),
                 );
               }
@@ -63,6 +121,10 @@ class HomePage extends ConsumerWidget {
                       theme: theme,
                       l10n: l10n,
                     ),
+                    if (dailyQuoteSlot != null) ...[
+                      const SizedBox(height: 14),
+                      dailyQuoteSlot,
+                    ],
                     const SizedBox(height: 28),
                     _HomeNavRow(
                       hasProfile: profile.hasProfile,
@@ -129,12 +191,14 @@ class _HomeCompactPortraitBody extends StatelessWidget {
     required this.hasProfile,
     required this.theme,
     required this.l10n,
+    this.dailyQuoteCard,
   });
 
   final int unlockedLevel;
   final bool hasProfile;
   final ThemeData theme;
   final AppLocalizations l10n;
+  final Widget? dailyQuoteCard;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +212,10 @@ class _HomeCompactPortraitBody extends StatelessWidget {
           theme: theme,
           l10n: l10n,
         ),
+        if (dailyQuoteCard != null) ...[
+          const SizedBox(height: 12),
+          dailyQuoteCard!,
+        ],
         const SizedBox(height: 16),
         _HomeNavRow(hasProfile: hasProfile, l10n: l10n),
         const SizedBox(height: 20),
@@ -167,12 +235,14 @@ class _HomeLandscapeBody extends StatelessWidget {
     required this.hasProfile,
     required this.theme,
     required this.l10n,
+    this.dailyQuoteCard,
   });
 
   final int unlockedLevel;
   final bool hasProfile;
   final ThemeData theme;
   final AppLocalizations l10n;
+  final Widget? dailyQuoteCard;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +261,10 @@ class _HomeLandscapeBody extends StatelessWidget {
                 theme: theme,
                 l10n: l10n,
               ),
+              if (dailyQuoteCard != null) ...[
+                const SizedBox(height: 10),
+                dailyQuoteCard!,
+              ],
               const Spacer(),
               _PlayActionBlock(
                 hasProfile: hasProfile,
