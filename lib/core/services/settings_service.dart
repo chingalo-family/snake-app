@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake_app/core/constants/preference_keys.dart';
 import 'package:snake_app/core/l10n/app_locale.dart';
 import 'package:snake_app/core/services/preference_service.dart';
+import 'package:snake_app/core/theme/snake_skins.dart';
 
 class AppSettings {
   const AppSettings({
@@ -12,6 +13,8 @@ class AppSettings {
     required this.themeMode,
     required this.localeCode,
     required this.onboardingCompleted,
+    required this.snakeSkinId,
+    required this.showDailyTip,
   });
 
   final bool sfxEnabled;
@@ -21,8 +24,12 @@ class AppSettings {
   final ThemeMode themeMode;
   final String localeCode;
   final bool onboardingCompleted;
+  final String snakeSkinId;
+  final bool showDailyTip;
 
   Locale get locale => AppLocale.fromCode(localeCode);
+
+  SnakeSkin get snakeSkin => SnakeSkinsCatalog.byId(snakeSkinId);
 
   AppSettings copyWith({
     bool? sfxEnabled,
@@ -32,6 +39,8 @@ class AppSettings {
     ThemeMode? themeMode,
     String? localeCode,
     bool? onboardingCompleted,
+    String? snakeSkinId,
+    bool? showDailyTip,
   }) {
     return AppSettings(
       sfxEnabled: sfxEnabled ?? this.sfxEnabled,
@@ -41,6 +50,8 @@ class AppSettings {
       themeMode: themeMode ?? this.themeMode,
       localeCode: localeCode ?? this.localeCode,
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
+      snakeSkinId: snakeSkinId ?? this.snakeSkinId,
+      showDailyTip: showDailyTip ?? this.showDailyTip,
     );
   }
 
@@ -52,6 +63,8 @@ class AppSettings {
     themeMode: ThemeMode.dark,
     localeCode: AppLocale.englishCode,
     onboardingCompleted: false,
+    snakeSkinId: 'forest',
+    showDailyTip: true,
   );
 }
 
@@ -63,6 +76,9 @@ class SettingsService {
   AppSettings load() {
     final localeRaw = _preferenceService.getString(PreferenceKeys.localeCode) ??
         AppLocale.englishCode;
+    final snakeSkinId =
+        _preferenceService.getString(PreferenceKeys.snakeSkinId) ??
+            SnakeSkinsCatalog.forest.id;
     return AppSettings(
       sfxEnabled:
           _preferenceService.getBool(PreferenceKeys.sfxEnabled) ?? true,
@@ -77,6 +93,9 @@ class SettingsService {
       onboardingCompleted: _preferenceService
               .getBool(PreferenceKeys.onboardingCompleted) ??
           false,
+      snakeSkinId: SnakeSkinsCatalog.byId(snakeSkinId).id,
+      showDailyTip:
+          _preferenceService.getBool(PreferenceKeys.showDailyTip) ?? true,
     );
   }
 
@@ -108,6 +127,14 @@ class SettingsService {
     await _preferenceService.setBool(
       PreferenceKeys.onboardingCompleted,
       settings.onboardingCompleted,
+    );
+    await _preferenceService.setString(
+      PreferenceKeys.snakeSkinId,
+      settings.snakeSkinId,
+    );
+    await _preferenceService.setBool(
+      PreferenceKeys.showDailyTip,
+      settings.showDailyTip,
     );
   }
 }

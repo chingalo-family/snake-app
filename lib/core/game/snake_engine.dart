@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/constants/collectibles.dart';
 import 'package:snake_app/core/constants/levels.dart';
+import 'package:snake_app/core/game/obstacle_generator.dart';
 import 'package:snake_app/core/models/direction.dart';
+import 'package:snake_app/core/models/game_mode.dart';
 
 enum GamePhase { ready, running, paused, gameOver }
 
@@ -36,6 +38,8 @@ class SnakeEngineSnapshot {
     required this.columns,
     required this.rows,
     required this.itemsEaten,
+    required this.mode,
+    required this.obstacleCellIndexes,
     this.lastEat,
   });
 
@@ -52,6 +56,8 @@ class SnakeEngineSnapshot {
   final int columns;
   final int rows;
   final int itemsEaten;
+  final GameMode mode;
+  final Set<int> obstacleCellIndexes;
   final EatEvent? lastEat;
 
   int get head => snake.first;
@@ -61,14 +67,16 @@ class SnakeEngineSnapshot {
 /// Pure snake simulation - no Flutter timers or widgets.
 class SnakeEngine {
   SnakeEngine({required this.level, Random? random})
-    : _random = random ?? Random(),
-      columns = LevelsCatalog.byLevel(level).columns,
-      rows = LevelsCatalog.byLevel(level).rows {
+      : _random = random ?? Random(),
+        columns = LevelsCatalog.byLevel(level).columns,
+        rows = LevelsCatalog.byLevel(level).rows,
+        mode = LevelsCatalog.byLevel(level).mode {
     reset();
   }
 
   final int level;
   final Random _random;
+  final GameMode mode;
   late int columns;
   late int rows;
 
@@ -82,31 +90,50 @@ class SnakeEngine {
   late int _bestCombo;
   late GamePhase _phase;
   late int _itemsEaten;
+  late List<ObstacleBox> _obstacleBoxes;
+  late Set<int> _obstacleCellIndexes;
   DateTime? _lastEatAt;
   EatEvent? _lastEat;
 
   SnakeEngineSnapshot get snapshot => SnakeEngineSnapshot(
-    snake: List.unmodifiable(_snake),
-    direction: _direction,
-    pendingDirection: _pendingDirection,
-    foodIndex: _foodIndex,
-    food: _food,
-    score: _score,
-    comboCount: _comboCount,
-    bestCombo: _bestCombo,
-    phase: _phase,
-    level: level,
-    columns: columns,
-    rows: rows,
-    itemsEaten: _itemsEaten,
-    lastEat: _lastEat,
-  );
+        snake: List.unmodifiable(_snake),
+        direction: _direction,
+        pendingDirection: _pendingDirection,
+        foodIndex: _foodIndex,
+        food: _food,
+        score: _score,
+        comboCount: _comboCount,
+        bestCombo: _bestCombo,
+        phase: _phase,
+        level: level,
+        columns: columns,
+        rows: rows,
+        itemsEaten: _itemsEaten,
+        mode: mode,
+        obstacleCellIndexes: Set.unmodifiable(_obstacleCellIndexes),
+        lastEat: _lastEat,
+      );
 
   void reset() {
+    _rebuildObstacles();
     final startColumnIndex = (columns / 2).floor().clamp(2, columns - 1);
     final startRowIndex = (rows / 2).floor();
     final headCellIndex = startRowIndex * columns + startColumnIndex;
     _snake = [headCellIndex, headCellIndex - 1, headCellIndex - 2];
+    // Ensure spawn is never on an obstacle (generator reserves corridor).
+    _snake = _snake
+        .where((cellIndex) => !_obstacleCellIndexes.contains(cellIndex))
+        .toList();
+    while (_snake.length < 3) {
+      final tailCellIndex = _snake.isEmpty ? headCellIndex : _snake.last;
+      final extensionCellIndex = tailCellIndex - 1;
+      if (extensionCellIndex < startRowIndex * columns) break;
+      if (_obstacleCellIndexes.contains(extensionCellIndex)) break;
+      _snake.add(extensionCellIndex);
+    }
+    if (_snake.isEmpty) {
+      _snake = [headCellIndex, headCellIndex - 1, headCellIndex - 2];
+    }
     _direction = Direction.right;
     _pendingDirection = Direction.right;
     _score = 0;
@@ -158,7 +185,9 @@ class SnakeEngine {
 
     _direction = _pendingDirection;
     final nextHeadIndex = _nextIndex(_snake.first, _direction);
-    if (nextHeadIndex == null || _snake.contains(nextHeadIndex)) {
+    if (nextHeadIndex == null ||
+        _snake.contains(nextHeadIndex) ||
+        _obstacleCellIndexes.contains(nextHeadIndex)) {
       _phase = GamePhase.gameOver;
       return null;
     }
@@ -203,22 +232,49 @@ class SnakeEngine {
     final columnIndex = headCellIndex % columns;
     switch (direction) {
       case Direction.up:
-        if (rowIndex <= 0) return null;
+        if (rowIndex <= 0) {
+          if (!mode.wrapsEdges) return null;
+          return (rows - 1) * columns + columnIndex;
+        }
         return headCellIndex - columns;
       case Direction.down:
-        if (rowIndex >= rows - 1) return null;
+        if (rowIndex >= rows - 1) {
+          if (!mode.wrapsEdges) return null;
+          return columnIndex;
+        }
         return headCellIndex + columns;
       case Direction.left:
-        if (columnIndex <= 0) return null;
+        if (columnIndex <= 0) {
+          if (!mode.wrapsEdges) return null;
+          return rowIndex * columns + (columns - 1);
+        }
         return headCellIndex - 1;
       case Direction.right:
-        if (columnIndex >= columns - 1) return null;
+        if (columnIndex >= columns - 1) {
+          if (!mode.wrapsEdges) return null;
+          return rowIndex * columns;
+        }
         return headCellIndex + 1;
     }
   }
 
+  void _rebuildObstacles() {
+    final levelConfig = LevelsCatalog.byLevel(level);
+    _obstacleBoxes = levelConfig.obstacleBoxesFor(
+      gridColumns: columns,
+      gridRows: rows,
+    );
+    _obstacleCellIndexes = ObstacleGenerator.blockedCells(
+      boxes: _obstacleBoxes,
+      columns: columns,
+    );
+  }
+
   void _spawnFood() {
-    final occupiedCellIndexes = _snake.toSet();
+    final occupiedCellIndexes = {
+      ..._snake,
+      ..._obstacleCellIndexes,
+    };
     final emptyCellIndexes = <int>[];
     for (var cellIndex = 0; cellIndex < columns * rows; cellIndex++) {
       if (!occupiedCellIndexes.contains(cellIndex)) {
@@ -291,9 +347,22 @@ class SnakeEngine {
 
     columns = newColumns;
     rows = newRows;
-    _snake = remappedSnake;
+    _rebuildObstacles();
 
-    if (_snake.contains(remappedFoodIndex)) {
+    // Drop snake segments that landed on new obstacles.
+    _snake = remappedSnake
+        .where((cellIndex) => !_obstacleCellIndexes.contains(cellIndex))
+        .toList();
+    if (_snake.isEmpty) {
+      reset();
+      if (_phase == GamePhase.running || _phase == GamePhase.paused) {
+        _phase = GamePhase.running;
+      }
+      return;
+    }
+
+    if (_snake.contains(remappedFoodIndex) ||
+        _obstacleCellIndexes.contains(remappedFoodIndex)) {
       _spawnFood();
     } else {
       _foodIndex = remappedFoodIndex;
@@ -322,7 +391,14 @@ class SnakeEngine {
   /// Test helper: place food on a known empty cell.
   void debugPlaceFood(int cellIndex, Collectible food) {
     assert(!_snake.contains(cellIndex));
+    assert(!_obstacleCellIndexes.contains(cellIndex));
     _foodIndex = cellIndex;
     _food = food;
+  }
+
+  /// Test helper: replace obstacle set (must not cover snake/food).
+  void debugSetObstacles(Set<int> cellIndexes) {
+    _obstacleBoxes = const [];
+    _obstacleCellIndexes = Set.unmodifiable(cellIndexes);
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:snake_app/core/constants/app_constants.dart';
+import 'package:snake_app/core/game/obstacle_generator.dart';
+import 'package:snake_app/core/models/game_mode.dart';
 import 'package:snake_app/l10n/app_localizations.dart';
 
 class LevelConfig {
@@ -10,6 +12,7 @@ class LevelConfig {
     required this.columns,
     required this.rows,
     required this.unlockScore,
+    required this.mode,
   });
 
   final int level;
@@ -17,6 +20,20 @@ class LevelConfig {
   final int columns;
   final int rows;
   final int unlockScore;
+  final GameMode mode;
+
+  /// Obstacle boxes for this level's base grid (regenerate after resize).
+  List<ObstacleBox> obstacleBoxesFor({
+    required int gridColumns,
+    required int gridRows,
+  }) {
+    return ObstacleGenerator.generate(
+      level: level,
+      columns: gridColumns,
+      rows: gridRows,
+      enabled: mode.hasObstacles,
+    );
+  }
 
   String densityLabel(AppLocalizations l10n) {
     final cells = columns * rows;
@@ -33,6 +50,8 @@ class LevelConfig {
   }
 
   String title(AppLocalizations l10n) => l10n.levelNumber(level);
+
+  String modeLabel(AppLocalizations l10n) => mode.label(l10n);
 }
 
 abstract final class LevelsCatalog {
@@ -46,6 +65,7 @@ abstract final class LevelsCatalog {
         columns: _columnsFor(level),
         rows: _rowsFor(level),
         unlockScore: _unlockScoreFor(level),
+        mode: _modeFor(level),
       );
     },
   );
@@ -53,6 +73,16 @@ abstract final class LevelsCatalog {
   static LevelConfig byLevel(int level) {
     final clamped = level.clamp(1, AppConstants.totalLevels);
     return levels[clamped - 1];
+  }
+
+  /// Campaign mix: Classic → Wrap intro → Maze → Wrap+Maze expert.
+  static GameMode _modeFor(int level) {
+    if (level <= 5) return GameMode.classic;
+    if (level <= 12) {
+      return level.isEven ? GameMode.wrap : GameMode.classic;
+    }
+    if (level <= 20) return GameMode.maze;
+    return level % 3 == 0 ? GameMode.wrapMaze : GameMode.maze;
   }
 
   /// Tick interval in ms - slower early, ramps toward a playable floor.

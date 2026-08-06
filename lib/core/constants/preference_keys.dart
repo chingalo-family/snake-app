@@ -8,4 +8,7 @@ abstract final class PreferenceKeys {
   static const themeMode = 'theme_mode';
   static const localeCode = 'locale_code';
   static const onboardingCompleted = 'onboarding_completed';
+  static const snakeSkinId = 'snake_skin_id';
+  static const showDailyTip = 'show_daily_tip';
+  static const dailyQuoteLastIndex = 'daily_quote_last_index';
 }
