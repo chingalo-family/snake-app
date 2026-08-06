@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
-import 'package:snake_app/core/utils/navigation.dart';
 import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/models/player_profile.dart';
@@ -33,6 +32,7 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
     final l10n = context.l10n;
     final messenger = ScaffoldMessenger.of(context);
     final skin = ref.read(settingsControllerProvider).snakeSkin;
+    final profile = ref.read(profileControllerProvider).profile;
     try {
       final outcome =
           await ref.read(shareScoreServiceProvider).shareSocialPostImage(
@@ -42,6 +42,8 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
                   level: highestLevel,
                   skin: skin,
                   isOverallBest: true,
+                  playerName: profile?.name,
+                  playerAvatarEmoji: profile?.avatarEmoji,
                 ),
                 shareText: l10n.shareTextOverallCaption(
                   bestScore,
@@ -76,12 +78,11 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: SnakePageAppBar(
         title: Text(l10n.highScores),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => popOrGoHome(context),
-        ),
+        showBackButton: true,
+        showHomeButton: true,
+        showMoreButton: true,
       ),
       body: AtmosphereBackground(
         child: !profile.hasProfile

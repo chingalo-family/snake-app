@@ -10,6 +10,7 @@ MP3 clips expected by `AudioService` / `AudioAssets`:
 | `sfx_collision.mp3` | Game over collision |
 | `sfx_ui.mp3` | Optional UI tap |
 
-See [ATTRIBUTION.md](ATTRIBUTION.md) for sources and licenses (Kenney CC0).
+See [ATTRIBUTION.md](ATTRIBUTION.md) for sources and licenses.
+`bgm.mp3` is the optimized project track (~128 kbps); SFX remain Kenney CC0.
 
 The folder is registered in `pubspec.yaml` as `assets/audio/`.

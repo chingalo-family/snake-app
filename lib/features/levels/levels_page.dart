@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
-import 'package:snake_app/core/utils/navigation.dart';
 import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/game/obstacle_generator.dart';
@@ -21,12 +20,11 @@ class LevelsPage extends ConsumerWidget {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: SnakePageAppBar(
         title: Text(l10n.levels),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => popOrGoHome(context),
-        ),
+        showBackButton: true,
+        showHomeButton: true,
+        showMoreButton: true,
       ),
       body: AtmosphereBackground(
         child: ListView.separated(

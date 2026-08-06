@@ -158,6 +158,30 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get quickActions;
+
+  /// No description provided for @scoreboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Scoreboard'**
+  String get scoreboard;
+
   /// No description provided for @skip.
   ///
   /// In en, this message translates to:
@@ -497,7 +521,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullNameRequired.
   ///
   /// In en, this message translates to:
-  /// **'Full name'**
+  /// **'Name'**
   String get fullNameRequired;
 
   /// No description provided for @emailOptional.
@@ -521,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullNameHint.
   ///
   /// In en, this message translates to:
-  /// **'Your full name'**
+  /// **'Your name'**
   String get fullNameHint;
 
   /// No description provided for @emailHint.
@@ -563,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullNameRequiredError.
   ///
   /// In en, this message translates to:
-  /// **'Full name is required'**
+  /// **'Name is required'**
   String get fullNameRequiredError;
 
   /// No description provided for @fullNameTooShort.
@@ -601,6 +625,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile saved — your score was kept'**
   String get profileSavedWithScore;
+
+  /// No description provided for @selectAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose avatar'**
+  String get selectAvatar;
 
   /// No description provided for @profileHelp.
   ///

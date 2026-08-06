@@ -2,30 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:snake_app/core/utils/profile_validators.dart';
 
 void main() {
-  group('ProfileValidators.username', () {
-    test('rejects empty and short values', () {
-      expect(ProfileValidators.username(null), 'required');
-      expect(ProfileValidators.username(''), 'required');
-      expect(ProfileValidators.username('a'), 'tooShort');
-    });
-
-    test('rejects invalid characters and overly long values', () {
-      expect(ProfileValidators.username('bad name'), 'invalid');
-      expect(ProfileValidators.username('ok-name'), 'invalid');
-      expect(ProfileValidators.username('a' * 25), 'tooLong');
-    });
-
-    test('accepts valid usernames', () {
-      expect(ProfileValidators.username('maya'), isNull);
-      expect(ProfileValidators.username('Maya_01'), isNull);
-    });
-  });
-
-  group('ProfileValidators.fullName', () {
+  group('ProfileValidators.name', () {
     test('requires a real name', () {
-      expect(ProfileValidators.fullName(''), 'required');
-      expect(ProfileValidators.fullName('A'), 'tooShort');
-      expect(ProfileValidators.fullName('Maya Chingalo'), isNull);
+      expect(ProfileValidators.name(''), 'required');
+      expect(ProfileValidators.name('A'), 'tooShort');
+      expect(ProfileValidators.name('Maya Chingalo'), isNull);
     });
   });
 

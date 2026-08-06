@@ -44,6 +44,18 @@ class $ProfilesTable extends Profiles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _avatarIdMeta = const VerificationMeta(
+    'avatarId',
+  );
+  @override
+  late final GeneratedColumn<String> avatarId = GeneratedColumn<String>(
+    'avatar_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('snake'),
+  );
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
@@ -89,6 +101,7 @@ class $ProfilesTable extends Profiles
     id,
     username,
     fullName,
+    avatarId,
     email,
     phone,
     createdAt,
@@ -124,6 +137,12 @@ class $ProfilesTable extends Profiles
       );
     } else if (isInserting) {
       context.missing(_fullNameMeta);
+    }
+    if (data.containsKey('avatar_id')) {
+      context.handle(
+        _avatarIdMeta,
+        avatarId.isAcceptableOrUnknown(data['avatar_id']!, _avatarIdMeta),
+      );
     }
     if (data.containsKey('email')) {
       context.handle(
@@ -174,6 +193,10 @@ class $ProfilesTable extends Profiles
         DriftSqlType.string,
         data['${effectivePrefix}full_name'],
       )!,
+      avatarId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}avatar_id'],
+      )!,
       email: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}email'],
@@ -203,6 +226,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
   final int id;
   final String username;
   final String fullName;
+  final String avatarId;
   final String? email;
   final String? phone;
   final DateTime createdAt;
@@ -211,6 +235,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     required this.id,
     required this.username,
     required this.fullName,
+    required this.avatarId,
     this.email,
     this.phone,
     required this.createdAt,
@@ -222,6 +247,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     map['id'] = Variable<int>(id);
     map['username'] = Variable<String>(username);
     map['full_name'] = Variable<String>(fullName);
+    map['avatar_id'] = Variable<String>(avatarId);
     if (!nullToAbsent || email != null) {
       map['email'] = Variable<String>(email);
     }
@@ -238,6 +264,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       id: Value(id),
       username: Value(username),
       fullName: Value(fullName),
+      avatarId: Value(avatarId),
       email: email == null && nullToAbsent
           ? const Value.absent()
           : Value(email),
@@ -258,6 +285,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       id: serializer.fromJson<int>(json['id']),
       username: serializer.fromJson<String>(json['username']),
       fullName: serializer.fromJson<String>(json['fullName']),
+      avatarId: serializer.fromJson<String>(json['avatarId']),
       email: serializer.fromJson<String?>(json['email']),
       phone: serializer.fromJson<String?>(json['phone']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -271,6 +299,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       'id': serializer.toJson<int>(id),
       'username': serializer.toJson<String>(username),
       'fullName': serializer.toJson<String>(fullName),
+      'avatarId': serializer.toJson<String>(avatarId),
       'email': serializer.toJson<String?>(email),
       'phone': serializer.toJson<String?>(phone),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -282,6 +311,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     int? id,
     String? username,
     String? fullName,
+    String? avatarId,
     Value<String?> email = const Value.absent(),
     Value<String?> phone = const Value.absent(),
     DateTime? createdAt,
@@ -290,6 +320,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
     id: id ?? this.id,
     username: username ?? this.username,
     fullName: fullName ?? this.fullName,
+    avatarId: avatarId ?? this.avatarId,
     email: email.present ? email.value : this.email,
     phone: phone.present ? phone.value : this.phone,
     createdAt: createdAt ?? this.createdAt,
@@ -300,6 +331,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
       id: data.id.present ? data.id.value : this.id,
       username: data.username.present ? data.username.value : this.username,
       fullName: data.fullName.present ? data.fullName.value : this.fullName,
+      avatarId: data.avatarId.present ? data.avatarId.value : this.avatarId,
       email: data.email.present ? data.email.value : this.email,
       phone: data.phone.present ? data.phone.value : this.phone,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -313,6 +345,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
           ..write('id: $id, ')
           ..write('username: $username, ')
           ..write('fullName: $fullName, ')
+          ..write('avatarId: $avatarId, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('createdAt: $createdAt, ')
@@ -322,8 +355,16 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, username, fullName, email, phone, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+    id,
+    username,
+    fullName,
+    avatarId,
+    email,
+    phone,
+    createdAt,
+    updatedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -331,6 +372,7 @@ class ProfileRow extends DataClass implements Insertable<ProfileRow> {
           other.id == this.id &&
           other.username == this.username &&
           other.fullName == this.fullName &&
+          other.avatarId == this.avatarId &&
           other.email == this.email &&
           other.phone == this.phone &&
           other.createdAt == this.createdAt &&
@@ -341,6 +383,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
   final Value<int> id;
   final Value<String> username;
   final Value<String> fullName;
+  final Value<String> avatarId;
   final Value<String?> email;
   final Value<String?> phone;
   final Value<DateTime> createdAt;
@@ -349,6 +392,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     this.id = const Value.absent(),
     this.username = const Value.absent(),
     this.fullName = const Value.absent(),
+    this.avatarId = const Value.absent(),
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -358,6 +402,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     this.id = const Value.absent(),
     required String username,
     required String fullName,
+    this.avatarId = const Value.absent(),
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     required DateTime createdAt,
@@ -370,6 +415,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     Expression<int>? id,
     Expression<String>? username,
     Expression<String>? fullName,
+    Expression<String>? avatarId,
     Expression<String>? email,
     Expression<String>? phone,
     Expression<DateTime>? createdAt,
@@ -379,6 +425,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
       if (id != null) 'id': id,
       if (username != null) 'username': username,
       if (fullName != null) 'full_name': fullName,
+      if (avatarId != null) 'avatar_id': avatarId,
       if (email != null) 'email': email,
       if (phone != null) 'phone': phone,
       if (createdAt != null) 'created_at': createdAt,
@@ -390,6 +437,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     Value<int>? id,
     Value<String>? username,
     Value<String>? fullName,
+    Value<String>? avatarId,
     Value<String?>? email,
     Value<String?>? phone,
     Value<DateTime>? createdAt,
@@ -399,6 +447,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
       id: id ?? this.id,
       username: username ?? this.username,
       fullName: fullName ?? this.fullName,
+      avatarId: avatarId ?? this.avatarId,
       email: email ?? this.email,
       phone: phone ?? this.phone,
       createdAt: createdAt ?? this.createdAt,
@@ -417,6 +466,9 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
     }
     if (fullName.present) {
       map['full_name'] = Variable<String>(fullName.value);
+    }
+    if (avatarId.present) {
+      map['avatar_id'] = Variable<String>(avatarId.value);
     }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
@@ -439,6 +491,7 @@ class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
           ..write('id: $id, ')
           ..write('username: $username, ')
           ..write('fullName: $fullName, ')
+          ..write('avatarId: $avatarId, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('createdAt: $createdAt, ')
@@ -1195,6 +1248,7 @@ typedef $$ProfilesTableCreateCompanionBuilder =
       Value<int> id,
       required String username,
       required String fullName,
+      Value<String> avatarId,
       Value<String?> email,
       Value<String?> phone,
       required DateTime createdAt,
@@ -1205,6 +1259,7 @@ typedef $$ProfilesTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> username,
       Value<String> fullName,
+      Value<String> avatarId,
       Value<String?> email,
       Value<String?> phone,
       Value<DateTime> createdAt,
@@ -1232,6 +1287,11 @@ class $$ProfilesTableFilterComposer
 
   ColumnFilters<String> get fullName => $composableBuilder(
     column: $table.fullName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get avatarId => $composableBuilder(
+    column: $table.avatarId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1280,6 +1340,11 @@ class $$ProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get avatarId => $composableBuilder(
+    column: $table.avatarId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get email => $composableBuilder(
     column: $table.email,
     builder: (column) => ColumnOrderings(column),
@@ -1318,6 +1383,9 @@ class $$ProfilesTableAnnotationComposer
 
   GeneratedColumn<String> get fullName =>
       $composableBuilder(column: $table.fullName, builder: (column) => column);
+
+  GeneratedColumn<String> get avatarId =>
+      $composableBuilder(column: $table.avatarId, builder: (column) => column);
 
   GeneratedColumn<String> get email =>
       $composableBuilder(column: $table.email, builder: (column) => column);
@@ -1366,6 +1434,7 @@ class $$ProfilesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> username = const Value.absent(),
                 Value<String> fullName = const Value.absent(),
+                Value<String> avatarId = const Value.absent(),
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -1374,6 +1443,7 @@ class $$ProfilesTableTableManager
                 id: id,
                 username: username,
                 fullName: fullName,
+                avatarId: avatarId,
                 email: email,
                 phone: phone,
                 createdAt: createdAt,
@@ -1384,6 +1454,7 @@ class $$ProfilesTableTableManager
                 Value<int> id = const Value.absent(),
                 required String username,
                 required String fullName,
+                Value<String> avatarId = const Value.absent(),
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 required DateTime createdAt,
@@ -1392,6 +1463,7 @@ class $$ProfilesTableTableManager
                 id: id,
                 username: username,
                 fullName: fullName,
+                avatarId: avatarId,
                 email: email,
                 phone: phone,
                 createdAt: createdAt,

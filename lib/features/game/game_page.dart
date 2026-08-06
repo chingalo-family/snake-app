@@ -315,6 +315,7 @@ class _GamePageState extends ConsumerState<GamePage>
   }) async {
     final l10n = sheetContext.l10n;
     final messenger = ScaffoldMessenger.of(context);
+    final profile = ref.read(profileControllerProvider).profile;
     try {
       if (!mounted) return;
       final outcome =
@@ -332,6 +333,8 @@ class _GamePageState extends ConsumerState<GamePage>
                   unlockedSkinLabels: unlockedSkins
                       .map((unlockedSkin) => unlockedSkin.label(l10n))
                       .toList(),
+                  playerName: profile?.name,
+                  playerAvatarEmoji: profile?.avatarEmoji,
                 ),
                 shareText: l10n.shareTextCaption(
                   engineSnapshot.score,

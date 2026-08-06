@@ -39,6 +39,18 @@ class AppLocalizationsSw extends AppLocalizations {
   String get about => 'Kuhusu';
 
   @override
+  String get home => 'Nyumbani';
+
+  @override
+  String get more => 'Zaidi';
+
+  @override
+  String get quickActions => 'Vitendo vya haraka';
+
+  @override
+  String get scoreboard => 'Ubao wa alama';
+
+  @override
   String get skip => 'Ruka';
 
   @override
@@ -211,7 +223,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get usernameRequired => 'Jina la mtumiaji';
 
   @override
-  String get fullNameRequired => 'Jina kamili';
+  String get fullNameRequired => 'Jina';
 
   @override
   String get emailOptional => 'Barua pepe';
@@ -223,7 +235,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get usernameHint => 'Chagua jina la mchezaji';
 
   @override
-  String get fullNameHint => 'Jina lako kamili';
+  String get fullNameHint => 'Jina lako';
 
   @override
   String get emailHint => 'jina@mfano.com';
@@ -245,7 +257,7 @@ class AppLocalizationsSw extends AppLocalizations {
       'Tumia herufi, nambari, na alama ya chini pekee';
 
   @override
-  String get fullNameRequiredError => 'Jina kamili linahitajika';
+  String get fullNameRequiredError => 'Jina linahitajika';
 
   @override
   String get fullNameTooShort => 'Angalau herufi 2';
@@ -265,6 +277,9 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get profileSavedWithScore =>
       'Wasifu umehifadhiwa — alama yako imehifadhiwa';
+
+  @override
+  String get selectAvatar => 'Chagua avatar';
 
   @override
   String get profileHelp =>

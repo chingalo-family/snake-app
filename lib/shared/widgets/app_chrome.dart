@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
+import 'package:snake_app/core/utils/navigation.dart';
 
 class AtmosphereBackground extends StatelessWidget {
   const AtmosphereBackground({super.key, required this.child});
@@ -34,13 +37,11 @@ class BrandMark extends StatelessWidget {
       children: [
         Text(
           l10n.appName,
-          style: (compact
-                  ? theme.textTheme.headlineMedium
-                  : theme.textTheme.displaySmall)
-              ?.copyWith(
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.5,
-          ),
+          style:
+              (compact
+                      ? theme.textTheme.headlineMedium
+                      : theme.textTheme.displaySmall)
+                  ?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -0.5),
         ),
         if (!compact) ...[
           const SizedBox(height: 8),
@@ -124,8 +125,9 @@ class SurfaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final surfaceColor = isDark ? AppColors.darkRaised : AppColors.lightRaised;
-    final borderColor =
-        isDark ? AppColors.darkGridLine : AppColors.lightGridLine;
+    final borderColor = isDark
+        ? AppColors.darkGridLine
+        : AppColors.lightGridLine;
 
     final paddedChild = Padding(padding: padding, child: child);
     return SizedBox(
@@ -151,11 +153,7 @@ class SurfaceCard extends StatelessWidget {
 
 /// Soft feature row used under onboarding heroes.
 class FeatureHintCard extends StatelessWidget {
-  const FeatureHintCard({
-    super.key,
-    required this.icon,
-    required this.title,
-  });
+  const FeatureHintCard({super.key, required this.icon, required this.title});
 
   final IconData icon;
   final String title;
@@ -189,13 +187,116 @@ class FeatureHintCard extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class SnakePageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SnakePageAppBar({
+    super.key,
+    required this.title,
+    this.showBackButton = true,
+    this.showHomeButton = true,
+    this.showMoreButton = true,
+    this.showProfileOptionInMenu = true,
+  });
+
+  final Widget title;
+  final bool showBackButton;
+  final bool showHomeButton;
+  final bool showMoreButton;
+  final bool showProfileOptionInMenu;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AppBar(
+      title: title,
+      leading: showBackButton
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () => popOrGoHome(context),
+            )
+          : null,
+      actions: [
+        if (showHomeButton)
+          IconButton(
+            tooltip: l10n.home,
+            onPressed: () => context.go(AppRoutes.home),
+            icon: const Icon(Icons.home_outlined),
+          ),
+        if (showMoreButton)
+          IconButton(
+            tooltip: l10n.more,
+            onPressed: () => _openQuickActions(context),
+            icon: const Icon(Icons.more_vert),
+          ),
+      ],
+    );
+  }
+
+  Future<void> _openQuickActions(BuildContext context) async {
+    final l10n = context.l10n;
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.quickActions,
+                  style: Theme.of(
+                    sheetContext,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  leading: const Icon(Icons.leaderboard_outlined),
+                  title: Text(l10n.scoreboard),
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    context.push(AppRoutes.scores);
+                  },
+                ),
+                if (showProfileOptionInMenu)
+                  ListTile(
+                    leading: const Icon(Icons.person_outline_rounded),
+                    title: Text(l10n.profile),
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      context.push(AppRoutes.profile);
+                    },
+                  ),
+                ListTile(
+                  leading: const Icon(Icons.settings_outlined),
+                  title: Text(l10n.settings),
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    context.push(AppRoutes.settings);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

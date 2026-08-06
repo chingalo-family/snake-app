@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
-import 'package:snake_app/core/utils/navigation.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
 
 class AboutPage extends StatelessWidget {
@@ -12,12 +11,11 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(
+      appBar: SnakePageAppBar(
         title: Text(l10n.about),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => popOrGoHome(context),
-        ),
+        showBackButton: true,
+        showHomeButton: true,
+        showMoreButton: true,
       ),
       body: AtmosphereBackground(
         child: FutureBuilder<PackageInfo>(

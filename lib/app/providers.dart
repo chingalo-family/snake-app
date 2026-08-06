@@ -216,14 +216,14 @@ class ProfileController extends StateNotifier<ProfileState> {
   }
 
   Future<ProfileSaveResult> saveProfile({
-    required String username,
-    required String fullName,
+    required String name,
+    required String avatarId,
     String? email,
     String? phone,
   }) async {
     final savedProfile = await _profileRepository.createOrUpdate(
-      username: username,
-      fullName: fullName,
+      name: name,
+      avatarId: avatarId,
       email: email,
       phone: phone,
     );

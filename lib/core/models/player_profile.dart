@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:snake_app/core/constants/profile_avatars.dart';
 
 @immutable
 class PlayerProfile {
   const PlayerProfile({
     required this.id,
-    required this.username,
-    required this.fullName,
+    required this.name,
+    required this.avatarId,
     this.email,
     this.phone,
     required this.createdAt,
@@ -13,30 +14,32 @@ class PlayerProfile {
   });
 
   final int id;
-  final String username;
-  final String fullName;
+  final String name;
+  final String avatarId;
   final String? email;
   final String? phone;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   String get initial {
-    final trimmed = username.trim();
+    final trimmed = name.trim();
     if (trimmed.isEmpty) return '?';
     return trimmed.substring(0, 1).toUpperCase();
   }
 
+  String get avatarEmoji => ProfileAvatarCatalog.byId(avatarId).emoji;
+
   PlayerProfile copyWith({
-    String? username,
-    String? fullName,
+    String? name,
+    String? avatarId,
     String? email,
     String? phone,
     DateTime? updatedAt,
   }) {
     return PlayerProfile(
       id: id,
-      username: username ?? this.username,
-      fullName: fullName ?? this.fullName,
+      name: name ?? this.name,
+      avatarId: avatarId ?? this.avatarId,
       email: email ?? this.email,
       phone: phone ?? this.phone,
       createdAt: createdAt,
@@ -47,8 +50,8 @@ class PlayerProfile {
   Map<String, Object?> toMap() {
     return {
       'id': id,
-      'username': username,
-      'full_name': fullName,
+      'full_name': name,
+      'avatar_id': avatarId,
       'email': email,
       'phone': phone,
       'created_at': createdAt.toIso8601String(),
@@ -59,8 +62,9 @@ class PlayerProfile {
   factory PlayerProfile.fromMap(Map<String, Object?> map) {
     return PlayerProfile(
       id: map['id']! as int,
-      username: map['username']! as String,
-      fullName: map['full_name']! as String,
+      name: map['full_name']! as String,
+      avatarId:
+          (map['avatar_id'] as String?) ?? ProfileAvatarCatalog.defaultAvatarId,
       email: map['email'] as String?,
       phone: map['phone'] as String?,
       createdAt: DateTime.parse(map['created_at']! as String),

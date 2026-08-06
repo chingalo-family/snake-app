@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/app/providers.dart';
+import 'package:snake_app/core/constants/profile_avatars.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
-import 'package:snake_app/core/utils/navigation.dart';
 import 'package:snake_app/core/utils/profile_validators.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
 import 'package:snake_app/shared/widgets/app_text_field.dart';
@@ -20,26 +20,25 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _username;
-  late final TextEditingController _fullName;
+  late final TextEditingController _name;
   late final TextEditingController _email;
   late final TextEditingController _phone;
+  String _selectedAvatarId = ProfileAvatarCatalog.defaultAvatarId;
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
     final profile = ref.read(profileControllerProvider).profile;
-    _username = TextEditingController(text: profile?.username ?? '');
-    _fullName = TextEditingController(text: profile?.fullName ?? '');
+    _name = TextEditingController(text: profile?.name ?? '');
     _email = TextEditingController(text: profile?.email ?? '');
     _phone = TextEditingController(text: profile?.phone ?? '');
+    _selectedAvatarId = profile?.avatarId ?? ProfileAvatarCatalog.defaultAvatarId;
   }
 
   @override
   void dispose() {
-    _username.dispose();
-    _fullName.dispose();
+    _name.dispose();
     _email.dispose();
     _phone.dispose();
     super.dispose();
@@ -51,8 +50,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     try {
       final saveResult =
           await ref.read(profileControllerProvider.notifier).saveProfile(
-                username: _username.text.trim(),
-                fullName: _fullName.text.trim(),
+                name: _name.text.trim(),
+                avatarId: _selectedAvatarId,
                 email: ProfileValidators.normalizeEmail(_email.text),
                 phone: ProfileValidators.normalizePhone(_phone.text),
               );
@@ -72,18 +71,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-  String? _usernameError(AppLocalizations l10n, String? value) {
-    return switch (ProfileValidators.username(value)) {
-      'required' => l10n.usernameRequiredError,
-      'tooShort' => l10n.usernameTooShort,
-      'tooLong' => l10n.usernameTooLong,
-      'invalid' => l10n.usernameInvalid,
-      _ => null,
-    };
-  }
-
-  String? _fullNameError(AppLocalizations l10n, String? value) {
-    return switch (ProfileValidators.fullName(value)) {
+  String? _nameError(AppLocalizations l10n, String? value) {
+    return switch (ProfileValidators.name(value)) {
       'required' => l10n.fullNameRequiredError,
       'tooShort' => l10n.fullNameTooShort,
       'tooLong' => l10n.fullNameTooLong,
@@ -113,12 +102,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: SnakePageAppBar(
+        showBackButton: true,
+        showHomeButton: true,
+        showMoreButton: true,
         title: Text(state.hasProfile ? l10n.profile : l10n.createProfile),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => popOrGoHome(context),
-        ),
+        showProfileOptionInMenu: false,
       ),
       body: AtmosphereBackground(
         child: ListView(
@@ -129,15 +118,45 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 radius: 40,
                 backgroundColor: AppColors.brandPrimary.withValues(alpha: 0.2),
                 child: Text(
-                  state.profile?.initial ?? '?',
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.brandPrimaryLight,
-                  ),
+                  state.profile?.avatarEmoji ??
+                      ProfileAvatarCatalog.byId(_selectedAvatarId).emoji,
+                  style: theme.textTheme.headlineMedium,
                 ),
               ),
             ),
             const SizedBox(height: 20),
+            SurfaceCard(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.selectAvatar,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final avatarOption in ProfileAvatarCatalog.all)
+                        ChoiceChip(
+                          label: Text(avatarOption.emoji),
+                          selected: avatarOption.id == _selectedAvatarId,
+                          onSelected: (_) {
+                            setState(() {
+                              _selectedAvatarId = avatarOption.id;
+                            });
+                          },
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             if (progress != null) ...[
               SurfaceCard(
                 child: Row(
@@ -168,25 +187,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 child: Column(
                   children: [
                     AppTextField(
-                      controller: _username,
-                      label: l10n.usernameRequired,
-                      hintText: l10n.usernameHint,
-                      required: true,
-                      textInputAction: TextInputAction.next,
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[a-zA-Z0-9_]'),
-                        ),
-                        LengthLimitingTextInputFormatter(
-                          ProfileValidators.maxUsernameLength,
-                        ),
-                      ],
-                      validator: (value) => _usernameError(l10n, value),
-                    ),
-                    const SizedBox(height: 14),
-                    AppTextField(
-                      controller: _fullName,
+                      controller: _name,
                       label: l10n.fullNameRequired,
                       hintText: l10n.fullNameHint,
                       required: true,
@@ -194,10 +195,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       prefixIcon: const Icon(Icons.badge_outlined),
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(
-                          ProfileValidators.maxFullNameLength,
+                          ProfileValidators.maxNameLength,
                         ),
                       ],
-                      validator: (value) => _fullNameError(l10n, value),
+                      validator: (value) => _nameError(l10n, value),
                     ),
                     const SizedBox(height: 14),
                     AppTextField(

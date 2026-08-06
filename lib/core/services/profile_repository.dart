@@ -25,8 +25,8 @@ class ProfileRepository {
   }
 
   Future<PlayerProfile> createOrUpdate({
-    required String username,
-    required String fullName,
+    required String name,
+    required String avatarId,
     String? email,
     String? phone,
   }) async {
@@ -40,8 +40,9 @@ class ProfileRepository {
     if (existing == null) {
       final profileId = await _database.into(_database.profiles).insert(
             ProfilesCompanion.insert(
-              username: username.trim(),
-              fullName: fullName.trim(),
+              username: _usernameFromName(name),
+              fullName: name.trim(),
+              avatarId: Value(avatarId),
               email: Value(trimmedEmail),
               phone: Value(trimmedPhone),
               createdAt: now,
@@ -60,8 +61,9 @@ class ProfileRepository {
           ..where((table) => table.id.equals(existing.id)))
         .write(
       ProfilesCompanion(
-        username: Value(username.trim()),
-        fullName: Value(fullName.trim()),
+        username: Value(_usernameFromName(name)),
+        fullName: Value(name.trim()),
+        avatarId: Value(avatarId),
         email: Value(trimmedEmail),
         phone: Value(trimmedPhone),
         updatedAt: Value(now),
@@ -188,8 +190,8 @@ class ProfileRepository {
   PlayerProfile _mapProfile(ProfileRow row) {
     return PlayerProfile(
       id: row.id,
-      username: row.username,
-      fullName: row.fullName,
+      name: row.fullName,
+      avatarId: row.avatarId,
       email: row.email,
       phone: row.phone,
       createdAt: row.createdAt,
@@ -215,6 +217,16 @@ class ProfileRepository {
       score: row.score,
       achievedAt: row.achievedAt,
     );
+  }
+
+  String _usernameFromName(String name) {
+    final trimmedName = name.trim().toLowerCase();
+    if (trimmedName.isEmpty) return 'player';
+    final normalizedName = trimmedName
+        .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
+        .replaceAll(RegExp(r'_+'), '_')
+        .replaceAll(RegExp(r'^_|_$'), '');
+    return normalizedName.isEmpty ? 'player' : normalizedName;
   }
 }
 

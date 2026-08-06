@@ -53,6 +53,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() => _showDailyQuote = false);
   }
 
+  Future<void> _openWithHaptic(String routePath) async {
+    await ref.read(hapticServiceProvider).light();
+    if (!mounted) return;
+    context.push(routePath);
+  }
+
   @override
   Widget build(BuildContext context) {
     final profile = ref.watch(profileControllerProvider);
@@ -67,6 +73,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: _PlayFab(
+        onPressed: () => _openWithHaptic(AppRoutes.levels),
+      ),
       body: AtmosphereBackground(
         child: SafeArea(
           child: LayoutBuilder(
@@ -96,6 +106,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                             hasProfile: profile.hasProfile,
                             theme: theme,
                             l10n: l10n,
+                            onOpenScores: () =>
+                                _openWithHaptic(AppRoutes.scores),
+                            onOpenProfile: () =>
+                                _openWithHaptic(AppRoutes.profile),
+                            onOpenSettings: () =>
+                                _openWithHaptic(AppRoutes.settings),
                             dailyQuoteCard: dailyQuoteSlot,
                           ),
                         )
@@ -104,6 +120,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                           hasProfile: profile.hasProfile,
                           theme: theme,
                           l10n: l10n,
+                          onOpenScores: () =>
+                              _openWithHaptic(AppRoutes.scores),
+                          onOpenProfile: () =>
+                              _openWithHaptic(AppRoutes.profile),
+                          onOpenSettings: () =>
+                              _openWithHaptic(AppRoutes.settings),
                           dailyQuoteCard: dailyQuoteSlot,
                         ),
                 );
@@ -129,13 +151,20 @@ class _HomePageState extends ConsumerState<HomePage> {
                     _HomeNavRow(
                       hasProfile: profile.hasProfile,
                       l10n: l10n,
+                      onOpenScores: () => _openWithHaptic(AppRoutes.scores),
+                      onOpenProfile: () => _openWithHaptic(AppRoutes.profile),
+                      onOpenSettings: () => _openWithHaptic(AppRoutes.settings),
                     ),
+                    const SizedBox(height: 12),
+                    if (!profile.hasProfile)
+                      Text(
+                        l10n.playFreelyHint.replaceFirst(RegExp(r'^·\s*'), ''),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
+                        ),
+                      ),
                     const Spacer(),
-                    _PlayActionBlock(
-                      hasProfile: profile.hasProfile,
-                      theme: theme,
-                      l10n: l10n,
-                    ),
+                    const SizedBox(height: 74),
                   ],
                 ),
               );
@@ -147,40 +176,19 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-/// Primary Play CTA + optional no-profile hint (About lives under Settings).
-class _PlayActionBlock extends StatelessWidget {
-  const _PlayActionBlock({
-    required this.hasProfile,
-    required this.theme,
-    required this.l10n,
+class _PlayFab extends StatelessWidget {
+  const _PlayFab({
+    required this.onPressed,
   });
 
-  final bool hasProfile;
-  final ThemeData theme;
-  final AppLocalizations l10n;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        PrimaryCta(
-          label: l10n.play,
-          icon: Icons.play_arrow_rounded,
-          expanded: true,
-          onPressed: () => context.push(AppRoutes.levels),
-        ),
-        if (!hasProfile) ...[
-          const SizedBox(height: 10),
-          Text(
-            l10n.playFreelyHint.replaceFirst(RegExp(r'^·\s*'), ''),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
-            ),
-          ),
-        ],
-      ],
+    return FloatingActionButton(
+      onPressed: onPressed,
+      tooltip: context.l10n.play,
+      child: const Icon(Icons.play_arrow_rounded),
     );
   }
 }
@@ -191,6 +199,9 @@ class _HomeCompactPortraitBody extends StatelessWidget {
     required this.hasProfile,
     required this.theme,
     required this.l10n,
+    required this.onOpenScores,
+    required this.onOpenProfile,
+    required this.onOpenSettings,
     this.dailyQuoteCard,
   });
 
@@ -198,6 +209,9 @@ class _HomeCompactPortraitBody extends StatelessWidget {
   final bool hasProfile;
   final ThemeData theme;
   final AppLocalizations l10n;
+  final VoidCallback onOpenScores;
+  final VoidCallback onOpenProfile;
+  final VoidCallback onOpenSettings;
   final Widget? dailyQuoteCard;
 
   @override
@@ -217,13 +231,22 @@ class _HomeCompactPortraitBody extends StatelessWidget {
           dailyQuoteCard!,
         ],
         const SizedBox(height: 16),
-        _HomeNavRow(hasProfile: hasProfile, l10n: l10n),
-        const SizedBox(height: 20),
-        _PlayActionBlock(
+        _HomeNavRow(
           hasProfile: hasProfile,
-          theme: theme,
           l10n: l10n,
+          onOpenScores: onOpenScores,
+          onOpenProfile: onOpenProfile,
+          onOpenSettings: onOpenSettings,
         ),
+        const SizedBox(height: 16),
+        if (!hasProfile)
+          Text(
+            l10n.playFreelyHint.replaceFirst(RegExp(r'^·\s*'), ''),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
+            ),
+          ),
+        const SizedBox(height: 74),
       ],
     );
   }
@@ -235,6 +258,9 @@ class _HomeLandscapeBody extends StatelessWidget {
     required this.hasProfile,
     required this.theme,
     required this.l10n,
+    required this.onOpenScores,
+    required this.onOpenProfile,
+    required this.onOpenSettings,
     this.dailyQuoteCard,
   });
 
@@ -242,6 +268,9 @@ class _HomeLandscapeBody extends StatelessWidget {
   final bool hasProfile;
   final ThemeData theme;
   final AppLocalizations l10n;
+  final VoidCallback onOpenScores;
+  final VoidCallback onOpenProfile;
+  final VoidCallback onOpenSettings;
   final Widget? dailyQuoteCard;
 
   @override
@@ -266,11 +295,14 @@ class _HomeLandscapeBody extends StatelessWidget {
                 dailyQuoteCard!,
               ],
               const Spacer(),
-              _PlayActionBlock(
-                hasProfile: hasProfile,
-                theme: theme,
-                l10n: l10n,
-              ),
+              if (!hasProfile)
+                Text(
+                  l10n.playFreelyHint.replaceFirst(RegExp(r'^·\s*'), ''),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.55),
+                  ),
+                ),
+              const SizedBox(height: 74),
             ],
           ),
         ),
@@ -280,7 +312,13 @@ class _HomeLandscapeBody extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _HomeNavColumn(hasProfile: hasProfile, l10n: l10n),
+              _HomeNavColumn(
+                hasProfile: hasProfile,
+                l10n: l10n,
+                onOpenScores: onOpenScores,
+                onOpenProfile: onOpenProfile,
+                onOpenSettings: onOpenSettings,
+              ),
             ],
           ),
         ),
@@ -346,48 +384,19 @@ class _UnlockedBadge extends StatelessWidget {
 }
 
 class _HomeNavRow extends StatelessWidget {
-  const _HomeNavRow({required this.hasProfile, required this.l10n});
+  const _HomeNavRow({
+    required this.hasProfile,
+    required this.l10n,
+    required this.onOpenScores,
+    required this.onOpenProfile,
+    required this.onOpenSettings,
+  });
 
   final bool hasProfile;
   final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _HomeNavTile(
-            icon: Icons.leaderboard_outlined,
-            label: l10n.scores,
-            onTap: () => context.push(AppRoutes.scores),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _HomeNavTile(
-            icon: Icons.person_outline_rounded,
-            label: hasProfile ? l10n.profile : l10n.createProfile,
-            onTap: () => context.push(AppRoutes.profile),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _HomeNavTile(
-            icon: Icons.settings_outlined,
-            label: l10n.settings,
-            onTap: () => context.push(AppRoutes.settings),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _HomeNavColumn extends StatelessWidget {
-  const _HomeNavColumn({required this.hasProfile, required this.l10n});
-
-  final bool hasProfile;
-  final AppLocalizations l10n;
+  final VoidCallback onOpenScores;
+  final VoidCallback onOpenProfile;
+  final VoidCallback onOpenSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -396,78 +405,48 @@ class _HomeNavColumn extends StatelessWidget {
         _HomeNavListTile(
           icon: Icons.leaderboard_outlined,
           label: l10n.scores,
-          onTap: () => context.push(AppRoutes.scores),
+          onTap: onOpenScores,
         ),
         const SizedBox(height: 10),
         _HomeNavListTile(
           icon: Icons.person_outline_rounded,
           label: hasProfile ? l10n.profile : l10n.createProfile,
-          onTap: () => context.push(AppRoutes.profile),
+          onTap: onOpenProfile,
         ),
         const SizedBox(height: 10),
         _HomeNavListTile(
           icon: Icons.settings_outlined,
           label: l10n.settings,
-          onTap: () => context.push(AppRoutes.settings),
+          onTap: onOpenSettings,
         ),
       ],
     );
   }
 }
 
-class _HomeNavTile extends StatelessWidget {
-  const _HomeNavTile({
-    required this.icon,
-    required this.label,
-    required this.onTap,
+class _HomeNavColumn extends StatelessWidget {
+  const _HomeNavColumn({
+    required this.hasProfile,
+    required this.l10n,
+    required this.onOpenScores,
+    required this.onOpenProfile,
+    required this.onOpenSettings,
   });
 
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
+  final bool hasProfile;
+  final AppLocalizations l10n;
+  final VoidCallback onOpenScores;
+  final VoidCallback onOpenProfile;
+  final VoidCallback onOpenSettings;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return SurfaceCard(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: AppColors.brandPrimary.withValues(alpha: 0.16),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              size: 22,
-              color: isDark
-                  ? AppColors.brandPrimaryLight
-                  : AppColors.brandPrimaryDark,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: isDark
-                  ? AppColors.darkTextPrimary
-                  : AppColors.lightTextPrimary,
-            ),
-          ),
-        ],
-      ),
+    return _HomeNavRow(
+      hasProfile: hasProfile,
+      l10n: l10n,
+      onOpenScores: onOpenScores,
+      onOpenProfile: onOpenProfile,
+      onOpenSettings: onOpenSettings,
     );
   }
 }

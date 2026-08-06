@@ -9,7 +9,6 @@ import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/services/update_service.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/core/theme/snake_skins.dart';
-import 'package:snake_app/core/utils/navigation.dart';
 import 'package:snake_app/features/settings/components/settings_nav_tile.dart';
 import 'package:snake_app/features/settings/components/settings_option_sheet.dart';
 import 'package:snake_app/features/settings/components/settings_section_header.dart';
@@ -28,14 +27,18 @@ class SettingsPage extends ConsumerWidget {
     final languageLabel = settings.localeCode == AppLocale.swahiliCode
         ? l10n.swahili
         : l10n.english;
+    final themeLabel = switch (settings.themeMode) {
+      ThemeMode.light => l10n.themeLight,
+      ThemeMode.system => l10n.themeSystem,
+      ThemeMode.dark => l10n.themeDark,
+    };
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: SnakePageAppBar(
         title: Text(l10n.settings),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => popOrGoHome(context),
-        ),
+        showBackButton: true,
+        showHomeButton: true,
+        showMoreButton: true,
       ),
       body: AtmosphereBackground(
         child: ListView(
@@ -114,6 +117,31 @@ class SettingsPage extends ConsumerWidget {
                       context: context,
                       ref: ref,
                       selectedSkinId: settings.snakeSkinId,
+                    ),
+                  ),
+                  SettingsNavTile(
+                    icon: Icons.dark_mode_outlined,
+                    title: l10n.theme,
+                    subtitle: themeLabel,
+                    onTap: () => showSettingsOptionSheet(
+                      context: context,
+                      title: l10n.theme,
+                      options: [
+                        l10n.themeDark,
+                        l10n.themeLight,
+                        l10n.themeSystem,
+                      ],
+                      selectedOption: themeLabel,
+                      onSelect: (selectedThemeLabel) {
+                        final themeMode = switch (selectedThemeLabel) {
+                          final selected when selected == l10n.themeLight =>
+                            ThemeMode.light,
+                          final selected when selected == l10n.themeSystem =>
+                            ThemeMode.system,
+                          _ => ThemeMode.dark,
+                        };
+                        controller.setThemeMode(themeMode);
+                      },
                     ),
                   ),
                   SettingsNavTile(

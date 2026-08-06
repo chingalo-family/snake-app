@@ -1,32 +1,19 @@
 /// Pure validators for the local player profile form.
 abstract final class ProfileValidators {
-  static final RegExp _usernamePattern = RegExp(r'^[a-zA-Z0-9_]+$');
   static final RegExp _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
   static final RegExp _phoneDigitPattern = RegExp(r'^\+?[\d\s\-().]{7,20}$');
 
-  static const int minUsernameLength = 2;
-  static const int maxUsernameLength = 24;
-  static const int minFullNameLength = 2;
-  static const int maxFullNameLength = 60;
+  static const int minNameLength = 2;
+  static const int maxNameLength = 60;
   static const int minPhoneDigits = 7;
   static const int maxPhoneDigits = 15;
 
-  /// Required username: letters, numbers, underscore.
-  static String? username(String? value) {
+  /// Required player name.
+  static String? name(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) return 'required';
-    if (trimmed.length < minUsernameLength) return 'tooShort';
-    if (trimmed.length > maxUsernameLength) return 'tooLong';
-    if (!_usernamePattern.hasMatch(trimmed)) return 'invalid';
-    return null;
-  }
-
-  /// Required display name.
-  static String? fullName(String? value) {
-    final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) return 'required';
-    if (trimmed.length < minFullNameLength) return 'tooShort';
-    if (trimmed.length > maxFullNameLength) return 'tooLong';
+    if (trimmed.length < minNameLength) return 'tooShort';
+    if (trimmed.length > maxNameLength) return 'tooLong';
     return null;
   }
 

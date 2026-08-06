@@ -21,9 +21,6 @@ class _SnakeAppState extends ConsumerState<SnakeApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      syncDesktopWindowTheme(Brightness.dark);
-    });
   }
 
   @override
@@ -46,12 +43,19 @@ class _SnakeAppState extends ConsumerState<SnakeApp>
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsControllerProvider);
+    final platformBrightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    final resolvedBrightness = resolveThemeBrightness(
+      themeMode: settings.themeMode,
+      platformBrightness: platformBrightness,
+    );
+    syncDesktopWindowTheme(resolvedBrightness);
 
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appName,
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      theme: AppTheme.dark(),
+      themeMode: settings.themeMode,
+      theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       locale: settings.locale,
       supportedLocales: AppLocale.supportedLocales,

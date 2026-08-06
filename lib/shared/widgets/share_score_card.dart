@@ -18,6 +18,8 @@ class ShareScoreCard extends StatelessWidget {
     this.isNewBest = false,
     this.unlockedLevel,
     this.unlockedSkinLabels = const [],
+    this.playerName,
+    this.playerAvatarEmoji,
   });
 
   static const double socialWidth = 360;
@@ -32,6 +34,8 @@ class ShareScoreCard extends StatelessWidget {
   final bool isNewBest;
   final int? unlockedLevel;
   final List<String> unlockedSkinLabels;
+  final String? playerName;
+  final String? playerAvatarEmoji;
 
   bool get hasAchievements =>
       isNewBest || unlockedLevel != null || unlockedSkinLabels.isNotEmpty;
@@ -119,6 +123,13 @@ class ShareScoreCard extends StatelessWidget {
                   ),
                 ],
               ),
+              if (playerName != null && playerName!.trim().isNotEmpty) ...[
+                const SizedBox(height: 12),
+                _PlayerIdentityBadge(
+                  name: playerName!.trim(),
+                  avatarEmoji: playerAvatarEmoji ?? '🎮',
+                ),
+              ],
               const Spacer(flex: 2),
               if (isOverallBest) ...[
                 Text(
@@ -234,6 +245,45 @@ class ShareScoreCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PlayerIdentityBadge extends StatelessWidget {
+  const _PlayerIdentityBadge({
+    required this.name,
+    required this.avatarEmoji,
+  });
+
+  final String name;
+  final String avatarEmoji;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.darkRaised.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppColors.brandPrimaryLight.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(avatarEmoji, style: theme.textTheme.titleMedium),
+          const SizedBox(width: 8),
+          Text(
+            name,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: AppColors.darkTextPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }

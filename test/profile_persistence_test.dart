@@ -43,8 +43,8 @@ void main() {
     expect(await profileRepository.allHighScores(), isEmpty);
 
     final saveResult = await profileController.saveProfile(
-      username: 'guest_saver',
-      fullName: 'Guest Saver',
+      name: 'Guest Saver',
+      avatarId: 'snake',
     );
     expect(saveResult.didSavePendingScore, isTrue);
     expect(profileController.state.pendingRun, isNull);
@@ -55,8 +55,8 @@ void main() {
 
   test('submit with profile upserts best and unlocks', () async {
     await profileRepository.createOrUpdate(
-      username: 'maya',
-      fullName: 'Maya Chingalo',
+      name: 'Maya Chingalo',
+      avatarId: 'panda',
     );
 
     final lowScoreResult = await profileRepository.submitRun(

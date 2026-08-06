@@ -97,8 +97,8 @@ Landscape tablet/desktop optional:
 
 ### 7. Profile
 
-- Avatar initial from username
-- Form: username*, full name*, email, phone
+- Avatar picker with suggested choices (10 quick avatars)
+- Form: name*, email, phone
 - Stats block: best score, highest level, games played
 - Edit / Save
 
@@ -119,6 +119,11 @@ Short story, version, package id, Chingalo Family, policy links.
 
 Local only: overall best + per-level bests. Empty state encourages Play + Profile.  
 Share overall best as a social image when `bestOverallScore > 0` (same platform behavior as game-over share).
+
+### Navigation bar
+
+- Non-home pages show top actions for **Home** and **More**
+- **More** opens an action sheet with: Scoreboard, Profile, Settings
 
 ---
 

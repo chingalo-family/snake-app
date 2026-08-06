@@ -79,6 +79,8 @@ class SettingsService {
     final snakeSkinId =
         _preferenceService.getString(PreferenceKeys.snakeSkinId) ??
             SnakeSkinsCatalog.forest.id;
+    final themeModeRaw =
+        _preferenceService.getString(PreferenceKeys.themeMode) ?? 'dark';
     return AppSettings(
       sfxEnabled:
           _preferenceService.getBool(PreferenceKeys.sfxEnabled) ?? true,
@@ -88,7 +90,7 @@ class SettingsService {
           _preferenceService.getBool(PreferenceKeys.hapticsEnabled) ?? true,
       showControlHints:
           _preferenceService.getBool(PreferenceKeys.showControlHints) ?? true,
-      themeMode: ThemeMode.dark,
+      themeMode: _themeModeFromStorage(themeModeRaw),
       localeCode: AppLocale.normalizeCode(localeRaw),
       onboardingCompleted: _preferenceService
               .getBool(PreferenceKeys.onboardingCompleted) ??
@@ -118,7 +120,7 @@ class SettingsService {
     );
     await _preferenceService.setString(
       PreferenceKeys.themeMode,
-      'dark',
+      _themeModeToStorage(settings.themeMode),
     );
     await _preferenceService.setString(
       PreferenceKeys.localeCode,
@@ -136,5 +138,21 @@ class SettingsService {
       PreferenceKeys.showDailyTip,
       settings.showDailyTip,
     );
+  }
+
+  ThemeMode _themeModeFromStorage(String rawThemeMode) {
+    return switch (rawThemeMode) {
+      'light' => ThemeMode.light,
+      'system' => ThemeMode.system,
+      _ => ThemeMode.dark,
+    };
+  }
+
+  String _themeModeToStorage(ThemeMode themeMode) {
+    return switch (themeMode) {
+      ThemeMode.light => 'light',
+      ThemeMode.system => 'system',
+      ThemeMode.dark => 'dark',
+    };
   }
 }

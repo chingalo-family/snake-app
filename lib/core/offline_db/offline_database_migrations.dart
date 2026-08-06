@@ -42,4 +42,8 @@ typedef _OfflineDatabaseMigration = Future<void> Function(
 );
 
 /// Ordered upgrade steps (v1→v2, …). Append new migrations at the end.
-final List<_OfflineDatabaseMigration> _offlineDatabaseMigrations = [];
+final List<_OfflineDatabaseMigration> _offlineDatabaseMigrations = [
+  (migrator, database) async {
+    await migrator.addColumn(database.profiles, database.profiles.avatarId);
+  },
+];

@@ -39,6 +39,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get home => 'Home';
+
+  @override
+  String get more => 'More';
+
+  @override
+  String get quickActions => 'Quick actions';
+
+  @override
+  String get scoreboard => 'Scoreboard';
+
+  @override
   String get skip => 'Skip';
 
   @override
@@ -211,7 +223,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameRequired => 'Username';
 
   @override
-  String get fullNameRequired => 'Full name';
+  String get fullNameRequired => 'Name';
 
   @override
   String get emailOptional => 'Email';
@@ -223,7 +235,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameHint => 'Choose a player name';
 
   @override
-  String get fullNameHint => 'Your full name';
+  String get fullNameHint => 'Your name';
 
   @override
   String get emailHint => 'name@example.com';
@@ -244,7 +256,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameInvalid => 'Use letters, numbers, and underscores only';
 
   @override
-  String get fullNameRequiredError => 'Full name is required';
+  String get fullNameRequiredError => 'Name is required';
 
   @override
   String get fullNameTooShort => 'At least 2 characters';
@@ -263,6 +275,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileSavedWithScore => 'Profile saved — your score was kept';
+
+  @override
+  String get selectAvatar => 'Choose avatar';
 
   @override
   String get profileHelp =>
