@@ -13,34 +13,44 @@ import 'package:snake_app/core/theme/snake_skins.dart';
 
 void main() {
   group('Direction reverse rejection', () {
-    test('opposite directions are detected', () {
+    test('same-axis and opposite helpers', () {
       expect(Direction.up.isOppositeOf(Direction.down), isTrue);
       expect(Direction.left.isOppositeOf(Direction.right), isTrue);
       expect(Direction.up.isOppositeOf(Direction.left), isFalse);
+      expect(Direction.right.isSameAxisAs(Direction.left), isTrue);
+      expect(Direction.right.isSameAxisAs(Direction.up), isFalse);
     });
 
-    test('engine rejects reverse into self', () {
+    test('horizontal movement only accepts vertical turns', () {
       final engine = SnakeEngine(level: 1, random: Random(1));
       engine.start();
+      expect(engine.snapshot.direction.isHorizontal, isTrue);
       expect(engine.queueDirection(Direction.left), isFalse);
+      expect(engine.queueDirection(Direction.right), isFalse);
       expect(engine.queueDirection(Direction.up), isTrue);
+      expect(engine.queueDirection(Direction.down), isTrue);
     });
 
-    test('rejects vertical reverse after queuing up', () {
+    test('rejects same-axis input while a perpendicular turn is pending', () {
       final engine = SnakeEngine(level: 1, random: Random(2));
       engine.start();
       expect(engine.queueDirection(Direction.up), isTrue);
-      expect(engine.queueDirection(Direction.down), isFalse);
-      expect(engine.snapshot.pendingDirection, Direction.up);
+      expect(engine.queueDirection(Direction.left), isFalse);
+      expect(engine.queueDirection(Direction.right), isFalse);
+      expect(engine.queueDirection(Direction.down), isTrue);
+      expect(engine.snapshot.pendingDirection, Direction.down);
     });
 
-    test('rejects horizontal reverse after queuing left', () {
+    test('after a vertical tick, only horizontal turns are allowed', () {
       final engine = SnakeEngine(level: 1, random: Random(4));
       engine.start();
       expect(engine.queueDirection(Direction.up), isTrue);
       engine.tick();
+      expect(engine.snapshot.direction.isVertical, isTrue);
+      expect(engine.queueDirection(Direction.up), isFalse);
+      expect(engine.queueDirection(Direction.down), isFalse);
       expect(engine.queueDirection(Direction.left), isTrue);
-      expect(engine.queueDirection(Direction.right), isFalse);
+      expect(engine.queueDirection(Direction.right), isTrue);
     });
   });
 

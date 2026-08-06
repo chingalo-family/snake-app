@@ -31,8 +31,8 @@ Use when working on local player profile, offline score/level persistence, or th
 ## Profile fields
 | Field | Required |
 |-------|----------|
-| Username | Yes (unique locally) |
-| Full name | Yes |
+| Name | Yes |
+| Avatar | Yes (pick from suggested catalog) |
 | Email | Optional |
 | Phone number | Optional |
 
@@ -67,8 +67,8 @@ lib/core/offline_db/
 
 ## UI expectations
 - Game over without profile: primary CTA **Save score — create profile**
-- Profile screen: edit fields + stats (best score, highest level, games played)
-- Validate username, full name, optional email/phone before save (`ProfileValidators`)
+- Profile screen: avatar picker + name/email/phone + stats (best score, highest level, games played)
+- Validate name and optional email/phone before save (`ProfileValidators`)
 - After successful save → snackbar + navigate to Home
 
 ## Migration hygiene

@@ -1,6 +1,6 @@
 ---
 description: Snake App gameplay and responsive board conventions
-globs: lib/features/game/**/*.dart,lib/features/levels/**/*.dart,lib/core/**/*grid*,lib/core/**/*snake*
+globs: lib/modules/game/**/*.dart,lib/modules/levels/**/*.dart,lib/core/**/*grid*,lib/core/**/*snake*
 alwaysApply: false
 ---
 

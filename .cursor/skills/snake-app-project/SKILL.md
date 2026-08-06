@@ -17,7 +17,7 @@ Use this skill whenever working in this repository to keep implementation style,
 ## First-step checklist
 1. Read `docs/IMPLEMENTATION_PLAN.md` for scope and acceptance criteria.
 2. Align UX with `docs/UX_DESIGN.md` and theme with `docs/THEME_AND_COLORS.md`.
-3. Map the change to a feature module (`onboarding`, `home`, `levels`, `game`, `profile`, `scores`, `settings`, `about`, `updates`).
+3. Map the change to a module (`onboarding`, `home`, `levels`, `game`, `profile`, `scores`, `settings`, `about`, `updates`).
 4. If gameplay/controls/board/levels/scoring → follow `.cursor/skills/snake-app-gameplay/SKILL.md`.
 5. If profile/scores/persistence → follow `.cursor/skills/snake-app-offline-profile/SKILL.md`.
 
@@ -26,11 +26,17 @@ Use this skill whenever working in this repository to keep implementation style,
 lib/
 ├── app/           # MaterialApp, router, bootstrap
 ├── core/          # theme, constants, models, services, utils
-├── features/      # feature modules (UI + local state)
-└── shared/        # cross-feature widgets
+├── modules/       # screen modules (UI + local state)
+│   └── <module>/
+│       ├── <module>_page.dart
+│       ├── components/   # module-local widgets
+│       └── utils/        # optional pure helpers
+└── shared/        # cross-module widgets
 ```
 
-Until folders exist, place new code toward this layout rather than dumping everything in `lib/main.dart`.
+Extract large page-private widgets into `modules/<module>/components/` as public
+types. Prefer `package:snake_app/...` imports. Until folders exist, place new
+code toward this layout rather than dumping everything in `lib/main.dart`.
 
 ## Consistency rules
 - Offline-first for scores/levels; no DHIS2 dependency for core play

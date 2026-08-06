@@ -3,15 +3,29 @@
 ## Principles
 
 1. **Offline-first** — core play, scores, levels, and profile work without network
-2. **Feature modules** — UI + state colocated under `features/`
+2. **Modules** — UI + state colocated under `modules/` with local `components/` and optional `utils/`
 3. **Thin services** — audio, storage, updates have single responsibilities
 4. **Responsive by construction** — grid metrics from constraints, not hard-coded portrait sizes
-5. **Platform-correct input** — touch gestures vs keyboard focus handled in the game feature
+5. **Platform-correct input** — touch gestures vs keyboard focus handled in the game module
+
+## Module layout
+
+```
+lib/modules/<module>/
+├── <module>_page.dart           # screen orchestration
+├── components/                  # module-local widgets
+├── utils/                       # optional pure helpers (e.g. game input mapping)
+└── <module>_controller.dart     # optional local controller at module root
+```
+
+Large private widgets belong in `components/` as public types. Prefer
+`package:snake_app/modules/...` imports. Shared cross-module widgets stay in
+`lib/shared/`.
 
 ## Layers
 
 ```
-UI (features/*)
+UI (modules/*)
     ↓
 State (ChangeNotifier / Notifiers)
     ↓

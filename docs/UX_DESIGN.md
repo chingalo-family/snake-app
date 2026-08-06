@@ -37,11 +37,11 @@ Footer: page dots · Skip · Next / Get Started
 **Composition (not a dense dashboard)**
 
 1. Brand / wordmark
-2. Primary CTA: **Play**
-3. Secondary: Level progress chip (“Level 4 unlocked”)
-4. Optional **A tip for you** card — fresh random quote each app open (dismissible for the session; Settings toggle)
-5. Row: High Scores · Profile · Settings
-6. Footer link: About · Update available? (if any)
+2. Welcome banner — avatar + name when profile exists; otherwise Guest + default avatar (tappable → Profile)
+3. Primary CTA: **Play** (FAB)
+4. Secondary: Level progress chip (“Level 4 unlocked”)
+5. Optional **A tip for you** card — fresh random quote each app open (dismissible for the session; Settings toggle)
+6. Actions: High Scores · Profile · Settings
 
 Avoid stacking stats walls on the first viewport.
 

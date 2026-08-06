@@ -31,7 +31,7 @@ void main() {
         random: Random(42),
       );
       service.sessionQuote(AppLocalizationsEn());
-      // Allow async persist to land.
+      
       await Future<void>.delayed(Duration.zero);
       expect(
         preferences.getInt(PreferenceKeys.dailyQuoteLastIndex),
@@ -48,8 +48,8 @@ void main() {
         PreferenceService(preferences),
         random: _AlwaysReturns(3),
       );
-      service.debugSetSessionQuoteIndex(0); // clear path — force ensure via reset
-      // New service without preset session index:
+      service.debugSetSessionQuoteIndex(0); 
+      
       final freshService = DailyQuoteService(
         PreferenceService(preferences),
         random: _AlwaysReturns(3),
@@ -105,7 +105,6 @@ void main() {
   });
 }
 
-/// Deterministic [Random] that always returns [value] from [nextInt].
 class _AlwaysReturns implements Random {
   _AlwaysReturns(this.value);
 

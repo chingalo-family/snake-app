@@ -12,7 +12,7 @@ Follow these standards for consistent contributions across developers and AI age
 - App root: repository root (`lib/`, `test/`, `android/`, `ios/`, `linux/`, `macos/`, `windows/`, `web/`)
 - Package ID: `chingalo.family.snake_app` · Display name: **Snake App**
 - Stack: Flutter, local SQLite via **Drift (`AppDatabase`)**, SharedPreferences via **PreferenceService**, audio (SFX/BGM), Provider or Riverpod
-- Target layout: `lib/app/`, `lib/core/`, `lib/features/`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
+- Target layout: `lib/app/`, `lib/core/`, `lib/modules/<feature>/{page,components,utils}`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
 - Product plan: `docs/IMPLEMENTATION_PLAN.md` · Modes: `docs/GAME_MODES.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
 - Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`
 
@@ -54,7 +54,7 @@ Follow these standards for consistent contributions across developers and AI age
 - Never commit secrets (`.env`, keystores, API keys)
 
 ## Naming
-- Features: `lib/features/<feature>/`
+- Modules: `lib/modules/<module>/` with optional `components/` and `utils/`
 - Tests: mirror under `test/`
 - **Variables must be meaningful** (domain words, not abbreviations)
   - Indexes: `rowIndex`, `cellIndex`, `levelIndex` — never bare `i`/`j`/`k`

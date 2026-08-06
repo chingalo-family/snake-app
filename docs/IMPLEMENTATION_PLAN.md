@@ -255,16 +255,23 @@ lib/
 │   ├── models/
 │   ├── services/                # audio, settings, storage, updates
 │   └── utils/                   # grid math, responsive helpers
-├── features/
+├── modules/
 │   ├── onboarding/
 │   ├── home/
+│   │   └── components/
 │   ├── levels/
+│   │   └── components/
 │   ├── game/                    # playground, controls, HUD
+│   │   ├── components/
+│   │   └── utils/
 │   ├── profile/
+│   │   └── components/
 │   ├── scores/
 │   ├── settings/
+│   │   └── components/
 │   ├── about/
-│   └── updates/
+│   │   └── components/
+│   └── splash/
 └── shared/                      # buttons, dialogs, icons
 ```
 
