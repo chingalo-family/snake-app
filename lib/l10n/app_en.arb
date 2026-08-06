@@ -231,10 +231,112 @@
   },
   "updateUnsupported": "Store updates are available on Android and iOS only.",
   "errorWithDetails": "Error: {details}",
-
   "@errorWithDetails": {
     "placeholders": {
       "details": { "type": "String" }
     }
-  }
+  },
+
+  "modeClassic": "Classic",
+  "modeWrap": "Wrap",
+  "modeMaze": "Maze",
+  "modeWrapMaze": "Wrap maze",
+  "modeClassicTip": "Walls end the run.",
+  "modeWrapTip": "Edges loop.",
+  "modeMazeTip": "Rocks end the run.",
+  "modeWrapMazeTip": "Edges loop — rocks still end the run.",
+  "onboardingMoveReverseHint": "You can’t reverse into yourself.",
+  "snakeLook": "Snake look",
+  "snakeLookSubtitle": "Cosmetic skins unlock with levels",
+  "selectSnakeLook": "Select snake look",
+  "skinLockedHint": "Unlock at level {level}",
+  "@skinLockedHint": {
+    "placeholders": {
+      "level": { "type": "int" }
+    }
+  },
+  "skinForest": "Forest",
+  "skinAmberLeaf": "Amber leaf",
+  "skinRiver": "River",
+  "skinSunset": "Sunset",
+  "skinMidnight": "Midnight",
+  "skinChampion": "Champion",
+  "skinUnlockedBanner": "New look: {skin}",
+  "@skinUnlockedBanner": {
+    "placeholders": {
+      "skin": { "type": "String" }
+    }
+  },
+  "showDailyTip": "Tips & quotes",
+  "showDailyTipSubtitle": "Show a fresh random tip each time you open the app",
+  "dailyTipTitle": "A tip for you",
+  "dailyTipGotIt": "Got it",
+  "shareScore": "Share as image",
+  "sharePreparing": "Preparing image…",
+  "shareFailed": "Couldn’t share the image right now. Try again.",
+  "shareSavedToDisk": "Image saved to Downloads/Snake App — open it from there to share.",
+  "sharePreviewTitle": "Share post",
+  "sharePreviewSubtitle": "Preview your image, then share it to social media",
+  "shareAsImageConfirm": "Share image",
+  "shareOverallBest": "Share overall best as image",
+  "shareCardPromo": "Offline fun · grow, collect, climb",
+  "shareCardDownload": "Get Snake App on Google Play",
+  "shareCardAvailableOn": "Available on",
+  "shareCardGooglePlay": "Google Play",
+  "shareCardAppStore": "App Store",
+  "shareCardDownloadBoth": "Download free on Google Play & App Store",
+  "shareCardAchievements": "This run",
+  "shareCardOverallBestLabel": "My overall best",
+  "shareCardOverallBestSummary": "Best {score} · Level {level} unlocked",
+  "@shareCardOverallBestSummary": {
+    "placeholders": {
+      "score": { "type": "int" },
+      "level": { "type": "int" }
+    }
+  },
+  "shareTextCaption": "I scored {score} on Snake App (Level {level})! Available on Google Play & App Store.",
+  "@shareTextCaption": {
+    "placeholders": {
+      "score": { "type": "int" },
+      "level": { "type": "int" }
+    }
+  },
+  "shareTextOverallCaption": "My overall best on Snake App is {score} (Level {level} unlocked)! Available on Google Play & App Store.",
+  "@shareTextOverallCaption": {
+    "placeholders": {
+      "score": { "type": "int" },
+      "level": { "type": "int" }
+    }
+  },
+
+  "dailyQuote0": "One careful turn beats a fast crash.",
+  "dailyQuote1": "Your best score started as a first try.",
+  "dailyQuote2": "Grow steady. The board will wait.",
+  "dailyQuote3": "Collect what you can reach — leave the rest for next run.",
+  "dailyQuote4": "Patience on the edges keeps the combo alive.",
+  "dailyQuote5": "A short run with focus beats a long run on autopilot.",
+  "dailyQuote6": "Every unlock began with a single eat.",
+  "dailyQuote7": "Turn early. Celebrate later.",
+  "dailyQuote8": "The board is fair — keep your path clear.",
+  "dailyQuote9": "Slow is smooth. Smooth is fast.",
+  "dailyQuote10": "Chase the rare treat, but respect the walls.",
+  "dailyQuote11": "Today’s high score is tomorrow’s warm-up.",
+  "dailyQuote12": "One more careful bite. That’s enough.",
+  "dailyQuote13": "Length is pride — space is wisdom.",
+  "dailyQuote14": "Breathe. Swipe. Grow.",
+  "dailyQuote15": "Missed a turn? Restart with a smile.",
+  "dailyQuote16": "Combos love calm hands.",
+  "dailyQuote17": "The next level unlocks for the patient.",
+  "dailyQuote18": "Play offline. Progress is yours.",
+  "dailyQuote19": "Corners teach more than open fields.",
+  "dailyQuote20": "A green path is a kind path — leave room to turn.",
+  "dailyQuote21": "Epic food is loud. Soft turns win.",
+  "dailyQuote22": "You don’t need perfect — just another try.",
+  "dailyQuote23": "Wrap the board in your mind before you wrap the edge.",
+  "dailyQuote24": "Rocks are teachers in disguise.",
+  "dailyQuote25": "Champion looks follow champion habits.",
+  "dailyQuote26": "Share the joy, keep the lessons.",
+  "dailyQuote27": "Small grids, big focus.",
+  "dailyQuote28": "The snake grows; so does your judgment.",
+  "dailyQuote29": "Open again anytime — a new tip is waiting."
 }

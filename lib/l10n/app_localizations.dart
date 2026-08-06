@@ -907,6 +907,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {details}'**
   String errorWithDetails(String details);
+
+  /// No description provided for @modeClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get modeClassic;
+
+  /// No description provided for @modeWrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap'**
+  String get modeWrap;
+
+  /// No description provided for @modeMaze.
+  ///
+  /// In en, this message translates to:
+  /// **'Maze'**
+  String get modeMaze;
+
+  /// No description provided for @modeWrapMaze.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap maze'**
+  String get modeWrapMaze;
+
+  /// No description provided for @modeClassicTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Walls end the run.'**
+  String get modeClassicTip;
+
+  /// No description provided for @modeWrapTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edges loop.'**
+  String get modeWrapTip;
+
+  /// No description provided for @modeMazeTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocks end the run.'**
+  String get modeMazeTip;
+
+  /// No description provided for @modeWrapMazeTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edges loop — rocks still end the run.'**
+  String get modeWrapMazeTip;
+
+  /// No description provided for @onboardingMoveReverseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can’t reverse into yourself.'**
+  String get onboardingMoveReverseHint;
+
+  /// No description provided for @snakeLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Snake look'**
+  String get snakeLook;
+
+  /// No description provided for @snakeLookSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmetic skins unlock with levels'**
+  String get snakeLookSubtitle;
+
+  /// No description provided for @selectSnakeLook.
+  ///
+  /// In en, this message translates to:
+  /// **'Select snake look'**
+  String get selectSnakeLook;
+
+  /// No description provided for @skinLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock at level {level}'**
+  String skinLockedHint(int level);
+
+  /// No description provided for @skinForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get skinForest;
+
+  /// No description provided for @skinAmberLeaf.
+  ///
+  /// In en, this message translates to:
+  /// **'Amber leaf'**
+  String get skinAmberLeaf;
+
+  /// No description provided for @skinRiver.
+  ///
+  /// In en, this message translates to:
+  /// **'River'**
+  String get skinRiver;
+
+  /// No description provided for @skinSunset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get skinSunset;
+
+  /// No description provided for @skinMidnight.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight'**
+  String get skinMidnight;
+
+  /// No description provided for @skinChampion.
+  ///
+  /// In en, this message translates to:
+  /// **'Champion'**
+  String get skinChampion;
+
+  /// No description provided for @skinUnlockedBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'New look: {skin}'**
+  String skinUnlockedBanner(String skin);
+
+  /// No description provided for @showDailyTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips & quotes'**
+  String get showDailyTip;
+
+  /// No description provided for @showDailyTipSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a fresh random tip each time you open the app'**
+  String get showDailyTipSubtitle;
+
+  /// No description provided for @dailyTipTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A tip for you'**
+  String get dailyTipTitle;
+
+  /// No description provided for @dailyTipGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get dailyTipGotIt;
+
+  /// No description provided for @shareScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Share as image'**
+  String get shareScore;
+
+  /// No description provided for @sharePreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing image…'**
+  String get sharePreparing;
+
+  /// No description provided for @shareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t share the image right now. Try again.'**
+  String get shareFailed;
+
+  /// No description provided for @shareSavedToDisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Image saved to Downloads/Snake App — open it from there to share.'**
+  String get shareSavedToDisk;
+
+  /// No description provided for @sharePreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share post'**
+  String get sharePreviewTitle;
+
+  /// No description provided for @sharePreviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview your image, then share it to social media'**
+  String get sharePreviewSubtitle;
+
+  /// No description provided for @shareAsImageConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareAsImageConfirm;
+
+  /// No description provided for @shareOverallBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Share overall best as image'**
+  String get shareOverallBest;
+
+  /// No description provided for @shareCardPromo.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline fun · grow, collect, climb'**
+  String get shareCardPromo;
+
+  /// No description provided for @shareCardDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Snake App on Google Play'**
+  String get shareCardDownload;
+
+  /// No description provided for @shareCardAvailableOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Available on'**
+  String get shareCardAvailableOn;
+
+  /// No description provided for @shareCardGooglePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play'**
+  String get shareCardGooglePlay;
+
+  /// No description provided for @shareCardAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'App Store'**
+  String get shareCardAppStore;
+
+  /// No description provided for @shareCardDownloadBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Download free on Google Play & App Store'**
+  String get shareCardDownloadBoth;
+
+  /// No description provided for @shareCardAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'This run'**
+  String get shareCardAchievements;
+
+  /// No description provided for @shareCardOverallBestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'My overall best'**
+  String get shareCardOverallBestLabel;
+
+  /// No description provided for @shareCardOverallBestSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Best {score} · Level {level} unlocked'**
+  String shareCardOverallBestSummary(int score, int level);
+
+  /// No description provided for @shareTextCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'I scored {score} on Snake App (Level {level})! Available on Google Play & App Store.'**
+  String shareTextCaption(int score, int level);
+
+  /// No description provided for @shareTextOverallCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'My overall best on Snake App is {score} (Level {level} unlocked)! Available on Google Play & App Store.'**
+  String shareTextOverallCaption(int score, int level);
+
+  /// No description provided for @dailyQuote0.
+  ///
+  /// In en, this message translates to:
+  /// **'One careful turn beats a fast crash.'**
+  String get dailyQuote0;
+
+  /// No description provided for @dailyQuote1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your best score started as a first try.'**
+  String get dailyQuote1;
+
+  /// No description provided for @dailyQuote2.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow steady. The board will wait.'**
+  String get dailyQuote2;
+
+  /// No description provided for @dailyQuote3.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect what you can reach — leave the rest for next run.'**
+  String get dailyQuote3;
+
+  /// No description provided for @dailyQuote4.
+  ///
+  /// In en, this message translates to:
+  /// **'Patience on the edges keeps the combo alive.'**
+  String get dailyQuote4;
+
+  /// No description provided for @dailyQuote5.
+  ///
+  /// In en, this message translates to:
+  /// **'A short run with focus beats a long run on autopilot.'**
+  String get dailyQuote5;
+
+  /// No description provided for @dailyQuote6.
+  ///
+  /// In en, this message translates to:
+  /// **'Every unlock began with a single eat.'**
+  String get dailyQuote6;
+
+  /// No description provided for @dailyQuote7.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn early. Celebrate later.'**
+  String get dailyQuote7;
+
+  /// No description provided for @dailyQuote8.
+  ///
+  /// In en, this message translates to:
+  /// **'The board is fair — keep your path clear.'**
+  String get dailyQuote8;
+
+  /// No description provided for @dailyQuote9.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow is smooth. Smooth is fast.'**
+  String get dailyQuote9;
+
+  /// No description provided for @dailyQuote10.
+  ///
+  /// In en, this message translates to:
+  /// **'Chase the rare treat, but respect the walls.'**
+  String get dailyQuote10;
+
+  /// No description provided for @dailyQuote11.
+  ///
+  /// In en, this message translates to:
+  /// **'Today’s high score is tomorrow’s warm-up.'**
+  String get dailyQuote11;
+
+  /// No description provided for @dailyQuote12.
+  ///
+  /// In en, this message translates to:
+  /// **'One more careful bite. That’s enough.'**
+  String get dailyQuote12;
+
+  /// No description provided for @dailyQuote13.
+  ///
+  /// In en, this message translates to:
+  /// **'Length is pride — space is wisdom.'**
+  String get dailyQuote13;
+
+  /// No description provided for @dailyQuote14.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe. Swipe. Grow.'**
+  String get dailyQuote14;
+
+  /// No description provided for @dailyQuote15.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed a turn? Restart with a smile.'**
+  String get dailyQuote15;
+
+  /// No description provided for @dailyQuote16.
+  ///
+  /// In en, this message translates to:
+  /// **'Combos love calm hands.'**
+  String get dailyQuote16;
+
+  /// No description provided for @dailyQuote17.
+  ///
+  /// In en, this message translates to:
+  /// **'The next level unlocks for the patient.'**
+  String get dailyQuote17;
+
+  /// No description provided for @dailyQuote18.
+  ///
+  /// In en, this message translates to:
+  /// **'Play offline. Progress is yours.'**
+  String get dailyQuote18;
+
+  /// No description provided for @dailyQuote19.
+  ///
+  /// In en, this message translates to:
+  /// **'Corners teach more than open fields.'**
+  String get dailyQuote19;
+
+  /// No description provided for @dailyQuote20.
+  ///
+  /// In en, this message translates to:
+  /// **'A green path is a kind path — leave room to turn.'**
+  String get dailyQuote20;
+
+  /// No description provided for @dailyQuote21.
+  ///
+  /// In en, this message translates to:
+  /// **'Epic food is loud. Soft turns win.'**
+  String get dailyQuote21;
+
+  /// No description provided for @dailyQuote22.
+  ///
+  /// In en, this message translates to:
+  /// **'You don’t need perfect — just another try.'**
+  String get dailyQuote22;
+
+  /// No description provided for @dailyQuote23.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap the board in your mind before you wrap the edge.'**
+  String get dailyQuote23;
+
+  /// No description provided for @dailyQuote24.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocks are teachers in disguise.'**
+  String get dailyQuote24;
+
+  /// No description provided for @dailyQuote25.
+  ///
+  /// In en, this message translates to:
+  /// **'Champion looks follow champion habits.'**
+  String get dailyQuote25;
+
+  /// No description provided for @dailyQuote26.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the joy, keep the lessons.'**
+  String get dailyQuote26;
+
+  /// No description provided for @dailyQuote27.
+  ///
+  /// In en, this message translates to:
+  /// **'Small grids, big focus.'**
+  String get dailyQuote27;
+
+  /// No description provided for @dailyQuote28.
+  ///
+  /// In en, this message translates to:
+  /// **'The snake grows; so does your judgment.'**
+  String get dailyQuote28;
+
+  /// No description provided for @dailyQuote29.
+  ///
+  /// In en, this message translates to:
+  /// **'Open again anytime — a new tip is waiting.'**
+  String get dailyQuote29;
 }
 
 class _AppLocalizationsDelegate

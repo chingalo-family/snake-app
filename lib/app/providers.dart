@@ -4,10 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snake_app/core/models/player_profile.dart';
 import 'package:snake_app/core/offline_db/app_database.dart';
 import 'package:snake_app/core/services/audio_service.dart';
+import 'package:snake_app/core/services/daily_quote_service.dart';
 import 'package:snake_app/core/services/haptic_service.dart';
 import 'package:snake_app/core/services/preference_service.dart';
 import 'package:snake_app/core/services/profile_repository.dart';
 import 'package:snake_app/core/services/settings_service.dart';
+import 'package:snake_app/core/services/share_score_service.dart';
 import 'package:snake_app/core/services/update_service.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
@@ -42,6 +44,14 @@ final hapticServiceProvider = Provider<HapticService>((ref) {
 
 final updateServiceProvider = Provider<UpdateService>((ref) {
   return UpdateService();
+});
+
+final dailyQuoteServiceProvider = Provider<DailyQuoteService>((ref) {
+  return DailyQuoteService(ref.watch(preferenceServiceProvider));
+});
+
+final shareScoreServiceProvider = Provider<ShareScoreService>((ref) {
+  return ShareScoreService();
 });
 
 class SettingsController extends StateNotifier<AppSettings> {
@@ -88,6 +98,16 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   Future<void> setControlHints(bool value) async {
     state = state.copyWith(showControlHints: value);
+    await _persist();
+  }
+
+  Future<void> setShowDailyTip(bool value) async {
+    state = state.copyWith(showDailyTip: value);
+    await _persist();
+  }
+
+  Future<void> setSnakeSkinId(String skinId) async {
+    state = state.copyWith(snakeSkinId: skinId);
     await _persist();
   }
 

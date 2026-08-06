@@ -463,4 +463,244 @@ class AppLocalizationsSw extends AppLocalizations {
   String errorWithDetails(String details) {
     return 'Hitilafu: $details';
   }
+
+  @override
+  String get modeClassic => 'Klasiki';
+
+  @override
+  String get modeWrap => 'Kuzunguka';
+
+  @override
+  String get modeMaze => 'Labyrinth';
+
+  @override
+  String get modeWrapMaze => 'Kuzunguka + mawe';
+
+  @override
+  String get modeClassicTip => 'Kuta zinakomesha mchezo.';
+
+  @override
+  String get modeWrapTip => 'Kingo zinazunguka.';
+
+  @override
+  String get modeMazeTip => 'Mawe yanakomesha mchezo.';
+
+  @override
+  String get modeWrapMazeTip => 'Kingo zinazunguka — mawe bado yanakomesha.';
+
+  @override
+  String get onboardingMoveReverseHint => 'Huwezi kugeuka nyuma moja kwa moja.';
+
+  @override
+  String get snakeLook => 'Muonekano wa nyoka';
+
+  @override
+  String get snakeLookSubtitle => 'Ngozi za mapambo hufunguliwa kwa viwango';
+
+  @override
+  String get selectSnakeLook => 'Chagua muonekano';
+
+  @override
+  String skinLockedHint(int level) {
+    return 'Fungua katika kiwango $level';
+  }
+
+  @override
+  String get skinForest => 'Msitu';
+
+  @override
+  String get skinAmberLeaf => 'Jani la kahawia';
+
+  @override
+  String get skinRiver => 'Mto';
+
+  @override
+  String get skinSunset => 'Machweo';
+
+  @override
+  String get skinMidnight => 'Usiku';
+
+  @override
+  String get skinChampion => 'Bingwa';
+
+  @override
+  String skinUnlockedBanner(String skin) {
+    return 'Muonekano mpya: $skin';
+  }
+
+  @override
+  String get showDailyTip => 'Vidokezo na nukuu';
+
+  @override
+  String get showDailyTipSubtitle =>
+      'Onyesha kidokezo kipya cha bahati kila unapofungua programu';
+
+  @override
+  String get dailyTipTitle => 'Kidokezo kwa ajili yako';
+
+  @override
+  String get dailyTipGotIt => 'Nimeelewa';
+
+  @override
+  String get shareScore => 'Shiriki kama picha';
+
+  @override
+  String get sharePreparing => 'Inatayarisha picha…';
+
+  @override
+  String get shareFailed => 'Imeshindwa kushiriki picha sasa. Jaribu tena.';
+
+  @override
+  String get shareSavedToDisk =>
+      'Picha imehifadhiwa kwenye Downloads/Snake App — fungua hapo ili kushiriki.';
+
+  @override
+  String get sharePreviewTitle => 'Shiriki chapisho';
+
+  @override
+  String get sharePreviewSubtitle =>
+      'Angalia picha kwanza, kisha ishiriki kwenye mitandao ya kijamii';
+
+  @override
+  String get shareAsImageConfirm => 'Shiriki picha';
+
+  @override
+  String get shareOverallBest => 'Shiriki alama bora kwa ujumla kama picha';
+
+  @override
+  String get shareCardPromo =>
+      'Furaha nje ya mtandao · kua, kusanya, panda viwango';
+
+  @override
+  String get shareCardDownload => 'Pata Snake App kwenye Google Play';
+
+  @override
+  String get shareCardAvailableOn => 'Inapatikana kwenye';
+
+  @override
+  String get shareCardGooglePlay => 'Google Play';
+
+  @override
+  String get shareCardAppStore => 'App Store';
+
+  @override
+  String get shareCardDownloadBoth =>
+      'Pakua bure kwenye Google Play na App Store';
+
+  @override
+  String get shareCardAchievements => 'Mchezo huu';
+
+  @override
+  String get shareCardOverallBestLabel => 'Alama yangu bora kwa ujumla';
+
+  @override
+  String shareCardOverallBestSummary(int score, int level) {
+    return 'Bora $score · Kiwango $level kimefunguliwa';
+  }
+
+  @override
+  String shareTextCaption(int score, int level) {
+    return 'Nimepata alama $score kwenye Snake App (Kiwango $level)! Inapatikana kwenye Google Play na App Store.';
+  }
+
+  @override
+  String shareTextOverallCaption(int score, int level) {
+    return 'Alama yangu bora kwa ujumla kwenye Snake App ni $score (Kiwango $level kimefunguliwa)! Inapatikana kwenye Google Play na App Store.';
+  }
+
+  @override
+  String get dailyQuote0 => 'Zamu ya uangalifu inashinda kasi isiyo na mpango.';
+
+  @override
+  String get dailyQuote1 => 'Alama yako bora ilianza kwa jaribio la kwanza.';
+
+  @override
+  String get dailyQuote2 => 'Kua polepole. Uwanja utangoja.';
+
+  @override
+  String get dailyQuote3 =>
+      'Kusanya unachoweza kufikia — wacha mengine kwa mchezo ujao.';
+
+  @override
+  String get dailyQuote4 => 'Subira kwenye kingo huweka mfululizo hai.';
+
+  @override
+  String get dailyQuote5 =>
+      'Mchezo mfupi wenye umakini unashinda mrefu bila mpango.';
+
+  @override
+  String get dailyQuote6 => 'Kila ufunguzi ulianza kwa kula moja.';
+
+  @override
+  String get dailyQuote7 => 'Geuka mapema. Sherehekea baadaye.';
+
+  @override
+  String get dailyQuote8 => 'Uwanja ni wa haki — weka njia wazi.';
+
+  @override
+  String get dailyQuote9 => 'Polepole ni laini. Laini ni haraka.';
+
+  @override
+  String get dailyQuote10 => 'Fuata kitoweo adimu, lakini heshimu kuta.';
+
+  @override
+  String get dailyQuote11 => 'Alama ya juu ya leo ni mazoezi ya kesho.';
+
+  @override
+  String get dailyQuote12 => 'Kilo kingine cha uangalifu. Kinatosha.';
+
+  @override
+  String get dailyQuote13 => 'Urefu ni fahari — nafasi ni hekima.';
+
+  @override
+  String get dailyQuote14 => 'Pumua. Telezesha. Kua.';
+
+  @override
+  String get dailyQuote15 => 'Umekosa zamu? Anza upya kwa tabasamu.';
+
+  @override
+  String get dailyQuote16 => 'Mifululizo inapenda mikono tulivu.';
+
+  @override
+  String get dailyQuote17 =>
+      'Kiwango kinachofuata hufunguliwa kwa wenye subira.';
+
+  @override
+  String get dailyQuote18 => 'Cheza nje ya mtandao. Maendeleo ni yako.';
+
+  @override
+  String get dailyQuote19 => 'Pembe hufundisha zaidi kuliko uwanja wazi.';
+
+  @override
+  String get dailyQuote20 =>
+      'Njia ya kijani ni njia ya fadhili — acha nafasi ya kugeuka.';
+
+  @override
+  String get dailyQuote21 =>
+      'Chakula cha kipekee ni cha kelele. Zamu laini hushinda.';
+
+  @override
+  String get dailyQuote22 => 'Huhitaji ukamilifu — jaribio jingine tu.';
+
+  @override
+  String get dailyQuote23 => 'Fikiria uwanja kabla ya kuzunguka kingo.';
+
+  @override
+  String get dailyQuote24 => 'Mawe ni walimu waliovalia siri.';
+
+  @override
+  String get dailyQuote25 => 'Muonekano wa bingwa unafuata tabia za bingwa.';
+
+  @override
+  String get dailyQuote26 => 'Shiriki furaha, hifadhi masomo.';
+
+  @override
+  String get dailyQuote27 => 'Gridi ndogo, umakini mkubwa.';
+
+  @override
+  String get dailyQuote28 => 'Nyoka anakua; hukumu yako pia.';
+
+  @override
+  String get dailyQuote29 =>
+      'Fungua tena wakati wowote — kidokezo kipya kinakungoja.';
 }

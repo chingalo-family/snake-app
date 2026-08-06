@@ -459,4 +459,241 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorWithDetails(String details) {
     return 'Error: $details';
   }
+
+  @override
+  String get modeClassic => 'Classic';
+
+  @override
+  String get modeWrap => 'Wrap';
+
+  @override
+  String get modeMaze => 'Maze';
+
+  @override
+  String get modeWrapMaze => 'Wrap maze';
+
+  @override
+  String get modeClassicTip => 'Walls end the run.';
+
+  @override
+  String get modeWrapTip => 'Edges loop.';
+
+  @override
+  String get modeMazeTip => 'Rocks end the run.';
+
+  @override
+  String get modeWrapMazeTip => 'Edges loop — rocks still end the run.';
+
+  @override
+  String get onboardingMoveReverseHint => 'You can’t reverse into yourself.';
+
+  @override
+  String get snakeLook => 'Snake look';
+
+  @override
+  String get snakeLookSubtitle => 'Cosmetic skins unlock with levels';
+
+  @override
+  String get selectSnakeLook => 'Select snake look';
+
+  @override
+  String skinLockedHint(int level) {
+    return 'Unlock at level $level';
+  }
+
+  @override
+  String get skinForest => 'Forest';
+
+  @override
+  String get skinAmberLeaf => 'Amber leaf';
+
+  @override
+  String get skinRiver => 'River';
+
+  @override
+  String get skinSunset => 'Sunset';
+
+  @override
+  String get skinMidnight => 'Midnight';
+
+  @override
+  String get skinChampion => 'Champion';
+
+  @override
+  String skinUnlockedBanner(String skin) {
+    return 'New look: $skin';
+  }
+
+  @override
+  String get showDailyTip => 'Tips & quotes';
+
+  @override
+  String get showDailyTipSubtitle =>
+      'Show a fresh random tip each time you open the app';
+
+  @override
+  String get dailyTipTitle => 'A tip for you';
+
+  @override
+  String get dailyTipGotIt => 'Got it';
+
+  @override
+  String get shareScore => 'Share as image';
+
+  @override
+  String get sharePreparing => 'Preparing image…';
+
+  @override
+  String get shareFailed => 'Couldn’t share the image right now. Try again.';
+
+  @override
+  String get shareSavedToDisk =>
+      'Image saved to Downloads/Snake App — open it from there to share.';
+
+  @override
+  String get sharePreviewTitle => 'Share post';
+
+  @override
+  String get sharePreviewSubtitle =>
+      'Preview your image, then share it to social media';
+
+  @override
+  String get shareAsImageConfirm => 'Share image';
+
+  @override
+  String get shareOverallBest => 'Share overall best as image';
+
+  @override
+  String get shareCardPromo => 'Offline fun · grow, collect, climb';
+
+  @override
+  String get shareCardDownload => 'Get Snake App on Google Play';
+
+  @override
+  String get shareCardAvailableOn => 'Available on';
+
+  @override
+  String get shareCardGooglePlay => 'Google Play';
+
+  @override
+  String get shareCardAppStore => 'App Store';
+
+  @override
+  String get shareCardDownloadBoth =>
+      'Download free on Google Play & App Store';
+
+  @override
+  String get shareCardAchievements => 'This run';
+
+  @override
+  String get shareCardOverallBestLabel => 'My overall best';
+
+  @override
+  String shareCardOverallBestSummary(int score, int level) {
+    return 'Best $score · Level $level unlocked';
+  }
+
+  @override
+  String shareTextCaption(int score, int level) {
+    return 'I scored $score on Snake App (Level $level)! Available on Google Play & App Store.';
+  }
+
+  @override
+  String shareTextOverallCaption(int score, int level) {
+    return 'My overall best on Snake App is $score (Level $level unlocked)! Available on Google Play & App Store.';
+  }
+
+  @override
+  String get dailyQuote0 => 'One careful turn beats a fast crash.';
+
+  @override
+  String get dailyQuote1 => 'Your best score started as a first try.';
+
+  @override
+  String get dailyQuote2 => 'Grow steady. The board will wait.';
+
+  @override
+  String get dailyQuote3 =>
+      'Collect what you can reach — leave the rest for next run.';
+
+  @override
+  String get dailyQuote4 => 'Patience on the edges keeps the combo alive.';
+
+  @override
+  String get dailyQuote5 =>
+      'A short run with focus beats a long run on autopilot.';
+
+  @override
+  String get dailyQuote6 => 'Every unlock began with a single eat.';
+
+  @override
+  String get dailyQuote7 => 'Turn early. Celebrate later.';
+
+  @override
+  String get dailyQuote8 => 'The board is fair — keep your path clear.';
+
+  @override
+  String get dailyQuote9 => 'Slow is smooth. Smooth is fast.';
+
+  @override
+  String get dailyQuote10 => 'Chase the rare treat, but respect the walls.';
+
+  @override
+  String get dailyQuote11 => 'Today’s high score is tomorrow’s warm-up.';
+
+  @override
+  String get dailyQuote12 => 'One more careful bite. That’s enough.';
+
+  @override
+  String get dailyQuote13 => 'Length is pride — space is wisdom.';
+
+  @override
+  String get dailyQuote14 => 'Breathe. Swipe. Grow.';
+
+  @override
+  String get dailyQuote15 => 'Missed a turn? Restart with a smile.';
+
+  @override
+  String get dailyQuote16 => 'Combos love calm hands.';
+
+  @override
+  String get dailyQuote17 => 'The next level unlocks for the patient.';
+
+  @override
+  String get dailyQuote18 => 'Play offline. Progress is yours.';
+
+  @override
+  String get dailyQuote19 => 'Corners teach more than open fields.';
+
+  @override
+  String get dailyQuote20 =>
+      'A green path is a kind path — leave room to turn.';
+
+  @override
+  String get dailyQuote21 => 'Epic food is loud. Soft turns win.';
+
+  @override
+  String get dailyQuote22 => 'You don’t need perfect — just another try.';
+
+  @override
+  String get dailyQuote23 =>
+      'Wrap the board in your mind before you wrap the edge.';
+
+  @override
+  String get dailyQuote24 => 'Rocks are teachers in disguise.';
+
+  @override
+  String get dailyQuote25 => 'Champion looks follow champion habits.';
+
+  @override
+  String get dailyQuote26 => 'Share the joy, keep the lessons.';
+
+  @override
+  String get dailyQuote27 => 'Small grids, big focus.';
+
+  @override
+  String get dailyQuote28 => 'The snake grows; so does your judgment.';
+
+  @override
+  String get dailyQuote29 => 'Open again anytime — a new tip is waiting.';
 }
