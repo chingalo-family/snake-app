@@ -17,6 +17,7 @@ Shared Cursor configuration for this repository.
 | `snake-app-project` | General conventions, verification, docs sync |
 | `snake-app-gameplay` | Board, controls, scoring, levels, audio feedback |
 | `snake-app-offline-profile` | Local profile + offline score/level persistence |
+| `snake-app-community-docs` | README, CONTRIBUTING, SECURITY, CoC, GETTING_STARTED, GitHub templates |
 
 ## Purpose
 - Align AI-assisted development with `docs/IMPLEMENTATION_PLAN.md`
@@ -26,6 +27,10 @@ Shared Cursor configuration for this repository.
 
 ## Docs baseline
 - `README.md`
+- `docs/GETTING_STARTED.md`
+- `CONTRIBUTING.md`
+- `SECURITY.md`
+- `CODE_OF_CONDUCT.md`
 - `docs/IMPLEMENTATION_PLAN.md`
 - `docs/UX_DESIGN.md`
 - `docs/THEME_AND_COLORS.md`
@@ -37,7 +42,7 @@ Shared Cursor configuration for this repository.
 When marketing-facing product facts change and `../snake-app-website` is present, update that repo’s `docs/` as well.
 
 ## Keeping skills current
-When layout, gameplay contracts, persistence schema, theme tokens, locales/ARB strings, CI workflows, or quality gates change, update this `.cursor/` folder in the same PR. Treat stale skills/rules as defects.
+When layout, gameplay contracts, persistence schema, theme tokens, locales/ARB strings, CI workflows, quality gates, or community-health facts (commands, stack, store links, contacts) change, update this `.cursor/` folder **and** the matching community files in the same PR. Treat stale skills/rules as defects. Use `.cursor/skills/snake-app-community-docs/`.
 
 ## Team usage
 - Keep these files version-controlled

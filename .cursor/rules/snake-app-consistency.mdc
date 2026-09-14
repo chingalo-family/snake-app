@@ -14,7 +14,7 @@ Follow these standards for consistent contributions across developers and AI age
 - Stack: Flutter, local SQLite via **Drift (`AppDatabase`)**, SharedPreferences via **PreferenceService**, audio (SFX/BGM), Provider or Riverpod
 - Target layout: `lib/app/`, `lib/core/`, `lib/modules/<feature>/{page,components,utils}`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
 - Product plan: `docs/IMPLEMENTATION_PLAN.md` · Modes: `docs/GAME_MODES.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
-- Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`
+- Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`, `snake-app-community-docs/`
 
 ## Required workflow before finishing a task
 1. **Check what changed** — `git status` and `git diff`; only intentional files
@@ -31,9 +31,12 @@ Follow these standards for consistent contributions across developers and AI age
    - `docs/GAME_MODES.md` — Classic / Wrap / Obstacles and variants (planning)
    - `docs/CI.md` — GitHub Actions / desktop release behavior
    - `docs/APP_ICON_CONCEPT.md` — icon / branding mark
-5. If marketing-facing product facts change (level count, game modes, controls, offline/profile claims, store links), also update sibling website docs at `../snake-app-website/docs/` when that repo is present beside this checkout
-6. If this rule or skills drift from the codebase, update `.cursor/` in the same change set
-7. Desktop CI lives in `.github/workflows/` — see `docs/CI.md` when changing build/release behavior
+   - `README.md`, `docs/GETTING_STARTED.md`, `CONTRIBUTING.md` — install commands, features, stack, contributor workflow
+   - `SECURITY.md`, `CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md` — contacts, platforms, CI checklists
+5. If stack, CI commands, project layout, prefs keys, or store listings changed, follow `.cursor/skills/snake-app-community-docs/SKILL.md` in the same change set
+6. If marketing-facing product facts change (level count, game modes, controls, offline/profile claims, store links), also update sibling website docs at `../snake-app-website/docs/` when that repo is present beside this checkout
+7. If this rule or skills drift from the codebase, update `.cursor/` in the same change set
+8. Desktop CI lives in `.github/workflows/` — see `docs/CI.md` when changing build/release behavior
 
 ## Product constraints (do not regress)
 - Offline-first: high scores and levels persist locally; no DHIS2 auth for core play

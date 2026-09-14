@@ -12,7 +12,7 @@ Use this skill whenever working in this repository to keep implementation style,
 - Package: `snake_app` · Application ID: `chingalo.family.snake_app`
 - Stack: Flutter game, offline-first local storage (Drift `AppDatabase` + PreferenceService), SFX/BGM audio, responsive multi-platform UI
 - Platforms: Android, iOS, Linux, macOS, Windows, Web
-- Docs baseline: `README.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`
+- Docs baseline: `README.md`, `docs/GETTING_STARTED.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`, `CONTRIBUTING.md`
 
 ## First-step checklist
 1. Read `docs/IMPLEMENTATION_PLAN.md` for scope and acceptance criteria.
@@ -20,6 +20,7 @@ Use this skill whenever working in this repository to keep implementation style,
 3. Map the change to a module (`onboarding`, `home`, `levels`, `game`, `profile`, `scores`, `settings`, `about`, `updates`).
 4. If gameplay/controls/board/levels/scoring → follow `.cursor/skills/snake-app-gameplay/SKILL.md`.
 5. If profile/scores/persistence → follow `.cursor/skills/snake-app-offline-profile/SKILL.md`.
+6. If stack, commands, layout, store listings, or contributor workflow changed → follow `.cursor/skills/snake-app-community-docs/SKILL.md`.
 
 ## Target layout
 ```
@@ -104,9 +105,14 @@ Do **not** finish a task that changed anything under `lib/` until:
 | Icon / branding mark | `docs/APP_ICON_CONCEPT.md` |
 | Game modes (planning) | `docs/GAME_MODES.md` |
 | CI / desktop builds | `docs/CI.md` + `.github/workflows/` |
-| Overview | `README.md` |
+| Overview / install / features / stack | `README.md` |
+| Clone/run/test, tree, prefs keys | `docs/GETTING_STARTED.md` |
+| Contributor workflow, Conventional Commits | `CONTRIBUTING.md` + `.github/PULL_REQUEST_TEMPLATE.md` |
+| Vulnerability reporting / CoC contact | `SECURITY.md` / `CODE_OF_CONDUCT.md` / `.github/ISSUE_TEMPLATE/` |
 | UI strings / locales | `lib/l10n/app_*.arb` (+ regenerate) |
 | Marketing-facing product facts | Sibling `../snake-app-website/docs/` when that repo is present |
+
+When README, GETTING_STARTED, CONTRIBUTING, SECURITY, CoC, or GitHub templates would drift, follow [snake-app-community-docs](../snake-app-community-docs/SKILL.md). Do not invent env vars, emails, or store URLs.
 
 ## Localization
 - Template: `lib/l10n/app_en.arb` (default)
@@ -118,3 +124,4 @@ Do **not** finish a task that changed anything under `lib/` until:
 ## Related skills
 - [snake-app-gameplay](../snake-app-gameplay/SKILL.md)
 - [snake-app-offline-profile](../snake-app-offline-profile/SKILL.md)
+- [snake-app-community-docs](../snake-app-community-docs/SKILL.md)
