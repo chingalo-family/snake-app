@@ -11,10 +11,13 @@ GitHub Actions for Snake App — inspired by Kanisani Hub desktop CI patterns.
 
 ## Triggers
 
-- **Push / PR to `main`** — run tests; build desktop zips
-- **Push to `main` or manual `workflow_dispatch` on `main`** — after all three desktop builds succeed, create/update a GitHub Release
-- Docs / `.cursor` / markdown-only changes are ignored for CI paths
-- Desktop / Flutter CI **do not run on `develop` alone** — GStreamer (and other) workflow fixes only take effect after they land on `main` (or on a PR targeting `main` whose head includes the workflow change)
+Workflows **do not** run on push or pull request. Start them by hand:
+
+1. GitHub → **Actions**
+2. Choose **Flutter CI — Analyze & Test** or **Desktop — Build (Windows, macOS, Linux)**
+3. **Run workflow** (use the `main` branch for a GitHub Release)
+
+A desktop run **on `main`** creates/updates a GitHub Release after all three platform builds succeed. Dispatching from another branch builds artifacts only (no release).
 
 ## GitHub Release (after desktop builds)
 
@@ -77,5 +80,5 @@ CI’s Linux job installs the same build packages (plus `libstdc++-12-dev`) in `
 
 - macOS CI builds are typically **unsigned**. First open on a Mac may require right-click → Open.
 - Linux CI on `ubuntu-latest` installs GTK/CMake **and** GStreamer `-dev` packages so `audioplayers` can link.
-- Bump `version:` in `pubspec.yaml` (especially the `+build` number) before merging to `main` when you want a new release tag.
+- Bump `version:` in `pubspec.yaml` (especially the `+build` number), then run **Desktop — Build** on `main` when you want a new release tag.
 - Android uses **AGP 8.13** + Kotlin 2.2.20 for now (see `android/settings.gradle.kts`). Flutter 3.44’s AGP 9 + Built-in Kotlin path still conflicts with some plugins; stay on AGP 8 until that stack is stable.

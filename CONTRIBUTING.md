@@ -53,7 +53,7 @@ Full walkthrough: [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md).
 
 ## Quality checks
 
-CI on PRs to `main` runs:
+GitHub Actions do not run automatically. Contributors should run the same commands locally (CI uses `--fatal-infos` and coverage):
 
 ```bash
 flutter pub get
@@ -61,7 +61,7 @@ flutter analyze --fatal-infos
 flutter test --coverage
 ```
 
-Desktop builds also run on PRs (Windows, macOS, Linux). Markdown-only changes under `docs/` and `.cursor/` are skipped by path filters.
+To run them on GitHub, use **Actions → Flutter CI — Analyze & Test → Run workflow**. Desktop zips: **Desktop — Build** on `main` (see [docs/CI.md](docs/CI.md)).
 
 Before you open a PR that touches `lib/`:
 

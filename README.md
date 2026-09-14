@@ -76,7 +76,7 @@ These match [`.github/workflows/flutter-ci.yml`](.github/workflows/flutter-ci.ym
 
 ## CI
 
-On `main` (and PRs targeting `main`): analyze + tests. Desktop release zips for **Windows**, **macOS**, and **Linux** are built in Actions. After all three succeed on `main`, a **GitHub Release** is created with those zips as assets plus a change summary. See [docs/CI.md](docs/CI.md).
+GitHub Actions are **manual only** (`workflow_dispatch`). They do not run on push or pull request. From Actions, run **Flutter CI** (analyze + tests) or **Desktop — Build** (Windows, macOS, Linux zips). A desktop run on `main` publishes a **GitHub Release**. See [docs/CI.md](docs/CI.md).
 
 ## Documentation
 

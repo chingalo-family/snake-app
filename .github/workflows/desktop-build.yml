@@ -1,18 +1,6 @@
 name: Desktop — Build (Windows, macOS, Linux)
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".cursor/**"
-  pull_request:
-    branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".cursor/**"
   workflow_dispatch:
 
 concurrency:
@@ -181,9 +169,7 @@ jobs:
   publish-release:
     name: Create GitHub Release
     needs: [build-windows, build-macos, build-linux]
-    if: >-
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write

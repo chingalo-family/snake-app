@@ -46,7 +46,7 @@ Inspect `pubspec.yaml`, `lib/`, `test/`, `.github/workflows/`, `analysis_options
 | Store IDs / Play or App Store live status | README Get the app; GETTING_STARTED install note |
 | Contact email | SECURITY, CODE_OF_CONDUCT, issue templates |
 | Drift schema / `build_runner` | GETTING_STARTED + CONTRIBUTING codegen steps |
-| CI path filters or branch | CONTRIBUTING + `docs/CI.md` |
+| CI triggers or branch | CONTRIBUTING, README, `docs/CI.md` (today: `workflow_dispatch` only) |
 
 If a fact is **not** in the repo, leave `<!-- TODO: ... -->` rather than fabricating it.
 
