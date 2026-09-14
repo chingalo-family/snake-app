@@ -1,0 +1,66 @@
+name: Bug report
+description: Report something that is broken or unexpected
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for a report. Search existing issues first.
+        **Security problems:** email chingalo.family@gmail.com instead of filing a public issue. See SECURITY.md.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Where you saw the bug
+      multiple: true
+      options:
+        - Android
+        - iOS
+        - Linux
+        - macOS
+        - Windows
+        - Web
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: app_version
+    attributes:
+      label: App version
+      description: From About in the app, or `version:` in pubspec.yaml (for example 1.1.0+2)
+      placeholder: "1.1.0+2"
+  - type: input
+    id: flutter_version
+    attributes:
+      label: Flutter version
+      description: Output of `flutter --version` (first line is enough)
+      placeholder: "Flutter 3.x.x • channel stable"
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Tap …
+        3. See …
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or analyzer/test output
+      description: Optional. Paste `flutter analyze --fatal-infos` or `flutter test` output if relevant.
+      render: text
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Screenshots, device model, orientation, locale (en/sw), guest vs profile, etc.
