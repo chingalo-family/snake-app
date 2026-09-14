@@ -1,40 +1,55 @@
 # Snake App
 
-Engaging, addictive Snake game by **Chingalo Family**.
+Offline-first snake game by **Chingalo Family**. Grow, collect, climb 30 levels, and chase local high scores — without a cloud account for core play.
 
 | | |
 |--|--|
 | **Package ID** | `chingalo.family.snake_app` |
 | **Display name** | Snake App |
+| **Version** | `1.1.0+2` |
 | **Platforms** | Android, iOS, Linux, macOS, Windows, Web |
+| **Google Play** | [chingalo.family.snake_app](https://play.google.com/store/apps/details?id=chingalo.family.snake_app) |
 
-## Status
+## Get the app
 
-Flutter scaffold is ready. Feature implementation follows the reviewed plan in `docs/`.
+- **Android:** [Snake App on Google Play](https://play.google.com/store/apps/details?id=chingalo.family.snake_app)
+- **Desktop:** GitHub Release zips (Windows, macOS, Linux) — see [CI](docs/CI.md)
+- **iOS:** App Store listing is not published yet (`appStoreId` is still empty in code)
 
-## Documentation (start here)
+## Features
 
-| Doc | Description |
-|-----|-------------|
-| [Implementation Plan](docs/IMPLEMENTATION_PLAN.md) | **Primary review doc** — features, phases, acceptance criteria |
-| [UX Design](docs/UX_DESIGN.md) | Screens, flows, controls, feedback |
-| [Theme & Colors](docs/THEME_AND_COLORS.md) | Palette, typography, Flutter theme tokens |
-| [App Icon Concept](docs/APP_ICON_CONCEPT.md) | Icon directions & asset checklist |
-| [Architecture](docs/ARCHITECTURE.md) | Technical structure |
-| [Game Modes](docs/GAME_MODES.md) | Planning: Classic / Wrap / Obstacles + future variants |
-| [CI / GitHub Actions](docs/CI.md) | Test + desktop build workflows |
-| [Cursor setup](.cursor/README.md) | Project rules & agent skills |
+- First-run onboarding, then splash → home
+- Responsive playground (phone, tablet, desktop, rotation)
+- Swipe on touch · arrow keys on desktop
+- Thirty levels mixing **Classic**, **Wrap**, **Maze**, and **Wrap maze**
+- Animal and object collectibles with tiered scores and combos
+- Independent SFX and background music toggles
+- Optional local profile: play as a guest; create a profile to save scores and unlocks
+- Offline high scores and level progress (Drift / SQLite)
+- English and Kiswahili; light, dark, and system themes
+- Share a branded score image; Android update CTA opens the live Play Store listing
 
-## CI
+## Tech stack
 
-On `main` (and PRs): analyze + tests. Desktop release zips for **Windows**, **macOS**, and **Linux** are built in Actions. After all three succeed on `main`, a **GitHub Release** is created with those zips as assets plus a change summary. See [docs/CI.md](docs/CI.md).
+- **Flutter / Dart** (`sdk: ^3.12.2`)
+- **Riverpod** for app state
+- **go_router** for navigation
+- **Drift** + SQLite for offline profile, scores, and progress
+- **shared_preferences** for settings
+- **audioplayers** for BGM and SFX
 
-## Run
+Package manager: **pub** (`flutter pub get`).
+
+## Quick start
 
 ```bash
+git clone https://github.com/chingalo-family/snake-app.git
+cd snake-app
 flutter pub get
 flutter run
 ```
+
+See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) for platforms, tests, Drift codegen, and Linux desktop packages.
 
 ### Linux desktop build deps
 
@@ -49,17 +64,47 @@ sudo apt-get install -y \
 
 See [docs/CI.md](docs/CI.md) for the full CI package list.
 
-## Product highlights (planned)
+## Test and lint
 
-- Onboarding, About, Settings
-- Responsive playground (phone / tablet / rotation)
-- Swipe on touch · arrow keys on desktop
-- Animal & object collectibles with tiered scores
-- Independent SFX and background music toggles
-- Levels with offline unlock progress
-- Local user profile to save high scores & levels
-- Google Play update checks
+```bash
+flutter pub get
+flutter analyze --fatal-infos
+flutter test --coverage
+```
 
-## Related
+These match [`.github/workflows/flutter-ci.yml`](.github/workflows/flutter-ci.yml).
 
-Legacy experiment / previous codebase may live alongside at `../snake-app`. This project (`snake_app`) is the clean rebuild target.
+## CI
+
+On `main` (and PRs targeting `main`): analyze + tests. Desktop release zips for **Windows**, **macOS**, and **Linux** are built in Actions. After all three succeed on `main`, a **GitHub Release** is created with those zips as assets plus a change summary. See [docs/CI.md](docs/CI.md).
+
+## Documentation
+
+| Doc | Description |
+|-----|-------------|
+| [Getting started](docs/GETTING_STARTED.md) | Clone, run, test, project layout |
+| [Implementation Plan](docs/IMPLEMENTATION_PLAN.md) | Features, phases, acceptance criteria |
+| [UX Design](docs/UX_DESIGN.md) | Screens, flows, controls, feedback |
+| [Theme & Colors](docs/THEME_AND_COLORS.md) | Palette, typography, Flutter theme tokens |
+| [App Icon Concept](docs/APP_ICON_CONCEPT.md) | Icon directions & asset checklist |
+| [Architecture](docs/ARCHITECTURE.md) | Technical structure |
+| [Game Modes](docs/GAME_MODES.md) | Classic / Wrap / Maze / Wrap maze |
+| [CI / GitHub Actions](docs/CI.md) | Test + desktop build workflows |
+| [Contributing](CONTRIBUTING.md) | How to send changes |
+| [Security](SECURITY.md) | Vulnerability reporting |
+| [Code of Conduct](CODE_OF_CONDUCT.md) | Community standards |
+| [Cursor setup](.cursor/README.md) | Project rules & agent skills |
+
+Marketing site (separate repo): [chingalo-family/snake-app-website](https://github.com/chingalo-family/snake-app-website).
+
+## Environment variables
+
+This app does not use `.env` files or compile-time environment variables. Player settings and progress are stored on device. See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md#environment-and-local-data).
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md). We use [Conventional Commits](https://www.conventionalcommits.org/) and pull requests against `main`.
+
+## License
+
+[BSD 3-Clause](LICENSE).
