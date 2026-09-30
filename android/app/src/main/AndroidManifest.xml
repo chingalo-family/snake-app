@@ -5,11 +5,13 @@
         android:label="Snake App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Default task affinity. An empty affinity lets Play Store's Open
+             button host this activity inside the store task on some devices,
+             so the launch screen never gives way to the game. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
