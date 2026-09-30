@@ -59,6 +59,14 @@ Guest runs are not written to Drift until a profile exists; the latest unfinishe
 opt-in run is held in memory so creating a profile after game over still keeps
 that score.
 
+## Startup
+
+`main` configures system UI, then calls `runApp` immediately. Prefs, SQLite, and audio finish behind `StartupGate`.
+
+Play Store installs on some devices never leave the native launch screen if those plugins are awaited first: SharedPreferences can block behind backup restore, and the package manager can block version lookup. Each launch step is time-boxed. If preferences do not answer, the session uses in-memory settings and the next launch tries disk again.
+
+Android keeps the default task affinity (so Play's Open button does not host the game inside the store task) and drops a duplicate launcher activity. Flutter Impeller stays **on** (the engine default); do not set `EnableImpeller` to false — that opt-out is deprecated and will be removed. If a GPU never draws the first frame, file a Flutter engine bug rather than disabling Impeller. The launch window background is the brand dark color.
+
 ## Updates (Android)
 
 ```
@@ -71,7 +79,7 @@ App start → package_info version
 
 - `AudioService` owns separate BGM and SFX players (`audioplayers`).
 - Settings (`sfx_enabled` / `bgm_enabled`) mute channels independently; SFX defaults **on**, BGM defaults **off**.
-- Bootstrap calls `startBgm()`; app lifecycle pauses/resumes BGM in background.
+- Bootstrap starts `startBgm()` without blocking the first frame; app lifecycle pauses/resumes BGM in background.
 - Bundled clips live under `assets/audio/` (see README there). Missing BGM → silent loop path; missing SFX → `SystemSound` fallback.
 - Gameplay: eat → `playSfx`, collision/game over → `playCollision`.
 

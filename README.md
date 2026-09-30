@@ -84,11 +84,15 @@ GitHub Actions are **manual only** (`workflow_dispatch`). They do not run on pus
 |-----|-------------|
 | [Getting started](docs/GETTING_STARTED.md) | Clone, run, test, project layout |
 | [Implementation Plan](docs/IMPLEMENTATION_PLAN.md) | Features, phases, acceptance criteria |
-| [UX Design](docs/UX_DESIGN.md) | Screens, flows, controls, feedback |
+| [UX Design](docs/UX_DESIGN.md) | Screens, flows, controls, feedback (shipped) |
+| [UI/UX enhancements](docs/UX_ENHANCEMENTS.md) | Planned UI for Challenges and new modes |
 | [Theme & Colors](docs/THEME_AND_COLORS.md) | Palette, typography, Flutter theme tokens |
 | [App Icon Concept](docs/APP_ICON_CONCEPT.md) | Icon directions & asset checklist |
 | [Architecture](docs/ARCHITECTURE.md) | Technical structure |
 | [Game Modes](docs/GAME_MODES.md) | Classic / Wrap / Maze / Wrap maze |
+| [Game experience](docs/GAME_EXPERIENCE.md) | Current play loops vs planned enhancements |
+| [Next full releases](docs/releases/README.md) | Specs for 1.2–2.0 (planning only) |
+| [Enhancement plans](docs/plans/README.md) | Suggested future modes (planning only) |
 | [CI / GitHub Actions](docs/CI.md) | Test + desktop build workflows |
 | [Contributing](CONTRIBUTING.md) | How to send changes |
 | [Security](SECURITY.md) | Vulnerability reporting |

@@ -55,7 +55,7 @@ flutter run -d linux
 flutter run -d windows
 ```
 
-Entry point: `lib/main.dart` (`main()` → `bootstrap()` → `SnakeApp`).
+Entry point: `lib/main.dart` (`main()` paints `StartupGate`, then `bootstrap()` → `SnakeApp`). Launch does not wait on prefs, SQLite, or audio before the first frame.
 
 ## Test, analyze, and generate
 
@@ -142,6 +142,8 @@ Offline profile, high scores, and level progress use Drift. Database file name: 
 │   └── fonts/
 ├── android/ ios/ linux/ macos/ web/ windows/
 ├── docs/                         # Product and engineering docs
+│   ├── plans/                    # Suggested future modes (inspiration)
+│   └── releases/                 # Next full-release experience specs
 ├── .github/
 │   ├── workflows/                # flutter-ci.yml, desktop-build.yml
 │   ├── ISSUE_TEMPLATE/
@@ -155,4 +157,10 @@ Offline profile, high scores, and level progress use Drift. Database file name: 
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — commits, PRs, conventions
 - [docs/ARCHITECTURE.md](ARCHITECTURE.md) — module layout and persistence
+- [docs/UX_DESIGN.md](UX_DESIGN.md) — shipped screens and controls
+- [docs/UX_ENHANCEMENTS.md](UX_ENHANCEMENTS.md) — planned UI for next releases
+- [docs/GAME_MODES.md](GAME_MODES.md) — shipped play modes
+- [docs/GAME_EXPERIENCE.md](GAME_EXPERIENCE.md) — current vs next experience
+- [docs/releases/](releases/README.md) — next full release specs (1.2–2.0)
+- [docs/plans/](plans/README.md) — suggested future modes and play loops
 - [docs/CI.md](CI.md) — GitHub Actions and release zips

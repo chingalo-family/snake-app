@@ -326,6 +326,17 @@ lib/
 - [ ] Store listing assets
 - [ ] Performance pass (60fps target on mid phones)
 
+### Phase 5 — Next full releases (experience)
+Planning only until implemented. Specs: [GAME_EXPERIENCE.md](./GAME_EXPERIENCE.md) and [releases/](./releases/README.md).
+
+- [ ] 1.2 Sprint + Challenges
+- [ ] 1.3 Zen + Collector
+- [ ] 1.4 Bonus critter + growing walls
+- [ ] 1.5 Burrows + bitter fruit
+- [ ] 1.6 Shield + Dash
+- [ ] 1.7 Daily seed + ghost + hot-seat
+- [ ] 2.0 optional extra pillar after playtest
+
 ---
 
 ## 8. Acceptance Criteria (MVP)
@@ -357,8 +368,13 @@ lib/
 ## 10. Related Docs
 
 - [UX Design & Flows](./UX_DESIGN.md)
+- [UI/UX enhancements](./UX_ENHANCEMENTS.md) — Challenges hub, HUD, sheets for 1.2–1.7
 - [Theme & Colors](./THEME_AND_COLORS.md)
-- [Game Modes](./GAME_MODES.md) — Classic / Wrap / Maze / Wrap maze and future variants
+- [Game Modes](./GAME_MODES.md) — Classic / Wrap / Maze / Wrap maze (shipped) and Phase 3–4 variants
+- [Game experience](./GAME_EXPERIENCE.md) — current loops vs gaps
+- [Next full releases](./releases/README.md) — 1.2–2.0 experience specs
+- [Enhancement plans](./plans/README.md) — suggested modes and play loops inspired by other snake-family games
+- [Versioned releases (notes)](./plans/07-versioned-releases.md) — 1.2–2.0 sequence vs current 1.1 UX
 - [App Icon Concept](./APP_ICON_CONCEPT.md)
 - [Architecture Notes](./ARCHITECTURE.md)
 - [CI / GitHub Actions](./CI.md)

@@ -1,5 +1,7 @@
 # Snake App — UX Design & Flows
 
+**Shipped in 1.1.** Planned screens and HUD for Challenges / Sprint / … : [UX_ENHANCEMENTS.md](./UX_ENHANCEMENTS.md).
+
 ## Design goals
 
 - One clear job per screen
@@ -14,8 +16,9 @@
 
 ### 1. Splash
 
-- Brand mark + app name
-- Short load (prefs, audio, profile)
+- Brand mark + app name on the brand dark launch background
+- Short load (prefs, audio, profile). Version text and profile refresh cannot hold this screen open
+- If startup itself fails, a retry action is shown
 - Route: onboarding if first run, else Home
 - Optional silent update check on Android
 
@@ -44,6 +47,8 @@ Footer: page dots · Skip · Next / Get Started
 6. Actions: High Scores · Profile · Settings
 
 Avoid stacking stats walls on the first viewport.
+
+**Planned (from 1.2):** one secondary **Challenges** control (same visual weight as High Scores / progress chip — never equal to Play). Layout, hub, HUD, and sheets: [UX_ENHANCEMENTS.md](./UX_ENHANCEMENTS.md). Spec: [releases/1.2-sprint.md](./releases/1.2-sprint.md). Do not turn Home into a mode dashboard.
 
 ### 4. Level select
 

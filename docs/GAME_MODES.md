@@ -1,7 +1,7 @@
 # Snake App — Game Modes & Level Variants
 
 **Status:** Implemented (Classic · Wrap · Maze · Wrap maze)  
-**Related:** [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) · [UX_DESIGN.md](./UX_DESIGN.md) · [ARCHITECTURE.md](./ARCHITECTURE.md)  
+**Related:** [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) · [UX_DESIGN.md](./UX_DESIGN.md) · [UX_ENHANCEMENTS.md](./UX_ENHANCEMENTS.md) · [ARCHITECTURE.md](./ARCHITECTURE.md) · [GAME_EXPERIENCE.md](./GAME_EXPERIENCE.md) · [releases/](./releases/README.md) · [plans/](./plans/README.md)  
 **Goal:** Give players meaningful variety beyond “same rules, faster tick,” while keeping offline-first play, fair controls, and clear progression.
 
 ---
@@ -57,6 +57,8 @@ Modes should:
 ## 3. Additional modes worth considering (UX-first)
 
 Ranked for impact vs complexity. Recommend shipping **A–C** after the three core modes; park **D+** for later.
+
+Full write-ups live in **[docs/plans/](./plans/README.md)**. **Next full releases** (player experience, UX, acceptance): **[docs/releases/](./releases/README.md)**. Sketches below stay as the short list.
 
 ### A. Zen / Endless (no level fail from time)
 
@@ -209,13 +211,14 @@ Stay on nature-arcade palette (`THEME_AND_COLORS.md`); avoid purple defaults.
 
 ### Phase 3 — Session variety
 
-- [ ] Collector objectives **or** Sprint timer (pick one first by playtest)
-- [ ] Zen endless entry point
-- [ ] Per-mode / per-challenge bests if needed
+- [ ] **1.2** Sprint + Challenges entry — [releases/1.2-sprint.md](./releases/1.2-sprint.md)
+- [ ] **1.3** Zen + Collector — [releases/1.3-zen-collector.md](./releases/1.3-zen-collector.md)
+- [ ] Per-challenge bests (profile-gated)
 
-### Phase 4 — Advanced (optional)
+### Phase 4 — Board spices and clutch (optional sequence)
 
-- [ ] Shrink arena, twin food, limited power-ups
+- [ ] **1.4–1.7** per [releases/README.md](./releases/README.md)
+- [ ] **2.0** only after playtest — [releases/2.0-optional.md](./releases/2.0-optional.md)
 
 ---
 
@@ -234,7 +237,7 @@ Stay on nature-arcade palette (`THEME_AND_COLORS.md`); avoid purple defaults.
 
 1. **Campaign mix:** Exact level numbers for first Wrap / first Maze? (Proposal: Wrap @ 6, Maze @ 13.)
 2. **Win condition:** Keep unlock-by-score only until Collector/Sprint, or add “clear” for maze levels earlier?
-3. **Zen placement:** Home secondary tile vs Levels filter chip?
+3. **Zen / Challenges placement:** Home **secondary** control, never equal to Play — decided in [releases/README.md](./releases/README.md).
 4. **Wrap + obstacles together:** Allow in expert band only, or forbid until both feel fair alone?
 5. **Naming:** `Wrap` vs `Portal` vs `Loop` — pick one word for chips and l10n.
 
