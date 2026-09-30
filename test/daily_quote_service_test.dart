@@ -13,7 +13,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final preferences = await SharedPreferences.getInstance();
       final service = DailyQuoteService(
-        PreferenceService(preferences),
+        PreferenceService(SharedPreferencesStore(preferences)),
         random: Random(42),
       );
       final l10n = AppLocalizationsEn();
@@ -27,7 +27,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final preferences = await SharedPreferences.getInstance();
       final service = DailyQuoteService(
-        PreferenceService(preferences),
+        PreferenceService(SharedPreferencesStore(preferences)),
         random: Random(42),
       );
       service.sessionQuote(AppLocalizationsEn());
@@ -45,13 +45,13 @@ void main() {
       });
       final preferences = await SharedPreferences.getInstance();
       final service = DailyQuoteService(
-        PreferenceService(preferences),
+        PreferenceService(SharedPreferencesStore(preferences)),
         random: _AlwaysReturns(3),
       );
       service.debugSetSessionQuoteIndex(0); 
       
       final freshService = DailyQuoteService(
-        PreferenceService(preferences),
+        PreferenceService(SharedPreferencesStore(preferences)),
         random: _AlwaysReturns(3),
       );
       freshService.sessionQuote(AppLocalizationsEn());
@@ -66,7 +66,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final preferences = await SharedPreferences.getInstance();
       final service = DailyQuoteService(
-        PreferenceService(preferences),
+        PreferenceService(SharedPreferencesStore(preferences)),
         random: Random(7),
       );
 
@@ -78,14 +78,14 @@ void main() {
     test('disabled tip never shows', () async {
       SharedPreferences.setMockInitialValues({});
       final preferences = await SharedPreferences.getInstance();
-      final service = DailyQuoteService(PreferenceService(preferences));
+      final service = DailyQuoteService(PreferenceService(SharedPreferencesStore(preferences)));
       expect(service.shouldShowCard(dailyTipEnabled: false), isFalse);
     });
 
     test('new launch can show a different quote', () async {
       SharedPreferences.setMockInitialValues({});
       final preferences = await SharedPreferences.getInstance();
-      final preferenceService = PreferenceService(preferences);
+      final preferenceService = PreferenceService(SharedPreferencesStore(preferences));
       final l10n = AppLocalizationsEn();
 
       final firstLaunch = DailyQuoteService(

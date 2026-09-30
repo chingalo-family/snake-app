@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snake_app/app/app.dart';
 import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/offline_db/app_database.dart';
+import 'package:snake_app/core/services/preference_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+          preferenceStoreProvider.overrideWithValue(
+            SharedPreferencesStore(sharedPreferences),
+          ),
           appDatabaseProvider.overrideWithValue(testDatabase),
         ],
         child: const SnakeApp(),
@@ -29,7 +32,8 @@ void main() {
     );
     await tester.pump();
     expect(find.text('Snake App'), findsWidgets);
-    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 900));
     await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
   });
 }
