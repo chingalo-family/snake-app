@@ -10,6 +10,7 @@ Use when implementing or changing the play loop, controls, board layout, collect
 ## Read first
 - `docs/IMPLEMENTATION_PLAN.md` §§4.4–4.8
 - `docs/UX_DESIGN.md` (playground + feedback tables)
+- `docs/UX_ENHANCEMENTS.md` when adding Challenges, Sprint HUD, Dash, or new mode chips
 - Rule: `.cursor/rules/snake-app-gameplay.mdc`
 
 ## Controls checklist

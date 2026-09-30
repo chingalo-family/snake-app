@@ -13,7 +13,7 @@ Follow these standards for consistent contributions across developers and AI age
 - Package ID: `chingalo.family.snake_app` · Display name: **Snake App**
 - Stack: Flutter, local SQLite via **Drift (`AppDatabase`)**, SharedPreferences via **PreferenceService**, audio (SFX/BGM), Provider or Riverpod
 - Target layout: `lib/app/`, `lib/core/`, `lib/modules/<feature>/{page,components,utils}`, `lib/shared/` (see `docs/ARCHITECTURE.md`)
-- Product plan: `docs/IMPLEMENTATION_PLAN.md` · Modes: `docs/GAME_MODES.md` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
+- Product plan: `docs/IMPLEMENTATION_PLAN.md` · Modes: `docs/GAME_MODES.md` · Experience: `docs/GAME_EXPERIENCE.md` · Next releases: `docs/releases/` · Future modes: `docs/plans/` · UX: `docs/UX_DESIGN.md` · Theme: `docs/THEME_AND_COLORS.md`
 - Skills: `.cursor/skills/snake-app-project/`, `snake-app-gameplay/`, `snake-app-offline-profile/`, `snake-app-community-docs/`
 
 ## Required workflow before finishing a task
@@ -26,9 +26,13 @@ Follow these standards for consistent contributions across developers and AI age
 4. If UX / architecture / theme / icon / CI / gameplay-modes / plan conventions changed, update the matching `docs/` files in the same change set:
    - `docs/ARCHITECTURE.md` — structure, packages, layers
    - `docs/UX_DESIGN.md` — screens, flows, controls, feedback
+   - `docs/UX_ENHANCEMENTS.md` — planned UI for Challenges and new modes
    - `docs/THEME_AND_COLORS.md` — palette, typography, tokens
    - `docs/IMPLEMENTATION_PLAN.md` — features, phases, acceptance
-   - `docs/GAME_MODES.md` — Classic / Wrap / Obstacles and variants (planning)
+   - `docs/GAME_MODES.md` — Classic / Wrap / Obstacles and variants (shipped + short Phase 3–4 list)
+   - `docs/GAME_EXPERIENCE.md` — current loops vs experience gaps
+   - `docs/releases/` — next full-release specs (1.2–2.0)
+   - `docs/plans/` — suggested future modes and play loops (planning only)
    - `docs/CI.md` — GitHub Actions / desktop release behavior
    - `docs/APP_ICON_CONCEPT.md` — icon / branding mark
    - `README.md`, `docs/GETTING_STARTED.md`, `CONTRIBUTING.md` — install commands, features, stack, contributor workflow

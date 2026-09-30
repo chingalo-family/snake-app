@@ -33,9 +33,13 @@ Shared Cursor configuration for this repository.
 - `CODE_OF_CONDUCT.md`
 - `docs/IMPLEMENTATION_PLAN.md`
 - `docs/UX_DESIGN.md`
+- `docs/UX_ENHANCEMENTS.md` — planned UI for Challenges / new modes
 - `docs/THEME_AND_COLORS.md`
 - `docs/ARCHITECTURE.md`
 - `docs/GAME_MODES.md`
+- `docs/GAME_EXPERIENCE.md`
+- `docs/releases/` — next full-release experience specs
+- `docs/plans/` — suggested future modes (planning only)
 - `docs/APP_ICON_CONCEPT.md`
 - `docs/CI.md`
 

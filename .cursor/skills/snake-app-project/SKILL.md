@@ -12,11 +12,11 @@ Use this skill whenever working in this repository to keep implementation style,
 - Package: `snake_app` · Application ID: `chingalo.family.snake_app`
 - Stack: Flutter game, offline-first local storage (Drift `AppDatabase` + PreferenceService), SFX/BGM audio, responsive multi-platform UI
 - Platforms: Android, iOS, Linux, macOS, Windows, Web
-- Docs baseline: `README.md`, `docs/GETTING_STARTED.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`, `CONTRIBUTING.md`
+- Docs baseline: `README.md`, `docs/GETTING_STARTED.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/UX_ENHANCEMENTS.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`, `docs/GAME_EXPERIENCE.md`, `docs/releases/`, `docs/plans/`, `CONTRIBUTING.md`
 
 ## First-step checklist
 1. Read `docs/IMPLEMENTATION_PLAN.md` for scope and acceptance criteria.
-2. Align UX with `docs/UX_DESIGN.md` and theme with `docs/THEME_AND_COLORS.md`.
+2. Align UX with `docs/UX_DESIGN.md` (shipped) and `docs/UX_ENHANCEMENTS.md` (planned Challenges / new modes). Theme: `docs/THEME_AND_COLORS.md`.
 3. Map the change to a module (`onboarding`, `home`, `levels`, `game`, `profile`, `scores`, `settings`, `about`, `updates`).
 4. If gameplay/controls/board/levels/scoring → follow `.cursor/skills/snake-app-gameplay/SKILL.md`.
 5. If profile/scores/persistence → follow `.cursor/skills/snake-app-offline-profile/SKILL.md`.
@@ -100,10 +100,14 @@ Do **not** finish a task that changed anything under `lib/` until:
 |-------------|--------|
 | Feature / acceptance | `docs/IMPLEMENTATION_PLAN.md` |
 | Screens / flows | `docs/UX_DESIGN.md` |
+| Planned UI for next modes / Challenges | `docs/UX_ENHANCEMENTS.md` |
 | Colors / type | `docs/THEME_AND_COLORS.md` |
 | Structure / packages | `docs/ARCHITECTURE.md` |
 | Icon / branding mark | `docs/APP_ICON_CONCEPT.md` |
-| Game modes (planning) | `docs/GAME_MODES.md` |
+| Game modes (shipped + Phase 3–4 sketches) | `docs/GAME_MODES.md` |
+| Current vs next game experience | `docs/GAME_EXPERIENCE.md` |
+| Next full releases (1.2–2.0 specs) | `docs/releases/` |
+| Suggested future modes / play loops | `docs/plans/` |
 | CI / desktop builds | `docs/CI.md` + `.github/workflows/` |
 | Overview / install / features / stack | `README.md` |
 | Clone/run/test, tree, prefs keys | `docs/GETTING_STARTED.md` |
