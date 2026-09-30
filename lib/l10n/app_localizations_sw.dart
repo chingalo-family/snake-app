@@ -15,6 +15,16 @@ class AppLocalizationsSw extends AppLocalizations {
   String get tagline => 'Kua, kusanya, panda viwango';
 
   @override
+  String get startupCouldNotOpen => 'Imeshindwa kufungua Snake App';
+
+  @override
+  String get startupCouldNotOpenBody =>
+      'Ufunguzi haujakamilika kwenye kifaa hiki. Jaribu tena.';
+
+  @override
+  String get tryAgain => 'Jaribu tena';
+
+  @override
   String get play => 'Cheza';
 
   @override

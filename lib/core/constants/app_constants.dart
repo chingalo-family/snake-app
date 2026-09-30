@@ -28,6 +28,9 @@ abstract final class AppConstants {
     return 'itms-apps://apps.apple.com/app/id$appStoreId';
   }
 
+  /// How long a launch step may block before the app continues without it.
+  static const Duration startupStepTimeout = Duration(seconds: 8);
+
   static const double swipeMinDistance = 28;
   static const double minCellSize = 14;
   static const double maxCellSize = 36;

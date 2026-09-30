@@ -110,6 +110,24 @@ abstract class AppLocalizations {
   /// **'Grow, collect, climb levels'**
   String get tagline;
 
+  /// No description provided for @startupCouldNotOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open Snake App'**
+  String get startupCouldNotOpen;
+
+  /// No description provided for @startupCouldNotOpenBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Startup did not finish on this device. Try again.'**
+  String get startupCouldNotOpenBody;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgain;
+
   /// No description provided for @play.
   ///
   /// In en, this message translates to:

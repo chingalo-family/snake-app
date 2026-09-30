@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snake_app/app/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:snake_app/app/providers.dart';
+import 'package:snake_app/app/routes.dart';
+import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/shared/widgets/app_chrome.dart';
@@ -39,19 +42,34 @@ class _SplashPageState extends ConsumerState<SplashPage>
   }
 
   Future<void> _boot() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    if (mounted) {
-      setState(() => _versionLabel = 'v${packageInfo.version}');
-    }
+    unawaited(_loadVersionLabel());
     await Future<void>.delayed(const Duration(milliseconds: 900));
     if (!mounted) return;
     final settings = ref.read(settingsControllerProvider);
-    await ref.read(profileControllerProvider.notifier).refresh();
+    try {
+      await ref
+          .read(profileControllerProvider.notifier)
+          .refresh()
+          .timeout(AppConstants.startupStepTimeout);
+    } catch (error, stackTrace) {
+      debugPrint('Profile refresh during splash skipped: $error\n$stackTrace');
+    }
     if (!mounted) return;
     if (!settings.onboardingCompleted) {
       context.go(AppRoutes.onboarding);
     } else {
       context.go(AppRoutes.home);
+    }
+  }
+
+  Future<void> _loadVersionLabel() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform()
+          .timeout(const Duration(seconds: 4));
+      if (!mounted) return;
+      setState(() => _versionLabel = 'v${packageInfo.version}');
+    } catch (error, stackTrace) {
+      debugPrint('Version label skipped: $error\n$stackTrace');
     }
   }
 

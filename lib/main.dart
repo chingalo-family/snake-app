@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:snake_app/app/app.dart';
 import 'package:snake_app/app/bootstrap.dart';
+import 'package:snake_app/app/startup_gate.dart';
 import 'package:snake_app/core/utils/system_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureSystemUi();
-  final container = await bootstrap();
-  runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const SnakeApp(),
-    ),
-  );
+  // Paint before prefs, SQLite, or audio. A hung plugin on a fresh Play
+  // Store install otherwise leaves the native launch screen up forever.
+  runApp(StartupGate(start: bootstrap));
 }

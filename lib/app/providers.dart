@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snake_app/core/models/player_profile.dart';
 import 'package:snake_app/core/offline_db/app_database.dart';
 import 'package:snake_app/core/services/audio_service.dart';
@@ -12,12 +11,12 @@ import 'package:snake_app/core/services/settings_service.dart';
 import 'package:snake_app/core/services/share_score_service.dart';
 import 'package:snake_app/core/services/update_service.dart';
 
-final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError('SharedPreferences must be overridden at bootstrap');
+final preferenceStoreProvider = Provider<PreferenceStore>((ref) {
+  throw UnimplementedError('PreferenceStore must be overridden at bootstrap');
 });
 
 final preferenceServiceProvider = Provider<PreferenceService>((ref) {
-  return PreferenceService(ref.watch(sharedPreferencesProvider));
+  return PreferenceService(ref.watch(preferenceStoreProvider));
 });
 
 final settingsServiceProvider = Provider<SettingsService>((ref) {

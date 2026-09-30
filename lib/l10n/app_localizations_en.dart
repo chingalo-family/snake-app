@@ -15,6 +15,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagline => 'Grow, collect, climb levels';
 
   @override
+  String get startupCouldNotOpen => 'Couldn\'t open Snake App';
+
+  @override
+  String get startupCouldNotOpenBody =>
+      'Startup did not finish on this device. Try again.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
   String get play => 'Play';
 
   @override
