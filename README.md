@@ -1,19 +1,19 @@
 # Snake App
 
-Offline-first snake game by **Chingalo Family**. Grow, collect, climb 30 levels, and chase local high scores — without a cloud account for core play.
+Offline-first snake game by **Chingalo Family**. Grow, collect, climb 30 levels, and chase local high scores - without a cloud account for core play.
 
 | | |
 |--|--|
 | **Package ID** | `chingalo.family.snake_app` |
 | **Display name** | Snake App |
-| **Version** | `1.1.0+2` |
+| **Version** | `2.0.0+4` |
 | **Platforms** | Android, iOS, Linux, macOS, Windows, Web |
 | **Google Play** | [chingalo.family.snake_app](https://play.google.com/store/apps/details?id=chingalo.family.snake_app) |
 
 ## Get the app
 
 - **Android:** [Snake App on Google Play](https://play.google.com/store/apps/details?id=chingalo.family.snake_app)
-- **Desktop:** GitHub Release zips (Windows, macOS, Linux) — see [CI](docs/CI.md)
+- **Desktop:** GitHub Release zips (Windows, macOS, Linux) - see [Technical requirements](docs/TECHNICAL_REQUIREMENTS.md)
 - **iOS:** App Store listing is not published yet (`appStoreId` is still empty in code)
 
 ## Features
@@ -22,6 +22,7 @@ Offline-first snake game by **Chingalo Family**. Grow, collect, climb 30 levels,
 - Responsive playground (phone, tablet, desktop, rotation)
 - Swipe on touch · arrow keys on desktop
 - Thirty levels mixing **Classic**, **Wrap**, **Maze**, and **Wrap maze**
+- Challenges hub (timed sprints, daily run, and other local modes) beside the campaign
 - Animal and object collectibles with tiered scores and combos
 - Independent SFX and background music toggles
 - Optional local profile: play as a guest; create a profile to save scores and unlocks
@@ -49,7 +50,7 @@ flutter pub get
 flutter run
 ```
 
-See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) for platforms, tests, Drift codegen, and Linux desktop packages.
+See [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md) for platforms, tests, Drift codegen, and Linux desktop packages.
 
 ### Linux desktop build deps
 
@@ -62,7 +63,7 @@ sudo apt-get install -y \
   libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 ```
 
-See [docs/CI.md](docs/CI.md) for the full CI package list.
+See [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md) for the full CI package list.
 
 ## Test and lint
 
@@ -76,24 +77,19 @@ These match [`.github/workflows/flutter-ci.yml`](.github/workflows/flutter-ci.ym
 
 ## CI
 
-GitHub Actions are **manual only** (`workflow_dispatch`). They do not run on push or pull request. From Actions, run **Flutter CI** (analyze + tests) or **Desktop — Build** (Windows, macOS, Linux zips). A desktop run on `main` publishes a **GitHub Release**. See [docs/CI.md](docs/CI.md).
+GitHub Actions are **manual only** (`workflow_dispatch`). They do not run on push or pull request. From Actions, run **Flutter CI** (analyze + tests) or **Desktop - Build** (Windows, macOS, Linux zips). A desktop run on `main` publishes a **GitHub Release**. See [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md).
 
 ## Documentation
 
 | Doc | Description |
 |-----|-------------|
-| [Getting started](docs/GETTING_STARTED.md) | Clone, run, test, project layout |
-| [Implementation Plan](docs/IMPLEMENTATION_PLAN.md) | Features, phases, acceptance criteria |
-| [UX Design](docs/UX_DESIGN.md) | Screens, flows, controls, feedback (shipped) |
-| [UI/UX enhancements](docs/UX_ENHANCEMENTS.md) | Planned UI for Challenges and new modes |
-| [Theme & Colors](docs/THEME_AND_COLORS.md) | Palette, typography, Flutter theme tokens |
-| [App Icon Concept](docs/APP_ICON_CONCEPT.md) | Icon directions & asset checklist |
-| [Architecture](docs/ARCHITECTURE.md) | Technical structure |
-| [Game Modes](docs/GAME_MODES.md) | Classic / Wrap / Maze / Wrap maze |
-| [Game experience](docs/GAME_EXPERIENCE.md) | Current play loops vs planned enhancements |
-| [Next full releases](docs/releases/README.md) | Specs for 1.2–2.0 (planning only) |
-| [Enhancement plans](docs/plans/README.md) | Suggested future modes (planning only) |
-| [CI / GitHub Actions](docs/CI.md) | Test + desktop build workflows |
+| [Product requirements](docs/PRODUCT_REQUIREMENTS.md) | Audience, scope, and success criteria |
+| [Technical requirements](docs/TECHNICAL_REQUIREMENTS.md) | Stack, quality gates, CI, local preference keys |
+| [App flow](docs/APP_FLOW.md) | Routes and screen-by-screen flow |
+| [UI/UX design brief](docs/UI_UX_DESIGN_BRIEF.md) | Palette, screen rules, feedback |
+| [Backend schema](docs/BACKEND_SCHEMA.md) | On-device Drift tables and preference stores |
+| [Implementation plan](docs/IMPLEMENTATION_PLAN.md) | Shipped modules and acceptance checks |
+| [Architecture](docs/ARCHITECTURE.md) | Layers, engine, startup, profile gate |
 | [Contributing](CONTRIBUTING.md) | How to send changes |
 | [Security](SECURITY.md) | Vulnerability reporting |
 | [Code of Conduct](CODE_OF_CONDUCT.md) | Community standards |
@@ -103,7 +99,7 @@ Marketing site (separate repo): [chingalo-family/snake-app-website](https://gith
 
 ## Environment variables
 
-This app does not use `.env` files or compile-time environment variables. Player settings and progress are stored on device. See [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md#environment-and-local-data).
+This app does not use `.env` files or compile-time environment variables. Player settings and progress are stored on device. See [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md) and [docs/BACKEND_SCHEMA.md](docs/BACKEND_SCHEMA.md).
 
 ## Contributing
 

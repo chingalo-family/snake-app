@@ -8,6 +8,7 @@ class HomeNavRow extends StatelessWidget {
     required this.hasProfile,
     required this.l10n,
     required this.onOpenScores,
+    required this.onOpenChallenges,
     required this.onOpenProfile,
     required this.onOpenSettings,
   });
@@ -15,6 +16,7 @@ class HomeNavRow extends StatelessWidget {
   final bool hasProfile;
   final AppLocalizations l10n;
   final VoidCallback onOpenScores;
+  final VoidCallback onOpenChallenges;
   final VoidCallback onOpenProfile;
   final VoidCallback onOpenSettings;
 
@@ -22,6 +24,12 @@ class HomeNavRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        HomeNavListTile(
+          icon: Icons.flag_outlined,
+          label: l10n.challenges,
+          onTap: onOpenChallenges,
+        ),
+        const SizedBox(height: 10),
         HomeNavListTile(
           icon: Icons.leaderboard_outlined,
           label: l10n.scores,

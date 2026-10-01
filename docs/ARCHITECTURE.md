@@ -1,93 +1,91 @@
-# Snake App — Architecture Notes
+# Architecture Document
 
 ## Principles
 
-1. **Offline-first** — core play, scores, levels, and profile work without network
-2. **Modules** — UI + state colocated under `modules/` with local `components/` and optional `utils/`
-3. **Thin services** — audio, storage, updates have single responsibilities
-4. **Responsive by construction** — grid metrics from constraints, not hard-coded portrait sizes
-5. **Platform-correct input** — touch gestures vs keyboard focus handled in the game module
+1. **Offline-first.** Play, scores, levels, and profile do not need a network.
+2. **Modules.** UI and state sit together under `lib/modules/<module>/`.
+3. **Thin services.** Audio, storage, sharing, and updates each do one job.
+4. **Responsive board.** Cell size comes from constraints, not a fixed portrait box.
+5. **Platform-correct input.** Touch gestures and keyboard focus stay in the game module.
 
-## Module layout
+## Layout
+
+```
+lib/
+├── app/            MaterialApp, router, bootstrap, StartupGate
+├── core/           engine, constants, Drift, theme, services
+├── modules/        splash, onboarding, home, levels, challenges,
+│                   game, profile, scores, settings, about
+└── shared/         widgets used by more than one module
+```
+
+A module looks like:
 
 ```
 lib/modules/<module>/
-├── <module>_page.dart           # screen orchestration
-├── components/                  # module-local widgets
-├── utils/                       # optional pure helpers (e.g. game input mapping)
-└── <module>_controller.dart     # optional local controller at module root
+├── <module>_page.dart
+├── components/
+├── utils/                    # optional pure helpers
+└── <module>_controller.dart  # optional
 ```
 
-Large private widgets belong in `components/` as public types. Prefer
-`package:snake_app/modules/...` imports. Shared cross-module widgets stay in
-`lib/shared/`.
+Prefer `package:snake_app/...` imports. Large private widgets become public types in `components/`.
 
 ## Layers
 
 ```
 UI (modules/*)
     ↓
-State (ChangeNotifier / Notifiers)
+State (Riverpod notifiers / controllers)
     ↓
-Services (audio, settings, profile_db, play_store_update)
+Services (audio, settings, profile DB, challenges, updates, share)
     ↓
-Local storage (sqflite + shared_preferences)
+Local storage (Drift SQLite + SharedPreferences)
 ```
 
-## Grid engine
+## Game engine
 
-`GridMetrics` computed from:
+`SnakeEngine` advances a `RunSpec`:
 
-- `BoxConstraints` of the board region
-- Target cell size range (min/max)
-- Aspect-preserving column/row counts
+- Campaign specs come from `LevelsCatalog` (30 levels).
+- Challenge specs come from `ChallengesCatalog`.
 
-On orientation change: recompute metrics; optionally soft-pause one frame to remount snake indices safely (map positions by row/col, not raw flat index alone).
+Rules on the spec include wall behavior (solid or wrap), obstacles (none, static maze, growing, shed, vine), food behavior (standard, bonus, bitter, key/lock, pellets, fleeing), and objective (score gate, timed, endless, collect targets, eat all, peaceful fill, arena).
+
+`GridMetrics` uses the board’s `BoxConstraints`, a target cell-size range, and column/row counts that keep the aspect. On orientation change, recompute metrics and map snake cells by row and column.
 
 ## Profile gate
 
 ```
 submitScore()
-  if (!profileExists)
-    → stash PendingRun in ProfileController
-    → prompt CreateProfile (“Save score — create profile”)
-    → on successful profile save → flush PendingRun via submitRun
-  else → upsert best scores / level unlocks
+  if no profile
+    → keep PendingRun in memory
+    → ask to create a profile
+    → on save, flush the run
+  else
+    → upsert best score and level unlocks
 ```
 
-Guest runs are not written to Drift until a profile exists; the latest unfinished
-opt-in run is held in memory so creating a profile after game over still keeps
-that score.
+Guest runs are not written to Drift until a profile exists.
 
 ## Startup
 
-`main` configures system UI, then calls `runApp` immediately. Prefs, SQLite, and audio finish behind `StartupGate`.
+`main` configures system UI, then `runApp`. Preferences, SQLite, and audio finish behind `StartupGate`, each step time-boxed. If preferences do not answer, the session uses in-memory settings.
 
-Play Store installs on some devices never leave the native launch screen if those plugins are awaited first: SharedPreferences can block behind backup restore, and the package manager can block version lookup. Each launch step is time-boxed. If preferences do not answer, the session uses in-memory settings and the next launch tries disk again.
-
-Android keeps the default task affinity (so Play's Open button does not host the game inside the store task) and drops a duplicate launcher activity. Flutter Impeller stays **on** (the engine default); do not set `EnableImpeller` to false — that opt-out is deprecated and will be removed. If a GPU never draws the first frame, file a Flutter engine bug rather than disabling Impeller. The launch window background is the brand dark color.
-
-## Updates (Android)
-
-```
-App start → package_info version
-         → in_app_update check OR Play Store scrape/listing open
-         → dialog → update / dismiss
-```
+Android launch uses the brand dark background. Impeller stays enabled.
 
 ## Audio
 
-- `AudioService` owns separate BGM and SFX players (`audioplayers`).
-- Settings (`sfx_enabled` / `bgm_enabled`) mute channels independently; SFX defaults **on**, BGM defaults **off**.
-- Bootstrap starts `startBgm()` without blocking the first frame; app lifecycle pauses/resumes BGM in background.
-- Bundled clips live under `assets/audio/` (see README there). Missing BGM → silent loop path; missing SFX → `SystemSound` fallback.
-- Gameplay: eat → `playSfx`, collision/game over → `playCollision`.
+`AudioService` owns separate BGM and SFX players. Settings mute each channel. Bootstrap starts music without blocking the first frame. App lifecycle pauses and resumes music. Clips live in `assets/audio/`. Missing music stays silent. Missing effects fall back to a system sound.
 
-## Testing focus
+## Updates
 
-- Grid math unit tests (columns/rows for sample sizes)
-- Direction reverse rejection
+On Android, app start can read the package version and open the Play Store listing. There is no custom APK download.
+
+## Tests to keep
+
+- Grid math for sample sizes
+- Reverse direction rejected
 - Level unlock rules
-- Profile required for persistence
-- Settings toggles mute the correct audio channel
-- Audio asset path constants / mute gating
+- Profile required before Drift writes
+- Settings mute the correct audio channel

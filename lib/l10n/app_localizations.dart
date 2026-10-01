@@ -659,7 +659,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number (7–15 digits)'**
+  /// **'Enter a valid phone number (7-15 digits)'**
   String get phoneInvalid;
 
   /// No description provided for @profileSaved.
@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileSavedWithScore.
   ///
   /// In en, this message translates to:
-  /// **'Profile saved — your score was kept'**
+  /// **'Profile saved - your score was kept'**
   String get profileSavedWithScore;
 
   /// No description provided for @selectAvatar.
@@ -1031,7 +1031,7 @@ abstract class AppLocalizations {
   /// No description provided for @modeWrapMazeTip.
   ///
   /// In en, this message translates to:
-  /// **'Edges loop — rocks still end the run.'**
+  /// **'Edges loop - rocks still end the run.'**
   String get modeWrapMazeTip;
 
   /// No description provided for @onboardingMoveReverseHint.
@@ -1151,7 +1151,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareSavedToDisk.
   ///
   /// In en, this message translates to:
-  /// **'Image saved to Downloads/Snake App — open it from there to share.'**
+  /// **'Image saved to Downloads/Snake App - open it from there to share.'**
   String get shareSavedToDisk;
 
   /// No description provided for @sharePreviewTitle.
@@ -1265,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote3.
   ///
   /// In en, this message translates to:
-  /// **'Collect what you can reach — leave the rest for next run.'**
+  /// **'Collect what you can reach - leave the rest for next run.'**
   String get dailyQuote3;
 
   /// No description provided for @dailyQuote4.
@@ -1295,7 +1295,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote8.
   ///
   /// In en, this message translates to:
-  /// **'The board is fair — keep your path clear.'**
+  /// **'The board is fair - keep your path clear.'**
   String get dailyQuote8;
 
   /// No description provided for @dailyQuote9.
@@ -1325,7 +1325,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote13.
   ///
   /// In en, this message translates to:
-  /// **'Length is pride — space is wisdom.'**
+  /// **'Length is pride - space is wisdom.'**
   String get dailyQuote13;
 
   /// No description provided for @dailyQuote14.
@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote20.
   ///
   /// In en, this message translates to:
-  /// **'A green path is a kind path — leave room to turn.'**
+  /// **'A green path is a kind path - leave room to turn.'**
   String get dailyQuote20;
 
   /// No description provided for @dailyQuote21.
@@ -1379,7 +1379,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote22.
   ///
   /// In en, this message translates to:
-  /// **'You don’t need perfect — just another try.'**
+  /// **'You don’t need perfect - just another try.'**
   String get dailyQuote22;
 
   /// No description provided for @dailyQuote23.
@@ -1421,8 +1421,326 @@ abstract class AppLocalizations {
   /// No description provided for @dailyQuote29.
   ///
   /// In en, this message translates to:
-  /// **'Open again anytime — a new tip is waiting.'**
+  /// **'Open again anytime - a new tip is waiting.'**
   String get dailyQuote29;
+
+  /// No description provided for @challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challenges;
+
+  /// No description provided for @challengesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Same snake, new reasons to play. Campaign stays under Play.'**
+  String get challengesIntro;
+
+  /// No description provided for @quitToChallenges.
+  ///
+  /// In en, this message translates to:
+  /// **'Quit to Challenges'**
+  String get quitToChallenges;
+
+  /// No description provided for @challengeCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleared'**
+  String get challengeCleared;
+
+  /// No description provided for @timer.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timer;
+
+  /// No description provided for @lengthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Length'**
+  String get lengthLabel;
+
+  /// No description provided for @targets.
+  ///
+  /// In en, this message translates to:
+  /// **'Targets'**
+  String get targets;
+
+  /// No description provided for @shield.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield'**
+  String get shield;
+
+  /// No description provided for @dashHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Dash'**
+  String get dashHold;
+
+  /// No description provided for @handToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand the phone to the next player'**
+  String get handToNext;
+
+  /// No description provided for @continuePlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continuePlay;
+
+  /// No description provided for @showGhost.
+  ///
+  /// In en, this message translates to:
+  /// **'Show ghost'**
+  String get showGhost;
+
+  /// No description provided for @showGhostSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Faint replay of your best path on this device'**
+  String get showGhostSubtitle;
+
+  /// No description provided for @challengeScores.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challengeScores;
+
+  /// No description provided for @playChallengePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Play a challenge to save a best here.'**
+  String get playChallengePrompt;
+
+  /// No description provided for @noChallengeBest.
+  ///
+  /// In en, this message translates to:
+  /// **'No best yet'**
+  String get noChallengeBest;
+
+  /// No description provided for @bestScoreValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best {score}'**
+  String bestScoreValue(int score);
+
+  /// No description provided for @sectionTimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Timed'**
+  String get sectionTimed;
+
+  /// No description provided for @sectionPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get sectionPractice;
+
+  /// No description provided for @sectionBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Board'**
+  String get sectionBoard;
+
+  /// No description provided for @sectionClutch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clutch'**
+  String get sectionClutch;
+
+  /// No description provided for @sectionToday.
+  ///
+  /// In en, this message translates to:
+  /// **'This device, today'**
+  String get sectionToday;
+
+  /// No description provided for @sectionExpert.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get sectionExpert;
+
+  /// No description provided for @tipTimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Score as much as you can before the clock ends.'**
+  String get tipTimed;
+
+  /// No description provided for @tipZen.
+  ///
+  /// In en, this message translates to:
+  /// **'No levels - just grow.'**
+  String get tipZen;
+
+  /// No description provided for @tipCollector.
+  ///
+  /// In en, this message translates to:
+  /// **'Eat the marked targets to clear.'**
+  String get tipCollector;
+
+  /// No description provided for @tipClearGrove.
+  ///
+  /// In en, this message translates to:
+  /// **'Eat every nut in the grove.'**
+  String get tipClearGrove;
+
+  /// No description provided for @tipPeaceful.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill the board. You cannot crash.'**
+  String get tipPeaceful;
+
+  /// No description provided for @tipArena.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlast the other snakes on this device.'**
+  String get tipArena;
+
+  /// No description provided for @tipScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow, collect, and keep moving.'**
+  String get tipScore;
+
+  /// No description provided for @challengeSprint60.
+  ///
+  /// In en, this message translates to:
+  /// **'Sprint 60s'**
+  String get challengeSprint60;
+
+  /// No description provided for @challengeSprint90.
+  ///
+  /// In en, this message translates to:
+  /// **'Sprint 90s'**
+  String get challengeSprint90;
+
+  /// No description provided for @challengeSprintOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sprint wrap'**
+  String get challengeSprintOpen;
+
+  /// No description provided for @challengeZen.
+  ///
+  /// In en, this message translates to:
+  /// **'Zen'**
+  String get challengeZen;
+
+  /// No description provided for @challengeZenWrap.
+  ///
+  /// In en, this message translates to:
+  /// **'Zen wrap'**
+  String get challengeZenWrap;
+
+  /// No description provided for @challengeCollector.
+  ///
+  /// In en, this message translates to:
+  /// **'Collector'**
+  String get challengeCollector;
+
+  /// No description provided for @challengeBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Bonus critter'**
+  String get challengeBonus;
+
+  /// No description provided for @challengeGrowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Growing walls'**
+  String get challengeGrowing;
+
+  /// No description provided for @challengeBurrows.
+  ///
+  /// In en, this message translates to:
+  /// **'Burrows'**
+  String get challengeBurrows;
+
+  /// No description provided for @challengeBitter.
+  ///
+  /// In en, this message translates to:
+  /// **'Bitter fruit'**
+  String get challengeBitter;
+
+  /// No description provided for @challengeKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Key fruit'**
+  String get challengeKey;
+
+  /// No description provided for @challengeShieldDash.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield and Dash'**
+  String get challengeShieldDash;
+
+  /// No description provided for @challengeHotSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot-seat sprint'**
+  String get challengeHotSeat;
+
+  /// No description provided for @challengeClearGrove.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear the grove'**
+  String get challengeClearGrove;
+
+  /// No description provided for @challengeShed.
+  ///
+  /// In en, this message translates to:
+  /// **'Shed skin'**
+  String get challengeShed;
+
+  /// No description provided for @challengePeaceful.
+  ///
+  /// In en, this message translates to:
+  /// **'Peaceful fill'**
+  String get challengePeaceful;
+
+  /// No description provided for @challengeFleeing.
+  ///
+  /// In en, this message translates to:
+  /// **'Fleeing food'**
+  String get challengeFleeing;
+
+  /// No description provided for @challengeLantern.
+  ///
+  /// In en, this message translates to:
+  /// **'Lantern'**
+  String get challengeLantern;
+
+  /// No description provided for @challengeVine.
+  ///
+  /// In en, this message translates to:
+  /// **'Vine trail'**
+  String get challengeVine;
+
+  /// No description provided for @challengeMixBitter.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrap and bitter fruit'**
+  String get challengeMixBitter;
+
+  /// No description provided for @challengeMixBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Maze and bonus'**
+  String get challengeMixBonus;
+
+  /// No description provided for @challengeArena.
+  ///
+  /// In en, this message translates to:
+  /// **'Grove arena'**
+  String get challengeArena;
+
+  /// No description provided for @challengeDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s grove'**
+  String get challengeDaily;
 }
 
 class _AppLocalizationsDelegate

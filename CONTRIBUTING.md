@@ -49,7 +49,7 @@ flutter pub get
 flutter run
 ```
 
-Full walkthrough: [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md).
+Full walkthrough: [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md).
 
 ## Quality checks
 
@@ -61,7 +61,7 @@ flutter analyze --fatal-infos
 flutter test --coverage
 ```
 
-To run them on GitHub, use **Actions → Flutter CI — Analyze & Test → Run workflow**. Desktop zips: **Desktop — Build** on `main` (see [docs/CI.md](docs/CI.md)).
+To run them on GitHub, use **Actions → Flutter CI - Analyze & Test → Run workflow**. Desktop zips: **Desktop - Build** on `main` (see [docs/TECHNICAL_REQUIREMENTS.md](docs/TECHNICAL_REQUIREMENTS.md)).
 
 Before you open a PR that touches `lib/`:
 
@@ -96,7 +96,7 @@ More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/IMPLEMENTATI
 - Describe **why**, not only what
 - Link related issues
 - Do not include secrets, local `build/` output, or IDE scratch files
-- Security issues: report privately per [SECURITY.md](SECURITY.md) — do not open a public PR that discloses an exploit
+- Security issues: report privately per [SECURITY.md](SECURITY.md) - do not open a public PR that discloses an exploit
 
 ## License
 

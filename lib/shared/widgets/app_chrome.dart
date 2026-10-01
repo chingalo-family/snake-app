@@ -267,6 +267,14 @@ class SnakePageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 const SizedBox(height: 8),
                 ListTile(
+                  leading: const Icon(Icons.flag_outlined),
+                  title: Text(l10n.challenges),
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    context.push(AppRoutes.challenges);
+                  },
+                ),
+                ListTile(
                   leading: const Icon(Icons.leaderboard_outlined),
                   title: Text(l10n.scoreboard),
                   onTap: () {

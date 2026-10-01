@@ -5,6 +5,7 @@ import 'package:snake_app/core/offline_db/app_database.dart';
 import 'package:snake_app/core/services/audio_service.dart';
 import 'package:snake_app/core/services/daily_quote_service.dart';
 import 'package:snake_app/core/services/haptic_service.dart';
+import 'package:snake_app/core/services/challenge_progress_store.dart';
 import 'package:snake_app/core/services/preference_service.dart';
 import 'package:snake_app/core/services/profile_repository.dart';
 import 'package:snake_app/core/services/settings_service.dart';
@@ -17,6 +18,10 @@ final preferenceStoreProvider = Provider<PreferenceStore>((ref) {
 
 final preferenceServiceProvider = Provider<PreferenceService>((ref) {
   return PreferenceService(ref.watch(preferenceStoreProvider));
+});
+
+final challengeProgressProvider = Provider<ChallengeProgressStore>((ref) {
+  return ChallengeProgressStore(ref.watch(preferenceStoreProvider));
 });
 
 final settingsServiceProvider = Provider<SettingsService>((ref) {
@@ -102,6 +107,11 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   Future<void> setShowDailyTip(bool value) async {
     state = state.copyWith(showDailyTip: value);
+    await _persist();
+  }
+
+  Future<void> setShowGhost(bool value) async {
+    state = state.copyWith(showGhost: value);
     await _persist();
   }
 

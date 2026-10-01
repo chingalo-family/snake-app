@@ -10,5 +10,6 @@ abstract final class PreferenceKeys {
   static const onboardingCompleted = 'onboarding_completed';
   static const snakeSkinId = 'snake_skin_id';
   static const showDailyTip = 'show_daily_tip';
+  static const showGhost = 'show_ghost';
   static const dailyQuoteLastIndex = 'daily_quote_last_index';
 }

@@ -7,6 +7,7 @@ import 'package:snake_app/app/providers.dart';
 import 'package:snake_app/core/bootstrap/desktop_window.dart';
 import 'package:snake_app/core/constants/app_constants.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
+import 'package:snake_app/core/constants/challenges.dart';
 import 'package:snake_app/core/constants/collectibles.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/game/snake_engine.dart';
@@ -28,9 +29,10 @@ import 'package:snake_app/shared/widgets/app_chrome.dart';
 import 'package:snake_app/shared/widgets/share_score_card.dart';
 
 class GamePage extends ConsumerStatefulWidget {
-  const GamePage({super.key, required this.level});
+  const GamePage({super.key, this.level = 1, this.challengeId});
 
   final int level;
+  final String? challengeId;
 
   @override
   ConsumerState<GamePage> createState() => _GamePageState();
@@ -48,11 +50,29 @@ class _GamePageState extends ConsumerState<GamePage>
   Size? _lastBoardSize;
   int _highestBeforeRun = 1;
   bool _isSharing = false;
+  bool _cleared = false;
+  bool _challengeIsNewBest = false;
+  int _hotSeatRound = 0;
+  int _hotSeatFirstScore = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller = GameController(level: widget.level);
+    final profile = ref.read(profileControllerProvider).profile;
+    final showGhost = ref.read(settingsControllerProvider).showGhost;
+    final ghostTrace = widget.challengeId != null &&
+            profile != null &&
+            showGhost
+        ? ref.read(challengeProgressProvider).ghostFor(
+              profileId: profile.id,
+              challengeId: widget.challengeId!,
+            )
+        : null;
+    _controller = GameController(
+      level: widget.level,
+      challengeId: widget.challengeId,
+      ghostTrace: ghostTrace,
+    );
     _focusNode = FocusNode();
     _headPulseController = AnimationController(
       vsync: this,
@@ -72,9 +92,12 @@ class _GamePageState extends ConsumerState<GamePage>
     if (eatEvent != null) {
       _handleEat(eatEvent);
     }
-    if (_controller.snapshot.phase == GamePhase.gameOver && !_submitted) {
+    final phase = _controller.snapshot.phase;
+    if ((phase == GamePhase.gameOver || phase == GamePhase.cleared) &&
+        !_submitted) {
       _submitted = true;
-      _onGameOver();
+      _cleared = phase == GamePhase.cleared;
+      _onRunEnded();
     }
     setState(() {});
   }
@@ -96,19 +119,92 @@ class _GamePageState extends ConsumerState<GamePage>
     });
   }
 
-  Future<void> _onGameOver() async {
+  Future<void> _onRunEnded() async {
     final engineSnapshot = _controller.snapshot;
-    await ref.read(audioServiceProvider).playCollision();
-    await ref.read(hapticServiceProvider).heavy();
-    final result = await ref.read(profileControllerProvider.notifier).submitRun(
-          level: engineSnapshot.level,
-          score: engineSnapshot.score,
-          bestCombo: engineSnapshot.bestCombo,
-        );
+    if (_cleared) {
+      await ref.read(audioServiceProvider).playSfx(isHighValue: true);
+      await ref.read(hapticServiceProvider).medium();
+    } else {
+      await ref.read(audioServiceProvider).playCollision();
+      await ref.read(hapticServiceProvider).heavy();
+    }
+    if (widget.challengeId == null) {
+      final result =
+          await ref.read(profileControllerProvider.notifier).submitRun(
+                level: engineSnapshot.level,
+                score: engineSnapshot.score,
+                bestCombo: engineSnapshot.bestCombo,
+              );
+      if (!mounted) return;
+      setState(() => _submitResult = result);
+    } else {
+      final waitingForSecond =
+          _controller.spec.hotSeat && _hotSeatRound == 0;
+      final profile = ref.read(profileControllerProvider).profile;
+      if (profile != null && !waitingForSecond) {
+        final score = _controller.spec.hotSeat
+            ? (engineSnapshot.score > _hotSeatFirstScore
+                ? engineSnapshot.score
+                : _hotSeatFirstScore)
+            : engineSnapshot.score;
+        final isNewBest = await ref.read(challengeProgressProvider).saveBest(
+              profileId: profile.id,
+              challengeId: widget.challengeId!,
+              score: score,
+              ghostTrace: _controller.ghostTrace,
+            );
+        if (!mounted) return;
+        setState(() => _challengeIsNewBest = isNewBest);
+      }
+    }
     if (!mounted) return;
-    setState(() => _submitResult = result);
+    if (_controller.spec.hotSeat && _hotSeatRound == 0) {
+      _hotSeatFirstScore = engineSnapshot.score;
+      _hotSeatRound = 1;
+      await _showHotSeatSheet();
+      return;
+    }
     await _showGameOverSheet();
   }
+
+  Future<void> _showHotSeatSheet() async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return GameSheetScaffold(
+          children: [
+            Text(
+              sheetContext.l10n.handToNext,
+              style: Theme.of(sheetContext).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text('${sheetContext.l10n.score} $_hotSeatFirstScore'),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: () => Navigator.pop(sheetContext),
+              child: Text(sheetContext.l10n.continuePlay),
+            ),
+          ],
+        );
+      },
+    );
+    if (!mounted) return;
+    _submitted = false;
+    _cleared = false;
+    _controller.restart();
+    _focusNode.requestFocus();
+  }
+
+  String get _quitRoute =>
+      widget.challengeId == null ? AppRoutes.levels : AppRoutes.challenges;
 
   Future<void> _showPauseSheet() async {
     _controller.pause();
@@ -141,6 +237,7 @@ class _GamePageState extends ConsumerState<GamePage>
               onPressed: () {
                 Navigator.pop(sheetContext);
                 _submitted = false;
+                _cleared = false;
                 _submitResult = null;
                 _controller.restart();
                 _focusNode.requestFocus();
@@ -151,9 +248,13 @@ class _GamePageState extends ConsumerState<GamePage>
             TextButton(
               onPressed: () {
                 Navigator.pop(sheetContext);
-                context.go(AppRoutes.levels);
+                context.go(_quitRoute);
               },
-              child: Text(sheetContext.l10n.quitToLevels),
+              child: Text(
+                widget.challengeId == null
+                    ? sheetContext.l10n.quitToLevels
+                    : sheetContext.l10n.quitToChallenges,
+              ),
             ),
           ],
         );
@@ -193,11 +294,15 @@ class _GamePageState extends ConsumerState<GamePage>
             return GameSheetScaffold(
               children: [
                 Text(
-                  sheetContext.l10n.gameOver,
+                  _cleared
+                      ? sheetContext.l10n.challengeCleared
+                      : sheetContext.l10n.gameOver,
                   style:
                       Theme.of(sheetContext).textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.w800,
-                            color: AppColors.brandDanger,
+                            color: _cleared
+                                ? AppColors.brandPrimaryLight
+                                : AppColors.brandDanger,
                           ),
                 ),
                 const SizedBox(height: 8),
@@ -206,7 +311,7 @@ class _GamePageState extends ConsumerState<GamePage>
                   '${engineSnapshot.bestCombo > 1 ? sheetContext.l10n.bestComboSuffix(engineSnapshot.bestCombo) : ''}',
                   style: Theme.of(sheetContext).textTheme.titleMedium,
                 ),
-                if (result?.isNewBest == true) ...[
+                if (result?.isNewBest == true || _challengeIsNewBest) ...[
                   const SizedBox(height: 8),
                   Text(
                     sheetContext.l10n.newPersonalBest,
@@ -287,6 +392,7 @@ class _GamePageState extends ConsumerState<GamePage>
                     onPressed: () {
                       Navigator.pop(sheetContext);
                       _submitted = false;
+                _cleared = false;
                       _submitResult = null;
                       _highestBeforeRun = ref
                           .read(profileControllerProvider)
@@ -300,7 +406,7 @@ class _GamePageState extends ConsumerState<GamePage>
                 OutlinedButton(
                   onPressed: () {
                     Navigator.pop(sheetContext);
-                    context.go(AppRoutes.levels);
+                    context.go(_quitRoute);
                   },
                   child: Text(sheetContext.l10n.backToLevels),
                 ),
@@ -370,8 +476,14 @@ class _GamePageState extends ConsumerState<GamePage>
   }
 
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
-    if (event is! KeyDownEvent) return KeyEventResult.ignored;
     final logicalKey = event.logicalKey;
+    final isShift = logicalKey == LogicalKeyboardKey.shiftLeft ||
+        logicalKey == LogicalKeyboardKey.shiftRight;
+    if (isShift && _controller.spec.dashEnabled) {
+      _controller.setDashHeld(event is KeyDownEvent);
+      return KeyEventResult.handled;
+    }
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
     if (logicalKey == LogicalKeyboardKey.escape || logicalKey == LogicalKeyboardKey.space) {
       if (_controller.snapshot.phase == GamePhase.running) {
         _showPauseSheet();
@@ -381,8 +493,10 @@ class _GamePageState extends ConsumerState<GamePage>
       return KeyEventResult.handled;
     }
     if (logicalKey == LogicalKeyboardKey.enter &&
-        _controller.snapshot.phase == GamePhase.gameOver) {
+        (_controller.snapshot.phase == GamePhase.gameOver ||
+            _controller.snapshot.phase == GamePhase.cleared)) {
       _submitted = false;
+      _cleared = false;
       _submitResult = null;
       _controller.restart();
       return KeyEventResult.handled;
@@ -499,6 +613,17 @@ class _GamePageState extends ConsumerState<GamePage>
           level: engineSnapshot.level,
           combo: engineSnapshot.comboCount,
           onPause: _showPauseSheet,
+          challengeTitle: widget.challengeId == null
+              ? null
+              : ChallengesCatalog.title(
+                  engineSnapshot.spec,
+                  context.l10n,
+                ),
+          remainingSeconds: engineSnapshot.remainingSeconds,
+          targetsEaten: engineSnapshot.targetsEaten,
+          targetCount: engineSnapshot.spec.targetCount,
+          shieldCharges: engineSnapshot.shieldCharges,
+          length: engineSnapshot.snake.length,
         ),
         if (showHints && engineSnapshot.itemsEaten < 3)
           Padding(
@@ -531,6 +656,14 @@ class _GamePageState extends ConsumerState<GamePage>
                 )
               : _buildBoard(engineSnapshot, isDark),
         ),
+        if (engineSnapshot.spec.dashEnabled)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: DashHoldButton(onChanged: _controller.setDashHeld),
+            ),
+          ),
       ],
     );
   }
@@ -560,8 +693,13 @@ class _GamePageState extends ConsumerState<GamePage>
                 ),
                 const SizedBox(height: 8),
                 HudChip(
-                  label: context.l10n.level,
-                  value: '${engineSnapshot.level}',
+                  label: engineSnapshot.remainingSeconds == null
+                      ? context.l10n.level
+                      : context.l10n.timer,
+                  value: engineSnapshot.remainingSeconds == null
+                      ? '${engineSnapshot.level}'
+                      : '${engineSnapshot.remainingSeconds}',
+                  accent: (engineSnapshot.remainingSeconds ?? 99) <= 10,
                 ),
                 if (engineSnapshot.comboCount > 1) ...[
                   const SizedBox(height: 8),

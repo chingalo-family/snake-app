@@ -1,17 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:snake_app/core/constants/levels.dart';
+import 'package:snake_app/core/constants/challenges.dart';
 import 'package:snake_app/core/game/snake_engine.dart';
 import 'package:snake_app/core/models/direction.dart';
+import 'package:snake_app/core/models/run_spec.dart';
 
 class GameController extends ChangeNotifier {
-  GameController({required this.level}) {
-    _engine = SnakeEngine(level: level);
-    _tickMs = LevelsCatalog.byLevel(level).tickMs;
+  GameController({
+    required this.level,
+    this.challengeId,
+    RunSpec? spec,
+    String? ghostTrace,
+    DateTime? challengeDate,
+  }) {
+    final resolved = spec ??
+        (challengeId == null
+            ? null
+            : ChallengesCatalog.byId(challengeId!, date: challengeDate));
+    _engine = SnakeEngine(
+      level: level,
+      spec: resolved,
+      ghostTrace: ghostTrace,
+    );
+    _tickMs = _engine.currentTickMs;
   }
 
   final int level;
+  final String? challengeId;
   late SnakeEngine _engine;
   late int _tickMs;
   Timer? _timer;
@@ -20,6 +36,10 @@ class GameController extends ChangeNotifier {
   bool _disposed = false;
 
   SnakeEngineSnapshot get snapshot => _engine.snapshot;
+
+  RunSpec get spec => _engine.spec;
+
+  String get ghostTrace => _engine.ghostTrace;
 
   void start() {
     _engine.start();
@@ -52,6 +72,14 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDashHeld(bool held) {
+    _engine.setDashHeld(held);
+    if (snapshot.phase == GamePhase.running) {
+      _restartTimer();
+    }
+    notifyListeners();
+  }
+
   bool queueDirection(Direction direction) {
     final changed = _engine.queueDirection(direction);
     if (changed && snapshot.phase == GamePhase.running && _timer == null) {
@@ -72,7 +100,6 @@ class GameController extends ChangeNotifier {
     });
   }
 
-  
   void applyGridSize({required int columns, required int rows}) {
     if (_disposed) return;
     if (snapshot.columns == columns && snapshot.rows == rows) return;
@@ -94,13 +121,17 @@ class GameController extends ChangeNotifier {
 
   void _restartTimer() {
     _timer?.cancel();
+    _tickMs = _engine.currentTickMs;
     _timer = Timer.periodic(Duration(milliseconds: _tickMs), (_) {
       if (_disposed) return;
       final eatEvent = _engine.tick();
       lastEatEvent = eatEvent;
-      if (_engine.snapshot.phase == GamePhase.gameOver) {
+      final phase = _engine.snapshot.phase;
+      if (phase == GamePhase.gameOver || phase == GamePhase.cleared) {
         _timer?.cancel();
         _timer = null;
+      } else if (_engine.currentTickMs != _tickMs) {
+        _restartTimer();
       }
       notifyListeners();
     });

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:snake_app/core/constants/app_constants.dart';
+import 'package:snake_app/core/constants/challenges.dart';
+import 'package:snake_app/core/models/run_spec.dart';
 import 'package:snake_app/core/constants/collectibles.dart';
 import 'package:snake_app/core/constants/levels.dart';
 import 'package:snake_app/core/game/obstacle_generator.dart';
@@ -289,6 +291,52 @@ void main() {
       expect(event!.points, food.score);
       expect(engine.snapshot.score, food.score);
       expect(engine.snapshot.snake.length, 4);
+    });
+  });
+
+  group('Challenge rules', () {
+    test('sprint clock expiry clears and pause freezes the clock', () {
+      final engine = SnakeEngine(
+        level: 1,
+        spec: ChallengesCatalog.byId('sprint-60'),
+        random: Random(3),
+      );
+      engine.start();
+      engine.pause();
+      final frozen = engine.snapshot.remainingTicks;
+      engine.tick();
+      expect(engine.snapshot.remainingTicks, frozen);
+      engine.resume();
+      engine.debugSetRemainingTicks(1);
+      engine.tick();
+      expect(engine.snapshot.phase, GamePhase.cleared);
+    });
+
+    test('shield absorbs one obstacle hit', () {
+      final engine = SnakeEngine(
+        level: 1,
+        spec: ChallengesCatalog.byId('shield-dash'),
+        random: Random(5),
+      );
+      final ahead = engine.snapshot.head + 1;
+      engine.debugSetObstacles({ahead});
+      engine.debugPlaceFood(ahead + 2, CollectiblesCatalog.all.first);
+      engine.start();
+      engine.tick();
+      expect(engine.snapshot.phase, GamePhase.running);
+      expect(engine.snapshot.shieldCharges, 0);
+      engine.tick();
+      expect(engine.snapshot.phase, GamePhase.gameOver);
+    });
+
+    test('zen has no timer', () {
+      final engine = SnakeEngine(
+        level: 1,
+        spec: ChallengesCatalog.byId('zen'),
+        random: Random(6),
+      );
+      expect(engine.snapshot.remainingTicks, isNull);
+      expect(engine.spec.objective, ObjectiveKind.endless);
     });
   });
 }

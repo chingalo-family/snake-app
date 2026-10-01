@@ -4,6 +4,7 @@ import 'package:snake_app/core/game/snake_engine.dart';
 import 'package:snake_app/core/models/direction.dart';
 import 'package:snake_app/core/models/game_mode.dart';
 import 'package:snake_app/core/models/grid_metrics.dart';
+import 'package:snake_app/core/models/run_spec.dart';
 import 'package:snake_app/core/theme/app_colors.dart';
 import 'package:snake_app/core/theme/snake_skins.dart';
 
@@ -186,6 +187,12 @@ class BoardPainter extends CustomPainter {
       canvas.drawCircle(eyeB, eyeRadius, eyePaint);
     }
 
+    _paintSpecials(canvas, metrics);
+
+    if (engineSnapshot.foodIndex < 0) {
+      _paintLantern(canvas, metrics);
+      return;
+    }
     final (foodRowIndex, foodColumnIndex) =
         metrics.rowColumnFor(engineSnapshot.foodIndex);
     final foodCenter = Offset(
@@ -221,6 +228,131 @@ class BoardPainter extends CustomPainter {
         foodCenter.dy - foodIconPainter.height / 2,
       ),
     );
+    _paintLantern(canvas, metrics);
+  }
+
+  void _paintSpecials(Canvas canvas, GridMetrics metrics) {
+    void iconAt(int cellIndex, String icon, {Color? ring}) {
+      final (rowIndex, columnIndex) = metrics.rowColumnFor(cellIndex);
+      final center = Offset(
+        columnIndex * metrics.cellSize + metrics.cellSize / 2,
+        rowIndex * metrics.cellSize + metrics.cellSize / 2,
+      );
+      if (ring != null) {
+        canvas.drawCircle(
+          center,
+          metrics.cellSize * 0.42,
+          Paint()
+            ..color = ring
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 2,
+        );
+      }
+      final painter = TextPainter(
+        text: TextSpan(
+          text: icon,
+          style: TextStyle(fontSize: metrics.cellSize * 0.55),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      painter.paint(
+        canvas,
+        Offset(center.dx - painter.width / 2, center.dy - painter.height / 2),
+      );
+    }
+
+    final burrowA = engineSnapshot.burrowA;
+    final burrowB = engineSnapshot.burrowB;
+    if (burrowA != null) {
+      iconAt(burrowA, '○', ring: AppColors.brandSecondary);
+    }
+    if (burrowB != null) {
+      iconAt(burrowB, '○', ring: AppColors.brandSecondary);
+    }
+    final bitter = engineSnapshot.bitterIndex;
+    if (bitter != null) iconAt(bitter, SnakeEngine.bitterFood.icon);
+    final bonus = engineSnapshot.bonusIndex;
+    if (bonus != null) {
+      iconAt(bonus, SnakeEngine.bonusFood.icon, ring: AppColors.brandSecondary);
+    }
+    final keyIndex = engineSnapshot.keyIndex;
+    if (keyIndex != null) iconAt(keyIndex, SnakeEngine.keyFood.icon);
+    final lockIndex = engineSnapshot.lockIndex;
+    if (lockIndex != null) iconAt(lockIndex, SnakeEngine.lockFood.icon);
+    for (final pellet in engineSnapshot.pelletIndexes) {
+      iconAt(pellet, SnakeEngine.pelletFood.icon);
+    }
+    final ghost = engineSnapshot.ghostCell;
+    if (ghost != null && ghost >= 0 && ghost < metrics.columns * metrics.rows) {
+      final (rowIndex, columnIndex) = metrics.rowColumnFor(ghost);
+      canvas.drawCircle(
+        Offset(
+          columnIndex * metrics.cellSize + metrics.cellSize / 2,
+          rowIndex * metrics.cellSize + metrics.cellSize / 2,
+        ),
+        metrics.cellSize * 0.28,
+        Paint()..color = AppColors.brandInfo.withValues(alpha: 0.35),
+      );
+    }
+    for (final bot in engineSnapshot.botSnakes) {
+      for (final cellIndex in bot) {
+        if (cellIndex < 0 || cellIndex >= metrics.columns * metrics.rows) {
+          continue;
+        }
+        final (rowIndex, columnIndex) = metrics.rowColumnFor(cellIndex);
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(
+              columnIndex * metrics.cellSize + 3,
+              rowIndex * metrics.cellSize + 3,
+              metrics.cellSize - 6,
+              metrics.cellSize - 6,
+            ),
+            const Radius.circular(4),
+          ),
+          Paint()..color = AppColors.brandDanger.withValues(alpha: 0.75),
+        );
+      }
+    }
+    if (engineSnapshot.shieldCharges > 0) {
+      final (rowIndex, columnIndex) =
+          metrics.rowColumnFor(engineSnapshot.head);
+      canvas.drawCircle(
+        Offset(
+          columnIndex * metrics.cellSize + metrics.cellSize / 2,
+          rowIndex * metrics.cellSize + metrics.cellSize / 2,
+        ),
+        metrics.cellSize * 0.48,
+        Paint()
+          ..color = AppColors.brandInfo
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2,
+      );
+    }
+  }
+
+  void _paintLantern(Canvas canvas, GridMetrics metrics) {
+    if (engineSnapshot.spec.visibility != VisibilityRule.lantern) return;
+    final head = engineSnapshot.head;
+    final headRow = head ~/ metrics.columns;
+    final headColumn = head % metrics.columns;
+    final dim = Paint()..color = const Color(0xCC06140F);
+    for (var rowIndex = 0; rowIndex < metrics.rows; rowIndex++) {
+      for (var columnIndex = 0; columnIndex < metrics.columns; columnIndex++) {
+        final distance =
+            (rowIndex - headRow).abs() + (columnIndex - headColumn).abs();
+        if (distance <= 4) continue;
+        canvas.drawRect(
+          Rect.fromLTWH(
+            columnIndex * metrics.cellSize,
+            rowIndex * metrics.cellSize,
+            metrics.cellSize,
+            metrics.cellSize,
+          ),
+          dim,
+        );
+      }
+    }
   }
 
   void _drawDashedRect(

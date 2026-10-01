@@ -124,6 +124,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                             welcomeBanner: welcomeBanner,
                             onOpenScores: () =>
                                 _openWithHaptic(AppRoutes.scores),
+                            onOpenChallenges: () =>
+                                _openWithHaptic(AppRoutes.challenges),
                             onOpenProfile: () =>
                                 _openWithHaptic(AppRoutes.profile),
                             onOpenSettings: () =>
@@ -139,6 +141,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                           welcomeBanner: welcomeBanner,
                           onOpenScores: () =>
                               _openWithHaptic(AppRoutes.scores),
+                          onOpenChallenges: () =>
+                              _openWithHaptic(AppRoutes.challenges),
                           onOpenProfile: () =>
                               _openWithHaptic(AppRoutes.profile),
                           onOpenSettings: () =>
@@ -171,6 +175,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       hasProfile: profileState.hasProfile,
                       l10n: l10n,
                       onOpenScores: () => _openWithHaptic(AppRoutes.scores),
+                      onOpenChallenges: () =>
+                          _openWithHaptic(AppRoutes.challenges),
                       onOpenProfile: () => _openWithHaptic(AppRoutes.profile),
                       onOpenSettings: () => _openWithHaptic(AppRoutes.settings),
                     ),

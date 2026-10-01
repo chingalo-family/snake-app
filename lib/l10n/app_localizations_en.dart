@@ -293,13 +293,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailInvalid => 'Enter a valid email address';
 
   @override
-  String get phoneInvalid => 'Enter a valid phone number (7–15 digits)';
+  String get phoneInvalid => 'Enter a valid phone number (7-15 digits)';
 
   @override
   String get profileSaved => 'Profile saved locally';
 
   @override
-  String get profileSavedWithScore => 'Profile saved — your score was kept';
+  String get profileSavedWithScore => 'Profile saved - your score was kept';
 
   @override
   String get selectAvatar => 'Choose avatar';
@@ -522,7 +522,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeMazeTip => 'Rocks end the run.';
 
   @override
-  String get modeWrapMazeTip => 'Edges loop — rocks still end the run.';
+  String get modeWrapMazeTip => 'Edges loop - rocks still end the run.';
 
   @override
   String get onboardingMoveReverseHint => 'You can’t reverse into yourself.';
@@ -588,7 +588,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareSavedToDisk =>
-      'Image saved to Downloads/Snake App — open it from there to share.';
+      'Image saved to Downloads/Snake App - open it from there to share.';
 
   @override
   String get sharePreviewTitle => 'Share post';
@@ -654,7 +654,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyQuote3 =>
-      'Collect what you can reach — leave the rest for next run.';
+      'Collect what you can reach - leave the rest for next run.';
 
   @override
   String get dailyQuote4 => 'Patience on the edges keeps the combo alive.';
@@ -670,7 +670,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyQuote7 => 'Turn early. Celebrate later.';
 
   @override
-  String get dailyQuote8 => 'The board is fair — keep your path clear.';
+  String get dailyQuote8 => 'The board is fair - keep your path clear.';
 
   @override
   String get dailyQuote9 => 'Slow is smooth. Smooth is fast.';
@@ -685,7 +685,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyQuote12 => 'One more careful bite. That’s enough.';
 
   @override
-  String get dailyQuote13 => 'Length is pride — space is wisdom.';
+  String get dailyQuote13 => 'Length is pride - space is wisdom.';
 
   @override
   String get dailyQuote14 => 'Breathe. Swipe. Grow.';
@@ -707,13 +707,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyQuote20 =>
-      'A green path is a kind path — leave room to turn.';
+      'A green path is a kind path - leave room to turn.';
 
   @override
   String get dailyQuote21 => 'Epic food is loud. Soft turns win.';
 
   @override
-  String get dailyQuote22 => 'You don’t need perfect — just another try.';
+  String get dailyQuote22 => 'You don’t need perfect - just another try.';
 
   @override
   String get dailyQuote23 =>
@@ -735,5 +735,168 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyQuote28 => 'The snake grows; so does your judgment.';
 
   @override
-  String get dailyQuote29 => 'Open again anytime — a new tip is waiting.';
+  String get dailyQuote29 => 'Open again anytime - a new tip is waiting.';
+
+  @override
+  String get challenges => 'Challenges';
+
+  @override
+  String get challengesIntro =>
+      'Same snake, new reasons to play. Campaign stays under Play.';
+
+  @override
+  String get quitToChallenges => 'Quit to Challenges';
+
+  @override
+  String get challengeCleared => 'Cleared';
+
+  @override
+  String get timer => 'Time';
+
+  @override
+  String get lengthLabel => 'Length';
+
+  @override
+  String get targets => 'Targets';
+
+  @override
+  String get shield => 'Shield';
+
+  @override
+  String get dashHold => 'Dash';
+
+  @override
+  String get handToNext => 'Hand the phone to the next player';
+
+  @override
+  String get continuePlay => 'Continue';
+
+  @override
+  String get showGhost => 'Show ghost';
+
+  @override
+  String get showGhostSubtitle =>
+      'Faint replay of your best path on this device';
+
+  @override
+  String get challengeScores => 'Challenges';
+
+  @override
+  String get playChallengePrompt => 'Play a challenge to save a best here.';
+
+  @override
+  String get noChallengeBest => 'No best yet';
+
+  @override
+  String bestScoreValue(int score) {
+    return 'Best $score';
+  }
+
+  @override
+  String get sectionTimed => 'Timed';
+
+  @override
+  String get sectionPractice => 'Practice';
+
+  @override
+  String get sectionBoard => 'Board';
+
+  @override
+  String get sectionClutch => 'Clutch';
+
+  @override
+  String get sectionToday => 'This device, today';
+
+  @override
+  String get sectionExpert => 'Expert';
+
+  @override
+  String get tipTimed => 'Score as much as you can before the clock ends.';
+
+  @override
+  String get tipZen => 'No levels - just grow.';
+
+  @override
+  String get tipCollector => 'Eat the marked targets to clear.';
+
+  @override
+  String get tipClearGrove => 'Eat every nut in the grove.';
+
+  @override
+  String get tipPeaceful => 'Fill the board. You cannot crash.';
+
+  @override
+  String get tipArena => 'Outlast the other snakes on this device.';
+
+  @override
+  String get tipScore => 'Grow, collect, and keep moving.';
+
+  @override
+  String get challengeSprint60 => 'Sprint 60s';
+
+  @override
+  String get challengeSprint90 => 'Sprint 90s';
+
+  @override
+  String get challengeSprintOpen => 'Sprint wrap';
+
+  @override
+  String get challengeZen => 'Zen';
+
+  @override
+  String get challengeZenWrap => 'Zen wrap';
+
+  @override
+  String get challengeCollector => 'Collector';
+
+  @override
+  String get challengeBonus => 'Bonus critter';
+
+  @override
+  String get challengeGrowing => 'Growing walls';
+
+  @override
+  String get challengeBurrows => 'Burrows';
+
+  @override
+  String get challengeBitter => 'Bitter fruit';
+
+  @override
+  String get challengeKey => 'Key fruit';
+
+  @override
+  String get challengeShieldDash => 'Shield and Dash';
+
+  @override
+  String get challengeHotSeat => 'Hot-seat sprint';
+
+  @override
+  String get challengeClearGrove => 'Clear the grove';
+
+  @override
+  String get challengeShed => 'Shed skin';
+
+  @override
+  String get challengePeaceful => 'Peaceful fill';
+
+  @override
+  String get challengeFleeing => 'Fleeing food';
+
+  @override
+  String get challengeLantern => 'Lantern';
+
+  @override
+  String get challengeVine => 'Vine trail';
+
+  @override
+  String get challengeMixBitter => 'Wrap and bitter fruit';
+
+  @override
+  String get challengeMixBonus => 'Maze and bonus';
+
+  @override
+  String get challengeArena => 'Grove arena';
+
+  @override
+  String get challengeDaily => 'Today\'s grove';
 }

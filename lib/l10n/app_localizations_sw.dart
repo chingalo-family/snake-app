@@ -294,14 +294,14 @@ class AppLocalizationsSw extends AppLocalizations {
   String get emailInvalid => 'Weka barua pepe sahihi';
 
   @override
-  String get phoneInvalid => 'Weka nambari ya simu sahihi (tarakimu 7–15)';
+  String get phoneInvalid => 'Weka nambari ya simu sahihi (tarakimu 7-15)';
 
   @override
   String get profileSaved => 'Wasifu umehifadhiwa kwenye kifaa';
 
   @override
   String get profileSavedWithScore =>
-      'Wasifu umehifadhiwa — alama yako imehifadhiwa';
+      'Wasifu umehifadhiwa - alama yako imehifadhiwa';
 
   @override
   String get selectAvatar => 'Chagua avatar';
@@ -526,7 +526,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get modeMazeTip => 'Mawe yanakomesha mchezo.';
 
   @override
-  String get modeWrapMazeTip => 'Kingo zinazunguka — mawe bado yanakomesha.';
+  String get modeWrapMazeTip => 'Kingo zinazunguka - mawe bado yanakomesha.';
 
   @override
   String get onboardingMoveReverseHint => 'Huwezi kugeuka nyuma moja kwa moja.';
@@ -592,7 +592,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get shareSavedToDisk =>
-      'Picha imehifadhiwa kwenye Downloads/Snake App — fungua hapo ili kushiriki.';
+      'Picha imehifadhiwa kwenye Downloads/Snake App - fungua hapo ili kushiriki.';
 
   @override
   String get sharePreviewTitle => 'Shiriki chapisho';
@@ -659,7 +659,7 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get dailyQuote3 =>
-      'Kusanya unachoweza kufikia — wacha mengine kwa mchezo ujao.';
+      'Kusanya unachoweza kufikia - wacha mengine kwa mchezo ujao.';
 
   @override
   String get dailyQuote4 => 'Subira kwenye kingo huweka mfululizo hai.';
@@ -675,7 +675,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get dailyQuote7 => 'Geuka mapema. Sherehekea baadaye.';
 
   @override
-  String get dailyQuote8 => 'Uwanja ni wa haki — weka njia wazi.';
+  String get dailyQuote8 => 'Uwanja ni wa haki - weka njia wazi.';
 
   @override
   String get dailyQuote9 => 'Polepole ni laini. Laini ni haraka.';
@@ -690,7 +690,7 @@ class AppLocalizationsSw extends AppLocalizations {
   String get dailyQuote12 => 'Kilo kingine cha uangalifu. Kinatosha.';
 
   @override
-  String get dailyQuote13 => 'Urefu ni fahari — nafasi ni hekima.';
+  String get dailyQuote13 => 'Urefu ni fahari - nafasi ni hekima.';
 
   @override
   String get dailyQuote14 => 'Pumua. Telezesha. Kua.';
@@ -713,14 +713,14 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get dailyQuote20 =>
-      'Njia ya kijani ni njia ya fadhili — acha nafasi ya kugeuka.';
+      'Njia ya kijani ni njia ya fadhili - acha nafasi ya kugeuka.';
 
   @override
   String get dailyQuote21 =>
       'Chakula cha kipekee ni cha kelele. Zamu laini hushinda.';
 
   @override
-  String get dailyQuote22 => 'Huhitaji ukamilifu — jaribio jingine tu.';
+  String get dailyQuote22 => 'Huhitaji ukamilifu - jaribio jingine tu.';
 
   @override
   String get dailyQuote23 => 'Fikiria uwanja kabla ya kuzunguka kingo.';
@@ -742,5 +742,169 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get dailyQuote29 =>
-      'Fungua tena wakati wowote — kidokezo kipya kinakungoja.';
+      'Fungua tena wakati wowote - kidokezo kipya kinakungoja.';
+
+  @override
+  String get challenges => 'Changamoto';
+
+  @override
+  String get challengesIntro =>
+      'Nyoka yule yule, sababu mpya za kucheza. Kampeni inabaki chini ya Cheza.';
+
+  @override
+  String get quitToChallenges => 'Rudi kwenye changamoto';
+
+  @override
+  String get challengeCleared => 'Umeshinda';
+
+  @override
+  String get timer => 'Muda';
+
+  @override
+  String get lengthLabel => 'Urefu';
+
+  @override
+  String get targets => 'Malengo';
+
+  @override
+  String get shield => 'Ngao';
+
+  @override
+  String get dashHold => 'Kimbia';
+
+  @override
+  String get handToNext => 'Mpe simu mchezaji anayefuata';
+
+  @override
+  String get continuePlay => 'Endelea';
+
+  @override
+  String get showGhost => 'Onyesha kivuli';
+
+  @override
+  String get showGhostSubtitle =>
+      'Njia hafifu ya alama yako bora kwenye kifaa hiki';
+
+  @override
+  String get challengeScores => 'Changamoto';
+
+  @override
+  String get playChallengePrompt =>
+      'Cheza changamoto ili kuhifadhi alama bora hapa.';
+
+  @override
+  String get noChallengeBest => 'Bado hakuna alama bora';
+
+  @override
+  String bestScoreValue(int score) {
+    return 'Bora $score';
+  }
+
+  @override
+  String get sectionTimed => 'Kwa muda';
+
+  @override
+  String get sectionPractice => 'Mazoezi';
+
+  @override
+  String get sectionBoard => 'Uwanja';
+
+  @override
+  String get sectionClutch => 'Uokoaji';
+
+  @override
+  String get sectionToday => 'Kifaa hiki, leo';
+
+  @override
+  String get sectionExpert => 'Mtaalamu';
+
+  @override
+  String get tipTimed => 'Pata alama nyingi kabla muda haujaisha.';
+
+  @override
+  String get tipZen => 'Hakuna viwango - kua tu.';
+
+  @override
+  String get tipCollector => 'Kula malengo yaliyowekwa ili kushinda.';
+
+  @override
+  String get tipClearGrove => 'Kula kila kokwa kwenye shamba.';
+
+  @override
+  String get tipPeaceful => 'Jaza uwanja. Huwezi kugonga.';
+
+  @override
+  String get tipArena => 'Dumu kuliko nyoka wengine kwenye kifaa hiki.';
+
+  @override
+  String get tipScore => 'Kua, kusanya, na endelea kusonga.';
+
+  @override
+  String get challengeSprint60 => 'Mbio za sekunde 60';
+
+  @override
+  String get challengeSprint90 => 'Mbio za sekunde 90';
+
+  @override
+  String get challengeSprintOpen => 'Mbio za kuzunguka';
+
+  @override
+  String get challengeZen => 'Utulivu';
+
+  @override
+  String get challengeZenWrap => 'Utulivu unaozunguka';
+
+  @override
+  String get challengeCollector => 'Mkusanyaji';
+
+  @override
+  String get challengeBonus => 'Mnyama wa bonasi';
+
+  @override
+  String get challengeGrowing => 'Kuta zinazokua';
+
+  @override
+  String get challengeBurrows => 'Mashimo';
+
+  @override
+  String get challengeBitter => 'Tunda chungu';
+
+  @override
+  String get challengeKey => 'Tunda la ufunguo';
+
+  @override
+  String get challengeShieldDash => 'Ngao na mbio';
+
+  @override
+  String get challengeHotSeat => 'Mbio za kupokezana';
+
+  @override
+  String get challengeClearGrove => 'Safisha shamba';
+
+  @override
+  String get challengeShed => 'Ngozi iliyomwagika';
+
+  @override
+  String get challengePeaceful => 'Kujaza kwa amani';
+
+  @override
+  String get challengeFleeing => 'Chakula kinachokimbia';
+
+  @override
+  String get challengeLantern => 'Taa';
+
+  @override
+  String get challengeVine => 'Njia ya mzabibu';
+
+  @override
+  String get challengeMixBitter => 'Kuzunguka na tunda chungu';
+
+  @override
+  String get challengeMixBonus => 'Mazingira na bonasi';
+
+  @override
+  String get challengeArena => 'Uwanja wa shamba';
+
+  @override
+  String get challengeDaily => 'Shamba la leo';
 }

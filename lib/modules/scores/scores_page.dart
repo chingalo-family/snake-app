@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/app/providers.dart';
+import 'package:snake_app/core/constants/challenges.dart';
 import 'package:snake_app/core/l10n/l10n_extensions.dart';
 import 'package:snake_app/core/models/player_profile.dart';
 import 'package:snake_app/core/services/share_score_service.dart';
@@ -189,6 +190,15 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
+                        l10n.challengeScores,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _ChallengeBests(profileId: profile.profile!.id),
+                      const SizedBox(height: 16),
+                      Text(
                         l10n.perLevel,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
@@ -234,6 +244,43 @@ class _ScoresPageState extends ConsumerState<ScoresPage> {
                 },
               ),
       ),
+    );
+  }
+}
+
+class _ChallengeBests extends ConsumerWidget {
+  const _ChallengeBests({required this.profileId});
+
+  final int profileId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final bests = ref.watch(challengeProgressProvider).bestsFor(profileId);
+    final recorded = ChallengesCatalog.all(DateTime.now())
+        .where((spec) => (bests[spec.id] ?? 0) > 0)
+        .toList();
+    if (recorded.isEmpty) {
+      return SurfaceCard(
+        child: Text(l10n.playChallengePrompt),
+      );
+    }
+    return Column(
+      children: [
+        for (final spec in recorded)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: SurfaceCard(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  Expanded(child: Text(ChallengesCatalog.title(spec, l10n))),
+                  Text('${bests[spec.id]}'),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

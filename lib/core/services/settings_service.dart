@@ -15,6 +15,7 @@ class AppSettings {
     required this.onboardingCompleted,
     required this.snakeSkinId,
     required this.showDailyTip,
+    required this.showGhost,
   });
 
   final bool sfxEnabled;
@@ -26,6 +27,7 @@ class AppSettings {
   final bool onboardingCompleted;
   final String snakeSkinId;
   final bool showDailyTip;
+  final bool showGhost;
 
   Locale get locale => AppLocale.fromCode(localeCode);
 
@@ -41,6 +43,7 @@ class AppSettings {
     bool? onboardingCompleted,
     String? snakeSkinId,
     bool? showDailyTip,
+    bool? showGhost,
   }) {
     return AppSettings(
       sfxEnabled: sfxEnabled ?? this.sfxEnabled,
@@ -52,6 +55,7 @@ class AppSettings {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       snakeSkinId: snakeSkinId ?? this.snakeSkinId,
       showDailyTip: showDailyTip ?? this.showDailyTip,
+      showGhost: showGhost ?? this.showGhost,
     );
   }
 
@@ -65,6 +69,7 @@ class AppSettings {
     onboardingCompleted: false,
     snakeSkinId: 'forest',
     showDailyTip: true,
+    showGhost: true,
   );
 }
 
@@ -98,6 +103,7 @@ class SettingsService {
       snakeSkinId: SnakeSkinsCatalog.byId(snakeSkinId).id,
       showDailyTip:
           _preferenceService.getBool(PreferenceKeys.showDailyTip) ?? true,
+      showGhost: _preferenceService.getBool(PreferenceKeys.showGhost) ?? true,
     );
   }
 
@@ -137,6 +143,10 @@ class SettingsService {
     await _preferenceService.setBool(
       PreferenceKeys.showDailyTip,
       settings.showDailyTip,
+    );
+    await _preferenceService.setBool(
+      PreferenceKeys.showGhost,
+      settings.showGhost,
     );
   }
 

@@ -115,6 +115,13 @@ class SettingsPage extends ConsumerWidget {
                     value: settings.showDailyTip,
                     onChanged: controller.setShowDailyTip,
                   ),
+                  SettingsToggleTile(
+                    icon: Icons.blur_on_outlined,
+                    title: l10n.showGhost,
+                    subtitle: l10n.showGhostSubtitle,
+                    value: settings.showGhost,
+                    onChanged: controller.setShowGhost,
+                  ),
                   SettingsNavTile(
                     icon: Icons.pets_rounded,
                     title: l10n.snakeLook,

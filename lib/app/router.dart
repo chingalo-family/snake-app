@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:snake_app/app/routes.dart';
 import 'package:snake_app/modules/about/about_page.dart';
+import 'package:snake_app/modules/challenges/challenges_page.dart';
 import 'package:snake_app/modules/game/game_page.dart';
 import 'package:snake_app/modules/home/home_page.dart';
 import 'package:snake_app/modules/levels/levels_page.dart';
@@ -28,6 +29,17 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.levels,
       builder: (context, state) => const LevelsPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.challenges,
+      builder: (context, state) => const ChallengesPage(),
+    ),
+    GoRoute(
+      path: '/challenge/:id',
+      builder: (context, state) {
+        final challengeId = state.pathParameters['id'] ?? 'sprint-60';
+        return GamePage(challengeId: challengeId);
+      },
     ),
     GoRoute(
       path: '/play/:level',
