@@ -1,4 +1,4 @@
-name: Desktop — Build (Windows, macOS, Linux)
+name: Desktop - Build (Windows, macOS, Linux)
 
 on:
   workflow_dispatch:
@@ -294,9 +294,9 @@ jobs:
             echo
             echo "## How to install"
             echo
-            echo "1. **Windows** — download \`${WIN_ZIP}\`, extract, run \`snake_app.exe\`"
-            echo "2. **macOS** — download \`${MAC_ZIP}\`, extract, open \`Snake App.app\` (right-click → Open if Gatekeeper blocks unsigned builds)"
-            echo "3. **Linux** — download \`${LINUX_ZIP}\`, extract the \`bundle\` folder, run \`./snake_app\`"
+            echo "1. **Windows** - download \`${WIN_ZIP}\`, extract, run \`snake_app.exe\`"
+            echo "2. **macOS** - download \`${MAC_ZIP}\`, extract, open \`Snake App.app\` (right-click → Open if Gatekeeper blocks unsigned builds)"
+            echo "3. **Linux** - download \`${LINUX_ZIP}\`, extract the \`bundle\` folder, run \`./snake_app\`"
             echo
             echo "---"
             echo "Package: \`chingalo.family.snake_app\` · Tag: \`${TAG}\`"
@@ -317,7 +317,7 @@ jobs:
           set -euo pipefail
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release ${TAG} already exists — updating notes and replacing assets."
+            echo "Release ${TAG} already exists - updating notes and replacing assets."
             gh release edit "$TAG" \
               --title "$TITLE" \
               --notes-file release_notes.md \

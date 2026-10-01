@@ -2,10 +2,10 @@ blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
     url: https://github.com/chingalo-family/snake-app/blob/main/SECURITY.md
-    about: Report security issues privately to chingalo.family@gmail.com — do not file a public issue.
-  - name: Getting started
-    url: https://github.com/chingalo-family/snake-app/blob/main/docs/GETTING_STARTED.md
-    about: Clone, run, test, and project layout.
+    about: Report security issues privately to chingalo.family@gmail.com - do not file a public issue.
+  - name: Technical requirements
+    url: https://github.com/chingalo-family/snake-app/blob/main/docs/TECHNICAL_REQUIREMENTS.md
+    about: Stack, tests, CI, and local data.
   - name: Marketing site
     url: https://github.com/chingalo-family/snake-app-website
     about: Public website and privacy policy for Snake App.

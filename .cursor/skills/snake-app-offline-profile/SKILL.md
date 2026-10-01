@@ -8,15 +8,16 @@ description: Snake App local profile and offline high-score/level persistence. U
 Use when working on local player profile, offline score/level persistence, or the “create profile to save” gate.
 
 ## Read first
-- `docs/IMPLEMENTATION_PLAN.md` §4.9
-- `docs/UX_DESIGN.md` (Profile + Game over sheets)
+- `docs/IMPLEMENTATION_PLAN.md`
+- `docs/BACKEND_SCHEMA.md`
+- `docs/APP_FLOW.md` (Profile and game over)
 - Project skill: `.cursor/skills/snake-app-project/SKILL.md`
 - Inspiration: `duka_mkononi_app` Drift + PreferenceService split
 
 ## Product rules
 1. **Play without profile is allowed**
 2. **Saving high scores and highest levels requires a profile**
-3. Storage is **local** — offline-first
+3. Storage is **local** - offline-first
 4. No DHIS2 / remote auth dependency for MVP core saves
 
 ## Storage split (Duka-style)
@@ -26,7 +27,7 @@ Use when working on local player profile, offline score/level persistence, or th
 | Domain DB | **Drift `AppDatabase`** (SQLite) | `profile`, `progress`, `high_scores` |
 | Preferences | **`PreferenceService`** → SharedPreferences | sfx, bgm, haptics, hints, theme, locale, onboarding |
 
-**No flutter_secure_storage for MVP** — profiles have no passwords. If secrets are added later, use a dedicated secure-storage service (do not store secrets in Drift plaintext or prefs).
+**No flutter_secure_storage for MVP** - profiles have no passwords. If secrets are added later, use a dedicated secure-storage service (do not store secrets in Drift plaintext or prefs).
 
 ## Profile fields
 | Field | Required |
@@ -50,7 +51,7 @@ onGameOver / submitScore / unlockLevel
 ```
 lib/core/offline_db/
   app_database.dart              # @DriftDatabase + singleton instance
-  app_database.g.dart            # generated — run build_runner
+  app_database.g.dart            # generated - run build_runner
   offline_database_migrations.dart
   database_path.dart
   connection/                    # native + web conditional export
@@ -66,7 +67,7 @@ lib/core/offline_db/
 - Typed API: `SettingsService` on top of `PreferenceService`
 
 ## UI expectations
-- Game over without profile: primary CTA **Save score — create profile**
+- Game over without profile: primary CTA **Save score - create profile**
 - Profile screen: avatar picker + name/email/phone + stats (best score, highest level, games played)
 - Validate name and optional email/phone before save (`ProfileValidators`)
 - After successful save → snackbar + navigate to Home
@@ -92,4 +93,4 @@ lib/core/offline_db/
 - Sync scores to a server as a blocker for local save
 - Store passwords for local MVP profile (not an auth account)
 - Use cryptic abbreviations in repository/service locals
-- Reintroduce sqflite for domain tables — use Drift
+- Reintroduce sqflite for domain tables - use Drift

@@ -6,7 +6,7 @@
 
 ## Related issues
 
-<!-- e.g. Closes #123 — leave blank if none -->
+<!-- e.g. Closes #123 - leave blank if none -->
 
 ## Test plan
 

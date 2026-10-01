@@ -8,13 +8,14 @@ description: Snake App gameplay engine conventions for board, controls, scoring,
 Use when implementing or changing the play loop, controls, board layout, collectibles, levels, or in-game feedback.
 
 ## Read first
-- `docs/IMPLEMENTATION_PLAN.md` §§4.4–4.8
-- `docs/UX_DESIGN.md` (playground + feedback tables)
-- `docs/UX_ENHANCEMENTS.md` when adding Challenges, Sprint HUD, Dash, or new mode chips
+- `docs/IMPLEMENTATION_PLAN.md`
+- `docs/APP_FLOW.md` (playground, pause, game over)
+- `docs/UI_UX_DESIGN_BRIEF.md` (feedback)
+- `docs/PRODUCT_REQUIREMENTS.md` when changing campaign bands or challenge scope
 - Rule: `.cursor/rules/snake-app-gameplay.mdc`
 
 ## Controls checklist
-- [ ] Touch: swipe uses dominant axis + minimum distance (~24–32 px)
+- [ ] Touch: swipe uses dominant axis + minimum distance (~24-32 px)
 - [ ] Reject 180° reverse into self
 - [ ] Desktop: Arrow keys (optional WASD); Esc → pause
 - [ ] Web: support touch and/or keyboard based on input
@@ -35,7 +36,7 @@ Use when implementing or changing the play loop, controls, board layout, collect
 ## Levels
 - Clear unlock rule (score threshold and/or survival / eat count)
 - Persist `highest_level_unlocked` and per-level bests via offline-profile skill
-- Speed / density increase by level — document constants in code or `docs/`
+- Speed / density increase by level - document constants in code or `docs/`
 
 ## Audio
 - SFX channel ≠ BGM channel

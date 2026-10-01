@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Snake App Gameplay
 
-Follow `docs/IMPLEMENTATION_PLAN.md` §4.4–4.8 and `.cursor/skills/snake-app-gameplay/SKILL.md`.
+Follow `docs/IMPLEMENTATION_PLAN.md`, `docs/APP_FLOW.md`, and `.cursor/skills/snake-app-gameplay/SKILL.md`.
 
 ## Controls
 - Touch: swipe with dominant-axis + distance threshold; block reverse into self
@@ -19,7 +19,7 @@ Follow `docs/IMPLEMENTATION_PLAN.md` §4.4–4.8 and `.cursor/skills/snake-app-g
 - On orientation change: recompute metrics; avoid unfair mid-move deaths (soft pause OK)
 
 ## Naming
-- Meaningful locals: `engineSnapshot`, `eatEvent`, `levelConfig`, `cellIndex` — not `snap` / `eat` / `dir` / bare `i`
+- Meaningful locals: `engineSnapshot`, `eatEvent`, `levelConfig`, `cellIndex` - not `snap` / `eat` / `dir` / bare `i`
 
 ## Scoring & levels
 - Collectibles are tiered objects/animals with icons and different base scores

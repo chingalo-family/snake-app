@@ -12,11 +12,11 @@ Use this skill whenever working in this repository to keep implementation style,
 - Package: `snake_app` · Application ID: `chingalo.family.snake_app`
 - Stack: Flutter game, offline-first local storage (Drift `AppDatabase` + PreferenceService), SFX/BGM audio, responsive multi-platform UI
 - Platforms: Android, iOS, Linux, macOS, Windows, Web
-- Docs baseline: `README.md`, `docs/GETTING_STARTED.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/UX_DESIGN.md`, `docs/UX_ENHANCEMENTS.md`, `docs/THEME_AND_COLORS.md`, `docs/ARCHITECTURE.md`, `docs/APP_ICON_CONCEPT.md`, `docs/GAME_MODES.md`, `docs/GAME_EXPERIENCE.md`, `docs/releases/`, `docs/plans/`, `CONTRIBUTING.md`
+- Docs baseline: `README.md`, `docs/PRODUCT_REQUIREMENTS.md`, `docs/TECHNICAL_REQUIREMENTS.md`, `docs/APP_FLOW.md`, `docs/UI_UX_DESIGN_BRIEF.md`, `docs/BACKEND_SCHEMA.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/ARCHITECTURE.md`, `CONTRIBUTING.md`
 
 ## First-step checklist
 1. Read `docs/IMPLEMENTATION_PLAN.md` for scope and acceptance criteria.
-2. Align UX with `docs/UX_DESIGN.md` (shipped) and `docs/UX_ENHANCEMENTS.md` (planned Challenges / new modes). Theme: `docs/THEME_AND_COLORS.md`.
+2. Align UX with `docs/APP_FLOW.md` and `docs/UI_UX_DESIGN_BRIEF.md`. Scope: `docs/PRODUCT_REQUIREMENTS.md`.
 3. Map the change to a module (`onboarding`, `home`, `levels`, `game`, `profile`, `scores`, `settings`, `about`, `updates`).
 4. If gameplay/controls/board/levels/scoring → follow `.cursor/skills/snake-app-gameplay/SKILL.md`.
 5. If profile/scores/persistence → follow `.cursor/skills/snake-app-offline-profile/SKILL.md`.
@@ -45,15 +45,15 @@ code toward this layout rather than dumping everything in `lib/main.dart`.
 - Separate SFX and BGM settings
 - Swipe on touch; arrow keys on desktop
 - Responsive board + rotation support
-- Theme tokens centralized — no purple default Material demos
+- Theme tokens centralized - no purple default Material demos
 - Package imports: `package:snake_app/...`
-- **Meaningful variable names** — see Naming below
-- **User-facing copy via l10n** — English (`en`, default) and Swahili (`sw`); ARBs in `lib/l10n/`; use `context.l10n` (see `lib/core/l10n/`)
+- **Meaningful variable names** - see Naming below
+- **User-facing copy via l10n** - English (`en`, default) and Swahili (`sw`); ARBs in `lib/l10n/`; use `context.l10n` (see `lib/core/l10n/`)
 - Update docs when behavior/architecture/theme changes
 - App icon source: `assets/app-icon.png` via `flutter_launcher_icons` in `pubspec.yaml`
 
 ## Naming
-Names must describe **what** the value is in domain terms — not how short you can type it.
+Names must describe **what** the value is in domain terms - not how short you can type it.
 
 ### Do
 - Prefer full words: `engineSnapshot`, `packageInfo`, `sharedPreferences`, `levelConfig`, `eatEvent`, `cellIndex`
@@ -65,7 +65,7 @@ Names must describe **what** the value is in domain terms — not how short you 
 - Bare loop letters: `i`, `j`, `k`
 - Cryptic abbreviations: `snap`, `db`, `tp`, `rng`, `prefs`, `cfg`, `repo`, `dir` (use `direction`)
 - Vague catch-alls: `data`, `temp`, `tmp`, `val`, `res`, `item`, `info`, `obj` when a domain name exists
-- Single-letter locals except rare math (`x`/`y` only for true coordinates if unavoidable — prefer `velocityX` / `offsetY`)
+- Single-letter locals except rare math (`x`/`y` only for true coordinates if unavoidable - prefer `velocityX` / `offsetY`)
 
 ### Allowed idioms (do not rename for purity)
 - Flutter: `context`, `ref`, `child`, `key`, `theme`, `tester`
@@ -74,7 +74,7 @@ Names must describe **what** the value is in domain terms — not how short you 
 
 When editing existing code, rename unclear locals/params in the same change if you touch that file.
 
-## After any code change — check what changed
+## After any code change - check what changed
 ```bash
 git status
 git diff
@@ -91,7 +91,7 @@ flutter test
 
 Do **not** finish a task that changed anything under `lib/` until:
 1. `flutter analyze` reports **no errors**
-2. `flutter test` passes — prefer the **full** suite when audio, core services, game engine, persistence/profile, or app bootstrap/providers changed (or when unsure). Targeted tests are OK only for clearly isolated tweaks.
+2. `flutter test` passes - prefer the **full** suite when audio, core services, game engine, persistence/profile, or app bootstrap/providers changed (or when unsure). Targeted tests are OK only for clearly isolated tweaks.
 
 `flutter analyze` must report no errors. Prefer targeted tests for narrow non-`lib/` or docs-only changes.
 
@@ -99,31 +99,26 @@ Do **not** finish a task that changed anything under `lib/` until:
 | Change type | Update |
 |-------------|--------|
 | Feature / acceptance | `docs/IMPLEMENTATION_PLAN.md` |
-| Screens / flows | `docs/UX_DESIGN.md` |
-| Planned UI for next modes / Challenges | `docs/UX_ENHANCEMENTS.md` |
-| Colors / type | `docs/THEME_AND_COLORS.md` |
+| Product scope | `docs/PRODUCT_REQUIREMENTS.md` |
+| Screens / flows | `docs/APP_FLOW.md` |
+| Colors / type / screen rules | `docs/UI_UX_DESIGN_BRIEF.md` |
 | Structure / packages | `docs/ARCHITECTURE.md` |
-| Icon / branding mark | `docs/APP_ICON_CONCEPT.md` |
-| Game modes (shipped + Phase 3–4 sketches) | `docs/GAME_MODES.md` |
-| Current vs next game experience | `docs/GAME_EXPERIENCE.md` |
-| Next full releases (1.2–2.0 specs) | `docs/releases/` |
-| Suggested future modes / play loops | `docs/plans/` |
-| CI / desktop builds | `docs/CI.md` + `.github/workflows/` |
+| Local schema | `docs/BACKEND_SCHEMA.md` |
+| CI / desktop builds / prefs keys | `docs/TECHNICAL_REQUIREMENTS.md` + `.github/workflows/` |
 | Overview / install / features / stack | `README.md` |
-| Clone/run/test, tree, prefs keys | `docs/GETTING_STARTED.md` |
 | Contributor workflow, Conventional Commits | `CONTRIBUTING.md` + `.github/PULL_REQUEST_TEMPLATE.md` |
 | Vulnerability reporting / CoC contact | `SECURITY.md` / `CODE_OF_CONDUCT.md` / `.github/ISSUE_TEMPLATE/` |
 | UI strings / locales | `lib/l10n/app_*.arb` (+ regenerate) |
 | Marketing-facing product facts | Sibling `../snake-app-website/docs/` when that repo is present |
 
-When README, GETTING_STARTED, CONTRIBUTING, SECURITY, CoC, or GitHub templates would drift, follow [snake-app-community-docs](../snake-app-community-docs/SKILL.md). Do not invent env vars, emails, or store URLs.
+When README, technical requirements, CONTRIBUTING, SECURITY, CoC, or GitHub templates would drift, follow [snake-app-community-docs](../snake-app-community-docs/SKILL.md). Do not invent env vars, emails, or store URLs.
 
 ## Localization
 - Template: `lib/l10n/app_en.arb` (default)
 - Swahili: `lib/l10n/app_sw.arb`
 - Access: `context.l10n` from `package:snake_app/core/l10n/l10n_extensions.dart`
 - Language preference persisted in settings (`locale_code`: `en` | `sw`)
-- Do not hardcode user-visible English in feature widgets — add ARB keys instead
+- Do not hardcode user-visible English in feature widgets - add ARB keys instead
 
 ## Related skills
 - [snake-app-gameplay](../snake-app-gameplay/SKILL.md)

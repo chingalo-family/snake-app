@@ -1,4 +1,4 @@
-name: Flutter CI — Analyze & Test
+name: Flutter CI - Analyze & Test
 
 on:
   workflow_dispatch:

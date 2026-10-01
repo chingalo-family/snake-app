@@ -1,12 +1,12 @@
 ---
 description: Snake App theme and UI visual standards
-globs: lib/**/*.dart,docs/THEME_AND_COLORS.md,docs/UX_DESIGN.md
+globs: lib/**/*.dart,docs/UI_UX_DESIGN_BRIEF.md
 alwaysApply: false
 ---
 
 # Snake App Theme & UI
 
-Follow `docs/THEME_AND_COLORS.md` and `docs/UX_DESIGN.md`.
+Follow `docs/UI_UX_DESIGN_BRIEF.md` and `docs/APP_FLOW.md`.
 
 ## Palette (dark default)
 - Primary: `#1FA87A` · Light: `#3ECF98` · Dark: `#14825C`
@@ -16,13 +16,13 @@ Follow `docs/THEME_AND_COLORS.md` and `docs/UX_DESIGN.md`.
 - Text: primary `#F2F7F4`, secondary `#A8C4B8`
 
 ## UI rules
-- One job per screen; Home is brand + Play CTA — not a dense dashboard
+- One job per screen; Home is brand + Play CTA - not a dense dashboard
 - Prefer tonal surfaces over heavy multi-layer shadows
 - Radii: 16 screens/cards, 12 controls, 8 chips
 - Avoid purple-indigo gradients, cream/terracotta stock looks, emoji-spam HUDs
-- Motion: intentional (food pulse, score float, unlock) — not continuous glow noise
+- Motion: intentional (food pulse, score float, unlock) - not continuous glow noise
 - Tap targets ≥ 48×48 on touch; keep contrast readable on the board
 
 ## When editing theme
-- Put tokens in `lib/core/theme/` (or equivalent) — do not hardcode scattered hex in feature widgets
-- Update `docs/THEME_AND_COLORS.md` if tokens change
+- Put tokens in `lib/core/theme/` (or equivalent) - do not hardcode scattered hex in feature widgets
+- Update `docs/UI_UX_DESIGN_BRIEF.md` if tokens change
